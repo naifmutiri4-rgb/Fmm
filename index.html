@@ -3,156 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FMM Royal System</title>
+    <title>FMM Ultimate Product Manager</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --royal-purple: #7c4dff;
             --deep-black: #050508;
             --panel-bg: #0d0d12;
-            --sidebar-bg: #0a0a0f;
-            --border: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --success: #00e676;
+            --error: #ff5252;
+            --warning: #ffee00;
             --text-muted: #8b8b93;
         }
 
-        body { background: var(--deep-black); color: #fff; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        body { background: var(--deep-black); color: #fff; font-family: 'Inter', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
-        /* [1] السايدبار الرئيسي الثابت */
-        .main-sidebar { width: 240px; background: var(--sidebar-bg); border-left: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 10px; z-index: 100; }
-        .nav-link { padding: 12px 15px; border-radius: 10px; display: flex; align-items: center; gap: 12px; color: var(--text-muted); cursor: pointer; transition: 0.3s; font-size: 14px; margin-bottom: 5px; }
-        .nav-link:hover, .nav-link.active { background: rgba(124, 77, 255, 0.1); color: #fff; }
-        .nav-link.active { color: var(--royal-purple); background: rgba(124, 77, 255, 0.05); border-right: 3px solid var(--royal-purple); }
+        /* سايدبار القوائم الرئيسية */
+        .sidebar { width: 240px; background: #000; border-left: 1px solid var(--border); display: flex; flex-direction: column; padding: 20px 10px; }
+        .nav-item { padding: 12px 15px; border-radius: 12px; display: flex; align-items: center; gap: 10px; color: var(--text-muted); cursor: pointer; transition: 0.3s; font-size: 13px; }
+        .nav-item.active { background: rgba(124, 77, 255, 0.15); color: #fff; border-right: 3px solid var(--royal-purple); }
 
-        /* [2] حاوية الصفحات الديناميكية */
-        .page-container { flex: 1; position: relative; display: flex; overflow: hidden; }
-        .page-section { display: none; width: 100%; height: 100%; position: absolute; inset: 0; animation: fadeIn 0.4s ease; }
-        .page-section.active { display: flex; }
-
-        /* [3] واجهة إدارة المنتجات (الخاصة بك) */
-        .products-list-col { width: 300px; background: var(--panel-bg); border-left: 1px solid var(--border); overflow-y: auto; }
-        .product-card { padding: 20px; border-bottom: 1px solid var(--border); cursor: pointer; }
+        /* عمود قائمة المنتجات الفرعية */
+        .products-column { width: 320px; background: var(--panel-bg); border-left: 1px solid var(--border); display: flex; flex-direction: column; }
+        .search-area { padding: 15px; border-bottom: 1px solid var(--border); }
+        .search-input { width: 100%; background: #000; border: 1px solid var(--border); padding: 10px; border-radius: 8px; color: #fff; font-size: 12px; }
+        
+        .product-list { flex: 1; overflow-y: auto; }
+        .product-card { padding: 15px; border-bottom: 1px solid var(--border); cursor: pointer; transition: 0.2s; position: relative; }
+        .product-card:hover { background: rgba(255,255,255,0.02); }
         .product-card.active { background: #161621; border-right: 3px solid var(--royal-purple); }
+        
+        /* منطقة التعديل الرئيسية */
+        .editor-view { flex: 1; overflow-y: auto; background: #000; padding: 30px; }
+        .top-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        
+        /* كرت إحصائيات المنتج */
+        .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; margin-bottom: 25px; }
+        .mini-stat { background: var(--panel-bg); padding: 15px; border-radius: 15px; border: 1px solid var(--border); }
+        .mini-stat small { color: var(--text-muted); font-size: 11px; }
+        .mini-stat div { font-size: 18px; font-weight: bold; margin-top: 5px; }
 
-        .editor-area { flex: 1; display: flex; flex-direction: column; overflow-y: auto; background: var(--deep-black); }
-        .editor-header { padding: 30px; border-bottom: 1px solid var(--border); background: var(--panel-bg); }
+        /* الجدول */
+        .main-table { width: 100%; border-collapse: collapse; background: var(--panel-bg); border-radius: 15px; overflow: hidden; }
+        .main-table th { text-align: right; padding: 15px; font-size: 11px; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+        .main-table td { padding: 15px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.03); }
 
-        /* جداول وقواعد SMM */
-        .rules-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .rules-table th { text-align: right; padding: 15px; color: var(--text-muted); font-size: 12px; border-bottom: 1px solid var(--border); }
-        .rules-table td { padding: 15px; font-size: 13px; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        /* نافذة الإضافة المتقدمة (المنبثقة) */
+        .modal { position: fixed; inset: 0; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 1000; }
+        .modal.active { display: flex; }
+        .modal-box { background: var(--panel-bg); width: 600px; border-radius: 25px; padding: 30px; border: 1px solid var(--royal-purple); max-height: 90vh; overflow-y: auto; }
 
-        /* تصميم عام للصفحات الأخرى */
-        .placeholder-content { padding: 40px; text-align: center; width: 100%; }
-        .stat-card { background: var(--panel-bg); padding: 25px; border-radius: 20px; border: 1px solid var(--border); margin: 10px; flex: 1; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        /* أزرار وحالات */
+        .btn { padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; font-size: 12px; transition: 0.3s; }
+        .btn-purple { background: var(--royal-purple); color: white; }
+        .status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-left: 5px; }
+        .online { background: var(--success); box-shadow: 0 0 10px var(--success); }
+        
+        .profit-text { color: var(--success); font-weight: bold; }
+        .badge { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: rgba(255,255,255,0.1); margin-right: 5px; }
     </style>
 </head>
 <body>
 
-    <aside class="main-sidebar">
-        <div style="margin-bottom: 40px; padding: 0 15px;">
-            <h1 style="color: var(--royal-purple); font-size: 24px; margin: 0;">FMM ROYAL</h1>
+    <nav class="sidebar">
+        <h2 style="color: var(--royal-purple); padding: 0 15px;">FMM Pro</h2>
+        <div class="nav-item"><i class="fas fa-home"></i> الرئيسية</div>
+        <div class="nav-item active"><i class="fas fa-box"></i> المنتجات</div>
+        <div class="nav-item"><i class="fas fa-shopping-cart"></i> الطلبات</div>
+        <div class="nav-item"><i class="fas fa-users"></i> العملاء</div>
+        <div class="nav-item"><i class="fas fa-bullhorn"></i> التسويق</div>
+        <div class="nav-item"><i class="fas fa-cog"></i> الإعدادات</div>
+    </nav>
+
+    <aside class="products-column">
+        <div class="search-area">
+            <input type="text" class="search-input" placeholder="بحث ذكي في 500 منتج...">
         </div>
-        <div class="nav-link active" onclick="showSection('home', this)"><i class="fas fa-home"></i> الرئيسية</div>
-        <div class="nav-link" onclick="showSection('products', this)"><i class="fas fa-box"></i> المنتجات</div>
-        <div class="nav-link" onclick="showSection('orders', this)"><i class="fas fa-shopping-cart"></i> الطلبات</div>
-        <div class="nav-link" onclick="showSection('customers', this)"><i class="fas fa-users"></i> العملاء</div>
-        <div class="nav-link" onclick="showSection('marketing', this)"><i class="fas fa-bullhorn"></i> أدوات التسويق</div>
-        <div class="nav-link" onclick="showSection('store', this)"><i class="fas fa-store"></i> المتجر</div>
+        <div class="product-list">
+            <div class="product-card active">
+                <div style="display:flex; justify-content:space-between;">
+                    <h4>بكج البلاتينيوم الملكي</h4>
+                    <span class="status-dot online"></span>
+                </div>
+                <div style="margin-top:5px;">
+                    <span class="badge">ID: 758</span>
+                    <span class="profit-text">ربح: 45.00 ر.س</span>
+                </div>
+            </div>
+            </div>
     </aside>
 
-    <main class="page-container">
-        
-        <section id="section-home" class="page-section active">
-            <div class="placeholder-content">
-                <h2 style="color: var(--royal-purple)">مرحباً بك في FMM</h2>
-                <div style="display: flex; gap: 20px; margin-top: 40px;">
-                    <div class="stat-card"><h3>$12,450</h3><p>إجمالي مبيعات اليوم</p></div>
-                    <div class="stat-card"><h3>145</h3><p>طلبات بانتظار التنفيذ</p></div>
-                </div>
+    <main class="editor-view">
+        <div class="top-header">
+            <div>
+                <h1 style="margin:0;">إدارة قواعد SMM <span style="font-size:14px; color:var(--text-muted); font-weight:normal;">(50 وظيفة مفعلة)</span></h1>
             </div>
-        </section>
+            <div style="display:flex; gap:10px;">
+                <button class="btn" style="background:#222; color:#fff;"><i class="fas fa-sync"></i> مزامنة سلة</button>
+                <button class="btn btn-purple" onclick="toggleModal()">+ إضافة قاعدة ذكية</button>
+            </div>
+        </div>
 
-        <section id="section-products" class="page-section">
-            <div class="products-list-col">
-                <div style="padding: 20px; border-bottom: 1px solid var(--border)">
-                    <input type="text" placeholder="بحث سريع..." style="width:100%; background:#15151e; border:1px solid var(--border); padding:10px; color:#fff; border-radius:8px;">
-                </div>
-                <div class="product-card active">
-                    <h4>بكج البلاتينيوم</h4>
-                    <small style="color:var(--text-muted)">0.00 ر.س | متصل ✅</small>
-                </div>
-                <div class="product-card">
-                    <h4>بكج الذهبي</h4>
-                    <small style="color:var(--text-muted)">0.00 ر.س | متصل ✅</small>
-                </div>
+        <div class="stats-row">
+            <div class="mini-stat">
+                <small>إجمالي التكلفة</small>
+                <div style="color:var(--error);">$12.40</div>
             </div>
-            <div class="editor-area">
-                <div class="editor-header">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <h2>بكج البلاتينيوم <span style="font-size:12px; background:var(--royal-purple); padding:3px 8px; border-radius:5px;">بكج</span></h2>
-                        <button style="background:var(--royal-purple); border:none; color:white; padding:10px 20px; border-radius:8px; cursor:pointer;">+ إضافة قاعدة SMM</button>
-                    </div>
-                </div>
-                <div style="padding:30px;">
-                    <table class="rules-table">
-                        <thead>
-                            <tr>
-                                <th>اسم الخدمة</th>
-                                <th>المزود</th>
-                                <th>ID الخدمة</th>
-                                <th>الكمية</th>
-                                <th>الإجراءات</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>مشاهدات فيديو</td>
-                                <td>smmcpan</td>
-                                <td style="color:var(--royal-purple)">27460</td>
-                                <td style="color:#00e676">250,000</td>
-                                <td><i class="fas fa-edit"></i> <i class="fas fa-trash" style="margin-right:10px; color:#ff5252;"></i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="mini-stat">
+                <small>سعر البيع</small>
+                <div>150.00 ر.س</div>
             </div>
-        </section>
+            <div class="mini-stat">
+                <small>صافي الربح</small>
+                <div class="profit-text">+105.00 ر.س</div>
+            </div>
+            <div class="mini-stat">
+                <small>حالة الـ API</small>
+                <div style="color:var(--success); font-size:14px;"><i class="fas fa-check-circle"></i> متصل (SMM-CPAN)</div>
+            </div>
+        </div>
 
-        <section id="section-customers" class="page-section">
-            <div class="placeholder-content">
-                <h2>إدارة العملاء</h2>
-                <div class="stat-card" style="max-width: 600px; margin: 40px auto;">
-                    <p>هنا تظهر قائمة العملاء المسجلين وبيانات تواصلهم.</p>
+        <div style="background:var(--panel-bg); border-radius:20px; padding:20px; border:1px solid var(--border);">
+            <div style="margin-bottom:20px; display:flex; justify-content:space-between;">
+                <b>قواعد التنفيذ المتسلسل</b>
+                <span style="font-size:12px; color:var(--warning);"><i class="fas fa-bolt"></i> ميزة التبديل الآلي للمزود مفعلة</span>
+            </div>
+            <table class="main-table">
+                <thead>
+                    <tr>
+                        <th>الخدمة</th>
+                        <th>المزود</th>
+                        <th>ID</th>
+                        <th>الكمية</th>
+                        <th>التأخير</th>
+                        <th>المزود البديل</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>مشاهدات فيديو</td>
+                        <td>SMM-CPAN</td>
+                        <td style="color:var(--royal-purple)">27460</td>
+                        <td>250,000</td>
+                        <td>0 دقيقة</td>
+                        <td>Global-SMM</td>
+                        <td>
+                            <i class="fas fa-eye" title="معاينة"></i>
+                            <i class="fas fa-edit" style="margin:0 10px;"></i>
+                            <i class="fas fa-trash" style="color:var(--error)"></i>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <div class="modal" id="addModal">
+        <div class="modal-box">
+            <h3>إضافة قاعدة SMM متقدمة</h3>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;">
+                <div>
+                    <label style="font-size:11px; color:var(--text-muted);">المزود الأساسي</label>
+                    <select style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid var(--border); border-radius:8px; margin-top:5px;">
+                        <option>SMM-CPAN</option>
+                        <option>Global-SMM</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:11px; color:var(--text-muted);">المزود الاحتياطي (Auto-Failover)</label>
+                    <select style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid var(--border); border-radius:8px; margin-top:5px;">
+                        <option>None</option>
+                        <option>Global-SMM</option>
+                    </select>
+                </div>
+                <div>
+                    <label style="font-size:11px; color:var(--text-muted);">ID الخدمة</label>
+                    <input type="text" style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid var(--border); border-radius:8px; margin-top:5px;">
+                </div>
+                <div>
+                    <label style="font-size:11px; color:var(--text-muted);">تأخير البدء (دقيقة)</label>
+                    <input type="number" value="0" style="width:100%; padding:10px; background:#000; color:#fff; border:1px solid var(--border); border-radius:8px; margin-top:5px;">
                 </div>
             </div>
-        </section>
-
-        </main>
+            <div style="margin-top:20px;">
+                <label style="font-size:11px; color:var(--text-muted);">توزيع الكمية (Drip-Feed)</label>
+                <div style="display:flex; gap:10px; margin-top:5px;">
+                    <input type="checkbox"> تفعيل التقسيم التلقائي على 24 ساعة
+                </div>
+            </div>
+            <div style="margin-top:30px; display:flex; gap:10px;">
+                <button class="btn btn-purple" style="flex:1;" onclick="toggleModal()">حفظ القاعدة وتفعيل الذكاء</button>
+                <button class="btn" style="background:#333; color:#fff;" onclick="toggleModal()">إلغاء</button>
+            </div>
+        </div>
+    </div>
 
     <script>
-        function showSection(sectionId, element) {
-            // 1. إخفاء جميع الأقسام
-            document.querySelectorAll('.page-section').forEach(section => {
-                section.classList.remove('active');
-            });
-
-            // 2. إظهار القسم المطلوب
-            const target = document.getElementById('section-' + sectionId);
-            if (target) {
-                target.classList.add('active');
-            } else {
-                // إذا لم نقم ببرمجة الصفحة بعد، نظهر رسالة بسيطة
-                alert("جاري العمل على صفحة " + sectionId);
-            }
-
-            // 3. تحديث مظهر الروابط في القائمة الجانبية
-            document.querySelectorAll('.nav-link').forEach(link => {
-                link.classList.remove('active');
-            });
-            element.classList.add('active');
+        function toggleModal() {
+            document.getElementById('addModal').classList.toggle('active');
         }
+        
+        // محاكاة لبعض الوظائف الـ 50 (مثل فحص الحالة اللحظي)
+        setInterval(() => {
+            const dots = document.querySelectorAll('.status-dot');
+            dots.forEach(dot => {
+                dot.style.opacity = dot.style.opacity === '0.5' ? '1' : '0.5';
+            });
+        }, 1000);
     </script>
 </body>
 </html>
