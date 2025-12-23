@@ -26,9 +26,9 @@
 
         /* بطاقات زجاجية بنفسجي ملكي */
         .card-royal {
-            background: rgba(124, 77, 255, 0.15); /* بنفسجي ملكي شفاف */
+            background: rgba(124, 77, 255, 0.25); /* بنفسجي ملكي شفاف */
             backdrop-filter: blur(15px);           /* تأثير الزجاج */
-            border: 1px solid rgba(124, 77, 255, 0.3); /* حدود بنفسجي مضيئة */
+            border: 1px solid rgba(124, 77, 255, 0.5); /* حدود بنفسجي مضيئة */
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -149,23 +149,23 @@
                 </div>
                 <div>
                     <p class="text-sm text-white font-medium uppercase">تاريخ اليوم</p>
-                    <span id="current-date" class="text-4xl font-normal"></span>
+                    <span id="current-date" class="text-3xl font-normal"></span>
                 </div>
             </div>
 
             <!-- بطاقة الرصيد والمبيعات -->
             <div class="card-royal p-6 flex flex-col md:flex-row justify-between gap-6 glow-purple">
                 <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
-                    <p class="text-lg text-white font-medium mb-2">رصيد المحفظة</p>
-                    <span id="wallet-balance" class="text-5xl font-normal">1,800 ريال</span>
+                    <p class="text-lg text-white font-normal mb-2">رصيد المحفظة</p>
+                    <span id="wallet-balance" class="text-4xl font-normal">1,800 ريال</span>
                 </div>
                 <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
-                    <p class="text-lg text-white font-medium mb-2">رصيد المورد</p>
-                    <span id="supplier-balance" class="text-5xl font-normal">1,800 ريال</span>
+                    <p class="text-lg text-white font-normal mb-2">رصيد المورد</p>
+                    <span id="supplier-balance" class="text-4xl font-normal">1,800 ريال</span>
                 </div>
                 <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
-                    <p class="text-lg text-white font-medium mb-2">مبيعات منصة سلة</p>
-                    <span id="salla-sales" class="text-5xl font-normal">18,000 ريال</span>
+                    <p class="text-lg text-white font-normal mb-2">مبيعات منصة سلة</p>
+                    <span id="salla-sales" class="text-4xl font-normal">18,000 ريال</span>
                 </div>
             </div>
 
@@ -173,28 +173,28 @@
             <div class="grid grid-cols-2 gap-4">
                 <div class="card-royal p-6 flex flex-col items-center">
                     <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3">
-                        <i class="fas fa-fire-alt text-3xl" style="color: var(--royal-purple);"></i>
+                        <i class="fas fa-fire-alt text-2xl" style="color: var(--royal-purple);"></i>
                     </div>
-                    <span class="text-lg text-white font-normal mb-1">طلبات اليوم</span>
-                    <span id="today-orders" class="text-3xl font-normal">120</span>
+                    <span class="text-2xl text-white font-normal mb-1">طلبات اليوم</span>
+                    <span id="today-orders" class="text-2xl font-normal">120</span>
                 </div>
 
                 <div class="card-royal p-6 flex flex-col items-center">
                     <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3">
-                        <i class="fas fa-clock text-3xl" style="color: var(--gold-status);"></i>
+                        <i class="fas fa-clock text-2xl" style="color: var(--gold-status);"></i>
                     </div>
-                    <span class="text-lg text-white font-normal mb-1">قيد التنفيذ</span>
-                    <span id="pending-orders" class="text-3xl font-normal">45</span>
+                    <span class="text-2xl text-white font-normal mb-1">قيد التنفيذ</span>
+                    <span id="pending-orders" class="text-2xl font-normal">45</span>
                 </div>
 
                 <div class="card-royal p-6 flex items-center justify-between col-span-2">
                     <div class="flex items-center gap-4">
                         <div class="w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center">
-                            <i class="fas fa-check-double text-3xl" style="color: var(--neon-green);"></i>
+                            <i class="fas fa-check-double text-2xl" style="color: var(--neon-green);"></i>
                         </div>
                         <div>
-                            <span class="text-lg text-white font-normal uppercase">الطلبات المكتملة</span>
-                            <h4 id="completed-orders" class="text-3xl font-normal" style="color: var(--neon-green);">980</h4>
+                            <span class="text-2xl text-white font-normal uppercase">الطلبات المكتملة</span>
+                            <h4 id="completed-orders" class="text-2xl font-normal" style="color: var(--neon-green);">980</h4>
                         </div>
                     </div>
                     <i class="fas fa-chevron-left text-gray-700 text-xs"></i>
@@ -205,7 +205,6 @@
     </div>
 
     <script>
-        // فتح وإغلاق القائمة الجانبية
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
@@ -218,13 +217,11 @@
             }
         }
 
-        // تحديث التاريخ تلقائياً بالميلادي
         function updateDate() {
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-GB', options);
         }
 
-        // محاكاة تغيير البيانات حسب الفلتر الزمني
         function handleTimeChange(value) {
             const customRange = document.getElementById('custom-date-range');
             const mainContent = document.getElementById('main-content');
