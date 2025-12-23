@@ -2,228 +2,142 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FMM Dashboard Pro | Premium Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FMM Mobile Expert</title>
     <style>
         :root {
-            --bg-dark: #0b0e14;
-            --sidebar-bg: #151921;
-            --card-bg: #1c222d;
-            --accent-blue: #00d4ff;
-            --accent-purple: #7c4dff;
-            --text-main: #ffffff;
-            --text-dim: #a0aec0;
-            --success: #00e676;
-            --danger: #ff5252;
-            --border: rgba(255, 255, 255, 0.05);
+            --bg: #050508;
+            --panel: #0d0d12;
+            --accent: #00d4ff;
+            --text: #ffffff;
+            --dim: #7d7d7d;
         }
 
-        * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-main); margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: sans-serif; }
+        body { background: var(--bg); color: var(--text); margin: 0; overflow-x: hidden; }
 
-        /* القائمة الجانبية المتقدمة */
-        .sidebar {
-            width: 260px;
-            background: var(--sidebar-bg);
-            border-left: 1px solid var(--border);
+        /* الهيدر العلوي */
+        .header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* زر الهامبرغر المطور */
+        .hamburger-btn {
+            cursor: pointer;
             display: flex;
             flex-direction: column;
-            transition: 0.3s;
+            gap: 5px;
+            width: 30px;
+            z-index: 3000;
         }
-        .sidebar-header { padding: 30px 20px; text-align: center; border-bottom: 1px solid var(--border); }
-        .sidebar-header h1 { color: var(--accent-blue); margin: 0; font-size: 24px; letter-spacing: 2px; }
-        
-        .nav-list { list-style: none; padding: 20px 0; margin: 0; flex-grow: 1; }
-        .nav-item {
-            padding: 15px 25px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            cursor: pointer;
-            color: var(--text-dim);
-            transition: 0.2s;
-            font-size: 14px;
-        }
-        .nav-item:hover, .nav-item.active {
-            background: rgba(124, 77, 255, 0.1);
-            color: var(--text-main);
-            border-right: 4px solid var(--accent-purple);
+        .hamburger-btn span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background: var(--text);
+            border-radius: 5px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* المحتوى الرئيسي */
-        .main-content { flex-grow: 1; overflow-y: auto; padding: 30px; }
+        /* تحويل الهامبرغر لعلامة X عند الفتح */
+        .hamburger-btn.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger-btn.active span:nth-child(2) { opacity: 0; }
+        .hamburger-btn.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* الهيدر العلوي في المحتوى */
-        .content-header {
+        /* قائمة التصنيفات والاقسام */
+        .nav-menu {
+            position: fixed;
+            top: 0;
+            right: -100%; /* مخفية في البداية */
+            width: 80%; /* عرض مناسب للجوال والآيباد */
+            max-width: 350px;
+            height: 100vh;
+            background: var(--panel);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            transition: 0.5s ease;
+            z-index: 2000;
+            padding: 80px 25px 20px;
+        }
+        .nav-menu.open { right: 0; }
+
+        .category-item {
+            padding: 18px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            font-size: 18px;
+            color: var(--text);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-        }
-        .alert-box {
-            background: rgba(255, 82, 82, 0.1);
-            border: 1px solid var(--danger);
-            color: var(--danger);
-            padding: 10px 20px;
-            border-radius: 8px;
-            font-size: 13px;
-        }
-
-        /* الجداول (مثل الصورة المرفقة) */
-        .data-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            margin-bottom: 25px;
-            overflow: hidden;
-        }
-        .card-title {
-            padding: 15px 20px;
-            background: rgba(255,255,255,0.02);
-            border-bottom: 1px solid var(--border);
-            font-weight: bold;
-            font-size: 16px;
-            color: var(--accent-blue);
-        }
-        
-        table { width: 100%; border-collapse: collapse; }
-        th { background: rgba(0,0,0,0.2); text-align: right; padding: 15px 20px; font-size: 13px; color: var(--text-dim); }
-        td { padding: 15px 20px; border-bottom: 1px solid var(--border); font-size: 14px; }
-        
-        .status-badge {
-            padding: 5px 12px;
-            border-radius: 6px;
-            font-size: 11px;
-            background: var(--accent-purple);
-            color: white;
-        }
-
-        /* الأزرار الاحترافية */
-        .btn-action {
-            background: var(--accent-blue);
-            color: #000;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 12px;
-            transition: 0.3s;
         }
-        .btn-action:hover { opacity: 0.8; box-shadow: 0 0 10px var(--accent-blue); }
+        .category-item span { font-size: 12px; color: var(--accent); border: 1px solid var(--accent); padding: 2px 8px; border-radius: 5px; }
 
-        /* الحقول والمدخلات */
-        .input-group {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-            padding: 20px;
-        }
-        .input-field {
-            background: var(--bg-dark);
-            border: 1px solid var(--border);
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 13px;
-        }
-
-        /* القائمة الجوال (الـ 3 خطوط) */
-        .mobile-header {
+        /* طبقة تظليل عند فتح القائمة */
+        .overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
             display: none;
-            padding: 15px;
-            background: var(--sidebar-bg);
-            justify-content: space-between;
-            align-items: center;
+            z-index: 1500;
+            backdrop-filter: blur(5px);
         }
-        .menu-toggle { font-size: 24px; cursor: pointer; }
+        .overlay.show { display: block; }
 
-        @media (max-width: 768px) {
-            .sidebar { position: fixed; right: -260px; height: 100%; z-index: 1000; }
-            .sidebar.active { right: 0; }
-            .mobile-header { display: flex; }
-            .input-group { grid-template-columns: 1fr; }
+        /* ضبط المحتوى للآيباد والجوال */
+        .content { padding: 25px; text-align: center; }
+        
+        @media (min-width: 768px) { /* مقاسات الآيباد */
+            .nav-menu { width: 40%; }
+            .category-item { font-size: 20px; padding: 22px; }
         }
     </style>
 </head>
 <body>
 
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h1>FMM PRO</h1>
+    <header class="header">
+        <div class="hamburger-btn" id="hamBtn" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
         </div>
-        <ul class="nav-list">
-            <li class="nav-item active">🏠 لوحة التحكم</li>
-            <li class="nav-item">📦 طلبات سلة</li>
-            <li class="nav-item">📊 سجل العمليات</li>
-            <li class="nav-item">💰 المالية</li>
-            <li class="nav-item">⚙️ الإعدادات</li>
-        </ul>
+        <div style="font-size: 20px; font-weight: 900; color: var(--accent);">FMM PRO</div>
+        <div style="width: 30px;"></div>
+    </header>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <nav class="nav-menu" id="navMenu">
+        <div class="category-item">📦 طلبات المتجر <span>3</span></div>
+        <div class="category-item">📈 خدمات تيك توك <span>ID: 22</span></div>
+        <div class="category-item">📸 خدمات انستقرام <span>ID: 45</span></div>
+        <div class="category-item">💰 السجل المالي <span>SAR</span></div>
+        <div class="category-item">⚙️ إعدادات الربط <span>Fix</span></div>
     </nav>
 
-    <div style="flex-grow: 1; display: flex; flex-direction: column;">
-        
-        <header class="mobile-header">
-            <div class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('active')">☰</div>
-            <div style="font-weight: bold; color: var(--accent-blue);">FMM</div>
-            <div style="width: 24px;"></div>
-        </header>
-
-        <main class="main-content">
-            
-            <div class="content-header">
-                <div>
-                    <h2 style="margin: 0;">Salla & SMM Management</h2>
-                    <small style="color: var(--text-dim);">أهلاً بك في الواجهة المتكاملة</small>
-                </div>
-                <div class="alert-box">
-                    ⚠️ تنبيه: طلب سلة #ZZZY يحتاج تدخل
-                </div>
-            </div>
-
-            <div class="data-card">
-                <div class="card-title">آخر الطلبات المستلمة من سلة</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>رقم الطلب</th>
-                            <th>اسم العميل</th>
-                            <th>نوع الخدمة</th>
-                            <th>رابط الحساب</th>
-                            <th>الإجراء</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>#99401</td>
-                            <td>نايف المطيري</td>
-                            <td><span class="status-badge">متابعين تيك توك</span></td>
-                            <td>tiktok.com/@user</td>
-                            <td><button class="btn-action">تنفيذ الآن</button></td>
-                        </tr>
-                        <tr>
-                            <td>#99402</td>
-                            <td>متجر الفهد</td>
-                            <td><span class="status-badge">لايكات انستقرام</span></td>
-                            <td>instagram.com/p/..</td>
-                            <td><button class="btn-action">تنفيذ الآن</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="data-card">
-                <div class="card-title">تفاصيل الربط اليدوي (Manual Link)</div>
-                <div class="input-group">
-                    <input type="text" class="input-field" placeholder="Account Name / Link">
-                    <input type="text" class="input-field" placeholder="SMM Service ID">
-                    <input type="text" class="input-field" placeholder="Video Link / Post ID">
-                    <button class="btn-action" style="height: 45px; background: var(--accent-purple); color: white;">تحديث البيانات ⚡</button>
-                </div>
-            </div>
-
-        </main>
+    <div class="content">
+        <h1 style="font-weight: 100; margin-top: 50px;">Welcome in <b>Fmm</b></h1>
+        <p style="color: var(--dim);">اضغط على الخطوط الثلاثة لعرض الأقسام</p>
     </div>
 
+    <script>
+        function toggleMenu() {
+            const btn = document.getElementById('hamBtn');
+            const menu = document.getElementById('navMenu');
+            const overlay = document.getElementById('overlay');
+
+            // منطق "الضغط مرة ثانية للاختفاء"
+            btn.classList.toggle('active');
+            menu.classList.toggle('open');
+            overlay.classList.toggle('show');
+        }
+    </script>
 </body>
 </html>
