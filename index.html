@@ -3,69 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>FMM Royal Control Center</title>
+    <title>FMM Multi-Page Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --royal-purple: #7c4dff;
             --deep-black: #050508;
-            --glass-bg: rgba(15, 15, 25, 0.95);
+            --glass-bg: rgba(15, 15, 25, 0.98);
             --border: rgba(124, 77, 255, 0.35);
             --success: #00e676;
-            --lightning: #ffee00;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, sans-serif; }
         body { background: var(--deep-black); color: #fff; margin: 0; overflow-x: hidden; }
 
         /* الهيدر */
-        .header { padding: 18px; display: flex; justify-content: space-between; align-items: center; background: #000; border-bottom: 1px solid var(--border); sticky; top: 0; z-index: 1000; }
-        .logo { font-weight: 900; color: var(--royal-purple); font-size: 22px; letter-spacing: -1px; }
+        .header { padding: 18px; display: flex; justify-content: space-between; align-items: center; background: #000; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 900; color: var(--royal-purple); font-size: 22px; }
 
-        /* القائمة الجانبية (Sidebar) */
-        .sidebar {
-            position: fixed; top: 0; right: -280px; width: 280px; height: 100%;
-            background: var(--glass-bg); backdrop-filter: blur(20px);
-            z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border-left: 1px solid var(--border); padding: 20px;
-            overflow-y: auto;
-        }
+        /* القائمة الجانبية */
+        .sidebar { position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: var(--glass-bg); backdrop-filter: blur(20px); z-index: 2000; transition: 0.4s; border-left: 1px solid var(--border); padding: 20px; }
         .sidebar.active { right: 0; }
-        .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
-        
-        .menu-list { list-style: none; padding: 0; margin: 0; }
-        .menu-item { 
-            padding: 14px 15px; margin-bottom: 8px; border-radius: 12px; 
-            display: flex; align-items: center; gap: 12px; color: #ccc;
-            transition: 0.3s; cursor: pointer; font-size: 14px;
-        }
-        .menu-item i { width: 20px; color: var(--royal-purple); font-size: 16px; }
-        .menu-item:hover { background: rgba(124, 77, 255, 0.1); color: #fff; }
+        .menu-item { padding: 14px; margin-bottom: 5px; border-radius: 12px; display: flex; align-items: center; gap: 12px; cursor: pointer; color: #888; transition: 0.3s; }
         .menu-item.active { background: var(--royal-purple); color: #fff; }
-        .menu-item.active i { color: #fff; }
 
-        /* المحتوى الرئيسي */
-        .tabs-container { display: flex; background: #111; padding: 5px; margin: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
-        .tab { flex: 1; padding: 12px; text-align: center; font-size: 12px; border-radius: 10px; cursor: pointer; color: #888; }
-        .tab.active { background: var(--royal-purple); color: white; }
+        /* الحاوية الرئيسية للصفحات */
+        .page-content { display: none; padding: 20px; animation: fadeIn 0.4s ease; }
+        .page-content.active { display: block; }
 
-        .order-card { margin: 15px; background: #0d0d0d; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
-        .order-header { padding: 18px; display: flex; justify-content: space-between; align-items: center; }
-        .order-details { display: none; padding: 20px; border-top: 1px solid var(--border); background: rgba(124,77,255,0.02); }
-        .order-details.active { display: block; }
+        /* عناصر الجرافيكس */
+        .card { background: #0d0d0d; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); padding: 20px; margin-bottom: 15px; }
+        .btn-action { background: var(--royal-purple); color: white; border: none; padding: 10px 20px; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 10px; }
 
-        .package-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
-        .pkg-item { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; text-align: center; font-size: 10px; }
-        .pkg-item b { display: block; color: var(--royal-purple); margin-top: 4px; }
+        /* جداول البيانات */
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 13px; }
+        th { text-align: right; color: #888; padding: 10px; border-bottom: 1px solid var(--border); }
+        td { padding: 12px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); }
 
-        /* المربع القزازي للتحليل */
-        .glass-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(25px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
-        .glass-overlay.active { display: flex; }
-        .glass-panel { background: var(--glass-bg); border: 1px solid var(--border); width: 100%; max-width: 450px; border-radius: 30px; padding: 25px; }
-
-        .btn-royal { width: 100%; padding: 16px; background: var(--royal-purple); border: none; border-radius: 15px; color: white; font-weight: bold; box-shadow: 0 5px 0 #4e29b3; margin-top: 10px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* غطاء الخلفية عند فتح المنيو */
         .overlay-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
         .overlay-bg.active { display: block; }
     </style>
@@ -74,92 +50,121 @@
 
     <div class="overlay-bg" id="overlay" onclick="toggleMenu()"></div>
     <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <span style="font-weight: 900; color: var(--royal-purple);">القوائم الرئيسية</span>
-            <i class="fas fa-times" onclick="toggleMenu()" style="cursor:pointer;"></i>
+        <div style="display:flex; justify-content:space-between; margin-bottom:30px;">
+            <b style="color:var(--royal-purple);">القائمة الرئيسية</b>
+            <i class="fas fa-times" onclick="toggleMenu()"></i>
         </div>
-        <ul class="menu-list">
-            <li class="menu-item active"><i class="fas fa-home"></i> الرئيسية</li>
-            <li class="menu-item"><i class="fas fa-box"></i> المنتجات</li>
-            <li class="menu-item"><i class="fas fa-shopping-cart"></i> الطلبات</li>
-            <li class="menu-item"><i class="fas fa-users"></i> العملاء</li>
-            <li class="menu-item"><i class="fas fa-bullhorn"></i> أدوات التسويق</li>
-            <li class="menu-item"><i class="fas fa-store"></i> المتجر</li>
-            <li class="menu-item"><i class="fas fa-user-gear"></i> المستخدم</li>
-            <li class="menu-item"><i class="fas fa-pen-nib"></i> مصمم الصفحات</li>
-            <li class="menu-item"><i class="fas fa-server"></i> متجر الخدمات</li>
-            <li class="menu-item"><i class="fas fa-screwdriver-wrench"></i> أدوات مجانية</li>
-        </ul>
+        <div class="menu-item active" onclick="showPage('home', this)"><i class="fas fa-home"></i> الرئيسية</div>
+        <div class="menu-item" onclick="showPage('products', this)"><i class="fas fa-box"></i> المنتجات</div>
+        <div class="menu-item" onclick="showPage('customers', this)"><i class="fas fa-users"></i> العملاء</div>
+        <div class="menu-item" onclick="showPage('orders', this)"><i class="fas fa-shopping-cart"></i> الطلبات</div>
     </aside>
 
     <header class="header">
-        <i class="fas fa-bars-staggered" onclick="toggleMenu()" style="font-size: 20px; cursor: pointer;"></i>
-        <div class="logo">FMM ENTERPRISE</div>
-        <div class="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/40 flex items-center justify-center">
-            <i class="fas fa-shield-halved text-[12px] text-purple-400"></i>
-        </div>
+        <i class="fas fa-bars-staggered" onclick="toggleMenu()"></i>
+        <div class="logo">FMM ROYAL</div>
+        <i class="fas fa-user-circle" style="font-size: 20px;"></i>
     </header>
 
-    <div class="tabs-container">
-        <div class="tab active">بالانتظار (2)</div>
-        <div class="tab">قيد التنفيذ</div>
-        <div class="tab">مكتملة</div>
-    </div>
-
-    <div class="order-card">
-        <div class="order-header" onclick="this.nextElementSibling.classList.toggle('active')">
-            <div style="display:flex; align-items:center; gap:12px;">
-                <input type="checkbox" style="width:17px; height:17px;">
-                <b>#6602 | عميل متجر سلة</b>
-            </div>
-            <i class="fas fa-chevron-down text-gray-600"></i>
+    <div id="page-home" class="page-content active">
+        <h3 style="color:var(--royal-purple);">لوحة التحكم</h3>
+        <div class="card">
+            <p style="color:#888; font-size:12px;">إجمالي المبيعات</p>
+            <h2 style="margin:5px 0;">$15,400.00</h2>
+            <small style="color:var(--success);">+12% عن الشهر الماضي</small>
         </div>
-        <div class="order-details">
-            <div class="package-grid">
-                <div class="pkg-item">👀 مشاهدات<b>5,000</b></div>
-                <div class="pkg-item">❤️ لايكات<b>500</b></div>
-                <div class="pkg-item">👥 متابعين<b>200</b></div>
-            </div>
-            <button class="btn-royal" onclick="openPkgAnalysis(6602)">تحليل وتفكيك البكج ⚡</button>
+        <div class="card">
+            <b>آخر العمليات</b>
+            <div style="font-size:12px; margin-top:10px; color:#ccc;">طلب #5501 - مكتمل</div>
+            <div style="font-size:12px; margin-top:10px; color:#ccc;">طلب #5502 - بالانتظار</div>
         </div>
     </div>
 
-    <div class="glass-overlay" id="analyzer">
-        <div class="glass-panel">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <b style="color:var(--royal-purple);">💎 محلل الخدمات الذكي</b>
-                <i class="fas fa-times" onclick="closeA()" style="cursor:pointer;"></i>
-            </div>
-            
-            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:15px; margin-bottom:15px; border-right:3px solid var(--royal-purple);">
-                <div style="display:flex; justify-content:space-between; font-size:13px;">
-                    <span>خادم المشاهدات السريع (#402)</span>
-                    <span style="color:var(--success)">$0.02</span>
-                </div>
-                <small style="color:var(--lightning); font-size:10px;">⚡ البدء: خلال 1 دقيقة</small>
-            </div>
+    <div id="page-products" class="page-content">
+        <h3 style="color:var(--royal-purple);">إدارة المنتجات</h3>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>الخدمة</th>
+                        <th>السعر</th>
+                        <th>الحالة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>متابعين تيك توك</td>
+                        <td>$0.50</td>
+                        <td><span style="color:var(--success)">نشط</span></td>
+                    </tr>
+                    <tr>
+                        <td>لايكات انستقرام</td>
+                        <td>$0.10</td>
+                        <td><span style="color:var(--success)">نشط</span></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button class="btn-action">إضافة خدمة جديدة +</button>
+        </div>
+    </div>
 
-            <div style="text-align:center; padding:15px; background:rgba(0,230,118,0.05); border-radius:20px; border:1px dashed var(--success);">
-                <small style="color:var(--success)">إجمالي تكلفة التنفيذ:</small>
-                <div style="font-size:32px; font-weight:900;">$0.65</div>
-            </div>
+    <div id="page-customers" class="page-content">
+        <h3 style="color:var(--royal-purple);">قائمة العملاء</h3>
+        <div class="card">
+            <table>
+                <thead>
+                    <tr>
+                        <th>العميل</th>
+                        <th>الطلبات</th>
+                        <th>الإجمالي</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>فهد محمد</td>
+                        <td>12</td>
+                        <td>$450</td>
+                    </tr>
+                    <tr>
+                        <td>نورة الحربي</td>
+                        <td>5</td>
+                        <td>$120</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-            <button class="btn-royal" onclick="alert('تم الإرسال للمزود ✅')">تأكيد الإرسال الفوري 🚀</button>
+    <div id="page-orders" class="page-content">
+        <h3 style="color:var(--royal-purple);">تنفيذ الطلبات</h3>
+        <div class="card">
+            <b>#5501 | بكج VIP</b>
+            <p style="font-size:11px; color:#888;">يحتوي على 3 خدمات مختلفة</p>
+            <button class="btn-action">فتح محلل البكج ⚡</button>
         </div>
     </div>
 
     <script>
+        // دالة تبديل القائمة
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('active');
             document.getElementById('overlay').classList.toggle('active');
         }
-        function openPkgAnalysis(id) {
-            document.getElementById('analyzer').classList.add('active');
-        }
-        function closeA() {
-            document.getElementById('analyzer').classList.remove('active');
+
+        // دالة تبديل الصفحات
+        function showPage(pageId, element) {
+            // إخفاء كل الصفحات
+            document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+            // إظهار الصفحة المطلوبة
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            // تحديث حالة القائمة الجانبية
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            element.classList.add('active');
+            
+            // إغلاق المنيو تلقائياً بعد الاختيار
+            toggleMenu();
         }
     </script>
 </body>
 </html>
-
