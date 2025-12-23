@@ -3,69 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FMM Royal Dashboard - Ultimate Space</title>
+    <title>FMM Royal Dashboard 2025</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
             --royal-purple: #7c4dff;
             --deep-black: #050508;
             --panel-bg: #0d0d12;
-            --sidebar-width: 260px;
-            --sidebar-collapsed: 70px;
+            --card-bg: rgba(255, 255, 255, 0.03);
             --border: rgba(255, 255, 255, 0.08);
             --success: #00e676;
+            --error: #ff5252;
+            --warning: #ffd600;
             --text-main: #ffffff;
             --text-muted: #a0a0ab;
+            --sidebar-w: 260px;
+            --sidebar-c: 80px;
         }
 
-        * { box-sizing: border-box; transition: all 0.3s ease; }
+        * { box-sizing: border-box; transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1); }
         body { background: var(--deep-black); color: var(--text-main); font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; overflow: hidden; }
 
-        /* [1] السايدبار القابل للطي */
-        .sidebar { width: var(--sidebar-width); background: #000; border-left: 1px solid var(--border); display: flex; flex-direction: column; position: relative; z-index: 1000; }
-        .sidebar.collapsed { width: var(--sidebar-collapsed); }
+        /* [1] السايدبار المطور */
+        .sidebar { width: var(--sidebar-w); background: #000; border-left: 1px solid var(--border); display: flex; flex-direction: column; z-index: 1000; }
+        .sidebar.collapsed { width: var(--sidebar-c); }
         
         .sidebar-header { padding: 25px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); }
-        .logo-text { font-size: 24px; font-weight: 900; color: var(--royal-purple); }
-        .sidebar.collapsed .logo-text { display: none; }
+        .logo-text { font-size: 22px; font-weight: 900; color: var(--royal-purple); letter-spacing: 1px; }
+        .sidebar.collapsed .logo-text, .sidebar.collapsed .nav-text { display: none; }
 
-        .nav-menu { flex: 1; padding: 15px 10px; }
+        .nav-menu { flex: 1; padding: 20px 12px; }
         .nav-item { 
-            padding: 15px; border-radius: 12px; display: flex; align-items: center; gap: 15px; 
-            color: var(--text-muted); cursor: pointer; margin-bottom: 8px; font-size: 16px; white-space: nowrap;
+            padding: 16px; border-radius: 15px; display: flex; align-items: center; gap: 15px; 
+            color: var(--text-muted); cursor: pointer; margin-bottom: 10px; font-size: 16px; white-space: nowrap;
         }
-        .nav-item i { min-width: 25px; font-size: 20px; text-align: center; }
-        .nav-item:hover, .nav-item.active { background: rgba(124, 77, 255, 0.15); color: #fff; }
-        .nav-item.active { border-right: 4px solid var(--royal-purple); color: var(--royal-purple); }
-        .sidebar.collapsed .nav-text { display: none; }
+        .nav-item i { min-width: 30px; font-size: 22px; text-align: center; }
+        .nav-item:hover, .nav-item.active { background: rgba(124, 77, 255, 0.12); color: #fff; }
+        .nav-item.active { background: var(--royal-purple); color: #fff; box-shadow: 0 10px 20px rgba(124, 77, 255, 0.2); }
 
         /* [2] منطقة المحتوى الرئيسي */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
 
-        /* الأقسام (Sections) */
-        .page-section { 
-            display: none; width: 100%; height: 100%; position: absolute; 
-            padding: 40px; overflow-y: auto; background: var(--deep-black); 
+        /* الهيدر العلوي */
+        .top-bar { padding: 20px 40px; background: var(--panel-bg); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .date-time { display: flex; align-items: center; gap: 20px; color: var(--text-muted); font-size: 14px; }
+
+        /* الأقسام */
+        .page-section { display: none; width: 100%; height: 100%; padding: 40px; overflow-y: auto; }
+        .page-section.active { display: block; animation: fadeIn 0.4s ease; }
+
+        /* [3] مودرن داشبورد (الرئيسية) */
+        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
+        .modern-card { 
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 24px; padding: 30px;
+            position: relative; overflow: hidden;
         }
-        .page-section.active { display: block; animation: slideIn 0.3s ease-out; }
+        .modern-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--royal-purple); opacity: 0; }
+        .modern-card:hover { background: rgba(255,255,255,0.05); transform: translateY(-5px); }
+        .modern-card:hover::before { opacity: 1; }
 
-        /* [3] واجهة المنتجات الخاصة بك (المساحة الكبيرة) */
-        .products-layout { display: flex; gap: 30px; height: 100%; }
-        .products-sidebar { width: 350px; background: var(--panel-bg); border: 1px solid var(--border); border-radius: 20px; display: flex; flex-direction: column; }
-        .product-item { padding: 20px; border-bottom: 1px solid var(--border); cursor: pointer; }
-        .product-item.active { background: rgba(124, 77, 255, 0.05); border-right: 4px solid var(--royal-purple); }
+        .card-icon { width: 50px; height: 50px; border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 20px; }
+        .val { font-size: 32px; font-weight: bold; margin-bottom: 5px; display: block; }
+        .lab { color: var(--text-muted); font-size: 15px; font-weight: 500; }
 
-        .editor-workspace { flex: 1; background: var(--panel-bg); border-radius: 20px; border: 1px solid var(--border); padding: 30px; display: flex; flex-direction: column; }
+        /* الألوان المخصصة للكروت */
+        .c-balance { color: var(--success); }
+        .c-error { color: var(--error); }
+        .c-pending { color: var(--warning); }
 
-        /* الجداول الموسعة */
-        .wide-table { width: 100%; border-collapse: collapse; margin-top: 25px; }
-        .wide-table th { text-align: right; padding: 20px; color: var(--text-muted); border-bottom: 2px solid var(--border); font-size: 14px; }
-        .wide-table td { padding: 20px; border-bottom: 1px solid var(--border); font-size: 15px; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* أزرار ضخمة */
-        .btn-xl { padding: 15px 30px; border-radius: 12px; border: none; font-weight: bold; font-size: 16px; cursor: pointer; background: var(--royal-purple); color: #fff; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* زر الطي العائم */
+        .toggle-btn { background: var(--panel-bg); border: 1px solid var(--border); color: #fff; width: 35px; height: 35px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -73,111 +82,102 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <span class="logo-text">FMM ROYAL</span>
-            <i class="fas fa-bars" style="cursor:pointer; font-size: 20px;" onclick="toggleSidebar()"></i>
+            <div class="toggle-btn" onclick="toggleSidebar()"><i class="fas fa-chevron-right" id="t-icon"></i></div>
         </div>
         <div class="nav-menu">
-            <div class="nav-item active" onclick="openPage('home', this)"><i class="fas fa-home"></i> <span class="nav-text">الرئيسية</span></div>
-            <div class="nav-item" onclick="openPage('products', this)"><i class="fas fa-box"></i> <span class="nav-text">إدارة المنتجات</span></div>
-            <div class="nav-item" onclick="openPage('orders', this)"><i class="fas fa-shopping-cart"></i> <span class="nav-text">الطلبات</span></div>
-            <div class="nav-item" onclick="openPage('customers', this)"><i class="fas fa-users"></i> <span class="nav-text">العملاء</span></div>
-            <div class="nav-item" onclick="openPage('settings', this)"><i class="fas fa-cog"></i> <span class="nav-text">الإعدادات</span></div>
+            <div class="nav-item active" onclick="openPage('home', this)"><i class="fas fa-chart-pie"></i> <span class="nav-text">الرئيسية</span></div>
+            <div class="nav-item" onclick="openPage('products', this)"><i class="fas fa-box-open"></i> <span class="nav-text">إدارة المنتجات</span></div>
+            <div class="nav-item" onclick="openPage('orders', this)"><i class="fas fa-stream"></i> <span class="nav-text">الطلبات</span></div>
+            <div class="nav-item" onclick="openPage('customers', this)"><i class="fas fa-user-friends"></i> <span class="nav-text">العملاء</span></div>
+            <div class="nav-item" style="margin-top: auto;"><i class="fas fa-cog"></i> <span class="nav-text">الإعدادات</span></div>
         </div>
     </aside>
 
     <main class="main-content">
-        
+        <header class="top-bar">
+            <h2 id="page-title">لوحة الإحصائيات</h2>
+            <div class="date-time">
+                <div id="clock">12:00:00 PM</div>
+                <div id="date">23 ديسمبر 2025</div>
+                <div style="background: var(--royal-purple); padding: 5px 15px; border-radius: 50px; color: #fff; font-size: 12px;">مسؤول النظام</div>
+            </div>
+        </header>
+
         <section id="page-home" class="page-section active">
-            <h1 style="font-size: 40px; margin-bottom: 10px;">نظرة عامة</h1>
-            <p style="color: var(--text-muted); font-size: 18px;">مرحباً بك في مركز التحكم الملكي لمتجرك.</p>
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 25px; margin-top: 40px;">
-                <div style="background: var(--panel-bg); padding: 40px; border-radius: 25px; border: 1px solid var(--border);">
-                    <h3 style="color: var(--text-muted);">إجمالي المبيعات</h3>
-                    <div style="font-size: 36px; font-weight: bold; color: var(--success);">45,200.00 ر.س</div>
+            <h1 style="font-size: 36px; margin: 0;">أهلاً بك، FMM</h1>
+            <p style="color: var(--text-muted);">إليك ملخص سريع لأداء متجرك اليوم.</p>
+
+            <div class="stat-grid">
+                <div class="modern-card">
+                    <div class="card-icon" style="background: rgba(0, 230, 118, 0.1); color: var(--success);"><i class="fas fa-wallet"></i></div>
+                    <span class="val c-balance">12,450.50 ر.س</span>
+                    <span class="lab">الرصيد المتاح حالياً</span>
+                </div>
+
+                <div class="modern-card">
+                    <div class="card-icon" style="background: rgba(124, 77, 255, 0.1); color: var(--royal-purple);"><i class="fas fa-shopping-basket"></i></div>
+                    <span class="val">1,280</span>
+                    <span class="lab">إجمالي طلبات سلة المزامنة</span>
+                </div>
+
+                <div class="modern-card">
+                    <div class="card-icon" style="background: rgba(255, 82, 82, 0.1); color: var(--error);"><i class="fas fa-exclamation-triangle"></i></div>
+                    <span class="val c-error">12</span>
+                    <span class="lab">طلبات فشل تنفيذها (تحتاج تدخل)</span>
+                </div>
+
+                <div class="modern-card">
+                    <div class="card-icon" style="background: rgba(0, 230, 118, 0.1); color: var(--success);"><i class="fas fa-check-double"></i></div>
+                    <span class="val">1,150</span>
+                    <span class="lab">طلبات مكتملة بنجاح</span>
+                </div>
+
+                <div class="modern-card">
+                    <div class="card-icon" style="background: rgba(255, 214, 0, 0.1); color: var(--warning);"><i class="fas fa-spinner fa-spin"></i></div>
+                    <span class="val c-pending">118</span>
+                    <span class="lab">طلبات جاري تنفيذها الآن</span>
                 </div>
             </div>
         </section>
 
         <section id="page-products" class="page-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-                <h1 style="font-size: 32px; margin:0;">إدارة المنتجات والقواعد</h1>
-                <button class="btn-xl">+ إضافة بكج جديد</button>
-            </div>
-            <div class="products-layout">
-                <div class="products-sidebar">
-                    <div style="padding:20px;"><input type="text" placeholder="بحث في المنتجات..." style="width:100%; padding:15px; background:#000; border:1px solid var(--border); color:#fff; border-radius:10px;"></div>
-                    <div class="product-item active">
-                        <h3 style="margin:0; font-size:18px;">بكج البلاتينيوم</h3>
-                        <small style="color:var(--text-muted)">ID: #758 | 4 قواعد SMM</small>
-                    </div>
-                </div>
-                <div class="editor-workspace">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <h2 style="margin:0;">قواعد تنفيذ البكج <span style="font-size:14px; background:var(--royal-purple); padding:5px 12px; border-radius:8px; margin-right:15px;">Advanced Mode</span></h2>
-                        <button class="btn-xl" style="font-size:14px; padding:10px 20px;">+ إضافة خدمة للبكج</button>
-                    </div>
-                    <table class="wide-table">
-                        <thead>
-                            <tr>
-                                <th>اسم الخدمة</th>
-                                <th>ID الخدمة</th>
-                                <th>المزود</th>
-                                <th>الكمية</th>
-                                <th>التأخير</th>
-                                <th>الحالة</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><b>مشاهدات تيك توك VIP</b></td>
-                                <td style="color:var(--royal-purple); font-weight:bold;">27460</td>
-                                <td>SMM-CPAN</td>
-                                <td style="color:var(--success)">250,000</td>
-                                <td>0 دقيقة</td>
-                                <td><span style="color:var(--success)">● نشط</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <h1>إدارة المنتجات</h1>
+            <p>مساحة العمل لإدارة القواعد (نفس التصميم السابق الواسع).</p>
         </section>
 
-        <section id="page-orders" class="page-section">
-            <h1 style="font-size: 32px;">إدارة الطلبات القادمة</h1>
-            <div style="padding:100px; text-align:center; background:var(--panel-bg); border-radius:30px; border:1px dashed var(--border);">
-                <i class="fas fa-shopping-cart fa-4x" style="color:var(--border); margin-bottom:20px;"></i>
-                <p style="color:var(--text-muted)">لا توجد طلبات نشطة حالياً.</p>
-            </div>
-        </section>
-
-    </main>
+        </main>
 
     <script>
-        // وظيفة طي وفتح السايدبار
+        // 1. وظيفة طي السايدبار
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('collapsed');
+            const side = document.getElementById('sidebar');
+            const icon = document.getElementById('t-icon');
+            side.classList.toggle('collapsed');
+            icon.classList.toggle('fa-chevron-right');
+            icon.classList.toggle('fa-chevron-left');
         }
 
-        // وظيفة التنقل بين الصفحات
+        // 2. وظيفة التنقل بين الصفحات
         function openPage(pageId, element) {
-            // 1. إخفاء جميع الصفحات
-            document.querySelectorAll('.page-section').forEach(page => {
-                page.classList.remove('active');
-            });
-
-            // 2. إظهار الصفحة المطلوبة
-            const target = document.getElementById('page-' + pageId);
-            if (target) {
-                target.classList.add('active');
-            } else {
-                alert("هذه الصفحة قيد التطوير!");
-            }
-
-            // 3. تحديث الأزرار في السايدبار
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-            });
+            document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            
+            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
             element.classList.add('active');
+
+            const titles = { 'home': 'لوحة الإحصائيات', 'products': 'إدارة المنتجات والقواعد', 'orders': 'تتبع الطلبات', 'customers': 'قاعدة بيانات العملاء' };
+            document.getElementById('page-title').innerText = titles[pageId] || 'FMM Dashboard';
         }
+
+        // 3. تحديث الساعة الحقيقية
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('ar-SA');
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').innerText = now.toLocaleDateString('ar-SA', options);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
     </script>
 </body>
 </html>
