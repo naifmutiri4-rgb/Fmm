@@ -26,9 +26,9 @@
 
         /* بطاقات زجاجية بنفسجي ملكي */
         .card-royal {
-            background: rgba(124, 77, 255, 0.25); /* بنفسجي ملكي شفاف */
-            backdrop-filter: blur(15px);           /* تأثير الزجاج */
-            border: 1px solid rgba(124, 77, 255, 0.5); /* حدود بنفسجي مضيئة */
+            background: rgba(124, 77, 255, 0.25);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(124, 77, 255, 0.5);
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -43,7 +43,30 @@
         .card-royal h4,
         .card-royal span,
         .card-royal p {
-            color: #FFFFFF; /* نصوص بيضاء */
+            color: #FFFFFF;
+        }
+
+        /* بطاقة الرصيد والمبيعات صغيرة */
+        .card-royal-small {
+            background: rgba(124, 77, 255, 0.25); 
+            backdrop-filter: blur(15px);  
+            border: 1px solid rgba(124, 77, 255, 0.5); 
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        .card-royal-small p {
+            font-size: 14px;
+            margin-bottom: 6px;
+            color: #FFFFFF;
+        }
+
+        .card-royal-small span {
+            font-size: 24px;
+            color: #FFFFFF;
         }
 
         /* القائمة الجانبية */
@@ -80,7 +103,6 @@
             z-index: 90;
         }
 
-        /* تنسيق الفلتر الزمني */
         .filter-select {
             background: rgba(18,18,22,0.7);
             border: 1px solid rgba(124,77,255,0.3);
@@ -153,24 +175,24 @@
                 </div>
             </div>
 
-            <!-- بطاقة الرصيد والمبيعات -->
-            <div class="card-royal p-6 flex flex-col md:flex-row justify-between gap-6 glow-purple">
-                <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
-                    <p class="text-lg text-white font-normal mb-2">رصيد المحفظة</p>
-                    <span id="wallet-balance" class="text-4xl font-normal">1,800 ريال</span>
+            <!-- بطاقات الرصيد والمبيعات صغيرة -->
+            <div class="flex flex-col md:flex-row justify-between gap-4">
+                <div class="card-royal-small flex-1">
+                    <p>رصيد المحفظة</p>
+                    <span id="wallet-balance">1,800 ريال</span>
                 </div>
-                <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
-                    <p class="text-lg text-white font-normal mb-2">رصيد المورد</p>
-                    <span id="supplier-balance" class="text-4xl font-normal">1,800 ريال</span>
+                <div class="card-royal-small flex-1">
+                    <p>رصيد المورد</p>
+                    <span id="supplier-balance">1,800 ريال</span>
                 </div>
-                <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
-                    <p class="text-lg text-white font-normal mb-2">مبيعات منصة سلة</p>
-                    <span id="salla-sales" class="text-4xl font-normal">18,000 ريال</span>
+                <div class="card-royal-small flex-1">
+                    <p>مبيعات منصة سلة</p>
+                    <span id="salla-sales">18,000 ريال</span>
                 </div>
             </div>
 
             <!-- بطاقات الطلبات -->
-            <div class="grid grid-cols-2 gap-4">
+            <div class="grid grid-cols-2 gap-4 mt-4">
                 <div class="card-royal p-6 flex flex-col items-center">
                     <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3">
                         <i class="fas fa-fire-alt text-2xl" style="color: var(--royal-purple);"></i>
