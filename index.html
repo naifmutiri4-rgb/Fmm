@@ -1,203 +1,222 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>FMM Mass Control</title>
-    <style>
-        :root {
-            --fmm-purple: #7c4dff;
-            --bg: #050505;
-            --card: #111114;
-            --glass: rgba(20, 20, 25, 0.95);
-            --safe-top: env(safe-area-inset-top);
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: #fff; margin: 0; font-family: -apple-system, sans-serif; padding-top: var(--safe-top); }
-
-        /* Header */
-        .fmm-nav { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; position: sticky; top: 0; background: var(--bg); z-index: 100; }
-        .logo { font-weight: 900; font-size: 24px; color: var(--fmm-purple); }
-
-        /* Dashboard Stats */
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 20px 15px; }
-        .s-card { background: var(--card); padding: 12px 5px; border-radius: 12px; text-align: center; border: 1px solid #1f1f23; }
-        .s-card span { display: block; font-size: 8px; color: #555; margin-bottom: 4px; }
-        .s-card b { font-size: 11px; color: var(--fmm-purple); }
-
-        /* Control Bar */
-        .control-bar { padding: 0 15px 15px; display: flex; justify-content: space-between; align-items: center; }
-        .batch-btn { background: #00e676; color: #000; border: none; padding: 8px 15px; border-radius: 10px; font-weight: bold; font-size: 12px; display: none; }
-
-        /* List Sections */
-        .section-label { padding: 10px 20px; font-size: 12px; color: #444; font-weight: bold; background: #08080a; }
-        .list { padding: 0 15px 20px; min-height: 40px; }
-
-        /* Order Card */
-        .order { background: var(--card); margin-bottom: 10px; padding: 15px; border-radius: 18px; border: 1px solid #1f1f23; position: relative; transition: 0.3s; }
-        .order.selected { border-color: var(--fmm-purple); background: rgba(124, 77, 255, 0.05); }
-        .order-check { position: absolute; left: 15px; top: 15px; transform: scale(1.3); }
-        .order-info b { font-size: 14px; display: block; margin-bottom: 5px; }
-        .order-info small { color: #555; font-size: 10px; }
-        .order-links, .order-cats { font-size: 10px; color: #aaa; margin-top: 5px; }
-        .order-links div, .order-cats div { margin-left: 10px; }
-
-        /* Glass Modal */
-        .glass { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); z-index: 1000; display: none; align-items: flex-end; }
-        .glass.active { display: flex; }
-        .sheet { background: var(--glass); width: 100%; border-radius: 35px 35px 0 0; padding: 30px 20px 40px; border-top: 1px solid var(--fmm-purple); }
-
-        .btn-full { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: bold; font-size: 15px; margin-top: 10px; cursor: pointer; }
-        .btn-primary { background: var(--fmm-purple); color: #fff; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>FMM Mass Control Advanced</title>
+<style>
+:root {
+    --fmm-purple:#7c4dff;
+    --bg:#050505;
+    --card:#111114;
+    --glass:rgba(20,20,25,0.95);
+    --safe-top:env(safe-area-inset-top);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{background:var(--bg);color:#fff;margin:0;font-family:-apple-system,sans-serif;padding-top:var(--safe-top);}
+.fmm-nav{padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1a1a1a;position:sticky;top:0;background:var(--bg);z-index:100;}
+.logo{font-weight:900;font-size:24px;color:var(--fmm-purple);}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:20px 15px;}
+.s-card{background:var(--card);padding:12px 5px;border-radius:12px;text-align:center;border:1px solid #1f1f23;}
+.s-card span{display:block;font-size:8px;color:#555;margin-bottom:4px;}
+.s-card b{font-size:11px;color:var(--fmm-purple);}
+.control-bar{padding:0 15px 15px;display:flex;justify-content:space-between;align-items:center;}
+.batch-btn{background:#00e676;color:#000;border:none;padding:8px 15px;border-radius:10px;font-weight:bold;font-size:12px;display:none;}
+.section-label{padding:10px 20px;font-size:12px;color:#444;font-weight:bold;background:#08080a;}
+.list{padding:0 15px 20px;min-height:40px;}
+.order{background:var(--card);margin-bottom:10px;padding:15px;border-radius:18px;border:1px solid #1f1f23;position:relative;transition:0.3s;}
+.order.selected{border-color:var(--fmm-purple);background:rgba(124,77,255,0.05);}
+.order-check{position:absolute;left:15px;top:15px;transform:scale(1.3);}
+.order-info b{font-size:14px;display:block;margin-bottom:5px;}
+.order-info small{color:#555;font-size:10px;}
+.glass{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(20px);z-index:1000;display:none;align-items:flex-end;}
+.glass.active{display:flex;}
+.sheet{background:var(--glass);width:100%;border-radius:35px 35px 0 0;padding:30px 20px 40px;border-top:1px solid var(--fmm-purple);}
+.btn-full{width:100%;padding:16px;border-radius:15px;border:none;font-weight:bold;font-size:15px;margin-top:10px;cursor:pointer;}
+.btn-primary{background:var(--fmm-purple);color:#fff;}
+.rec-option{padding:10px;border-radius:12px;border:1px solid #333;margin:8px 0;cursor:pointer;}
+.rec-option.active{border-color:var(--fmm-purple);background:rgba(124,77,255,0.1);}
+.total-box{background:rgba(255,255,255,0.03);padding:15px;border-radius:20px;text-align:center;margin-bottom:15px;}
+.total-box small{font-size:12px;color:#aaa;}
+.total-box b{font-size:24px;color:#00e676;font-weight:900;}
+</style>
 </head>
 <body>
 
-    <nav class="fmm-nav">
-        <div class="logo">FMM</div>
-        <div style="font-size:24px;">☰</div>
-    </nav>
+<nav class="fmm-nav">
+    <div class="logo">FMM</div>
+    <div style="font-size:24px;">☰</div>
+</nav>
 
-    <div class="stats-grid">
-        <div class="s-card"><span>الرصيد</span><b id="bal">$2,500.00</b></div>
-        <div class="s-card"><span>انتظار</span><b id="c-p">3</b></div>
-        <div class="s-card"><span>تنفيذ</span><b id="c-r">0</b></div>
-        <div class="s-card"><span>مكتمل</span><b id="c-d">0</b></div>
-    </div>
+<div class="stats-grid">
+    <div class="s-card"><span>الرصيد</span><b id="bal">$2,500.00</b></div>
+    <div class="s-card"><span>انتظار</span><b id="c-p">3</b></div>
+    <div class="s-card"><span>تنفيذ</span><b id="c-r">0</b></div>
+    <div class="s-card"><span>مكتمل</span><b id="c-d">0</b></div>
+</div>
 
-    <div class="control-bar">
-        <label style="font-size: 12px; color: #888;"><input type="checkbox" id="selectAll" onclick="toggleAll()"> تحديد الكل</label>
-        <button id="batchBtn" class="batch-btn" onclick="openMassModal()">تنفيذ المختار ( <span id="selCount">0</span> ) ⚡</button>
-    </div>
+<div class="control-bar">
+    <label style="font-size:12px;color:#888;"><input type="checkbox" id="selectAll" onclick="toggleAll()"> تحديد الكل</label>
+    <button id="batchBtn" class="batch-btn" onclick="openMassModal()">تنفيذ المختار ( <span id="selCount">0</span> ) ⚡</button>
+</div>
 
-    <div class="section-label">📦 بانتظار المراجعة</div>
-    <div id="pending-list" class="list"></div>
+<div class="section-label">📦 بانتظار المراجعة</div>
+<div id="pending-list" class="list"></div>
 
-    <div class="section-label">⏳ قيد التنفيذ (متعدد)</div>
-    <div id="processing-list" class="list"></div>
+<div class="section-label">⏳ قيد التنفيذ</div>
+<div id="processing-list" class="list"></div>
 
-    <div class="section-label">✅ السجل المكتمل</div>
-    <div id="completed-list" class="list"></div>
+<div class="section-label">✅ مكتمل</div>
+<div id="completed-list" class="list"></div>
 
-    <div class="glass" id="modal">
-        <div class="sheet" id="modalContent"></div>
-    </div>
+<div class="glass" id="modal">
+    <div class="sheet" id="modalContent"></div>
+</div>
 
-    <script>
-        let data = {
-            balance: 2500.0,
-            pending: [
-                { id: 101, user: "أحمد علي", cost: 1.2, links: ["tiktok.com/@ahmad", "tiktok.com/v/101"], cats: ["متابعين 2K"] },
-                { id: 102, user: "سارة محمد", cost: 2.5, links: ["tiktok.com/@sara", "tiktok.com/v/102"], cats: ["متابعين 3K", "لايكات 500"] },
-                { id: 103, user: "متجر الرواد", cost: 5.0, links: ["tiktok.com/@rawad", "tiktok.com/v/103"], cats: ["متابعين 5K"] }
-            ],
-            processing: [],
-            completed: [],
-            selectedIds: []
-        };
+<script>
+let data = {
+    balance:2500,
+    pending:[
+        {id:101,user:"نايف المطيري",service:"متابعين تيك توك",qty:"2K",cost:2.2},
+        {id:102,user:"سارة محمد",service:"متابعين تيك توك",qty:"1K",cost:1.2},
+        {id:103,user:"متجر الرواد",service:"متابعين تيك توك",qty:"5K",cost:5.0}
+    ],
+    processing:[],
+    completed:[],
+    selectedIds:[]
+};
 
-        function render() {
-            const pList = document.getElementById('pending-list');
-            pList.innerHTML = data.pending.map(o => `
-                <div class="order ${data.selectedIds.includes(o.id) ? 'selected' : ''}" onclick="toggleSelect(${o.id})">
-                    <input type="checkbox" class="order-check" ${data.selectedIds.includes(o.id) ? 'checked' : ''}>
-                    <div class="order-info">
-                        <b>#${o.id} | ${o.user}</b>
-                        <small>متابعين تيك توك • التكلفة: $${o.cost}</small>
-                    </div>
-                    <div class="order-links">
-                        <b>الروابط:</b>
-                        ${o.links.map(l => `<div>${l}</div>`).join('')}
-                    </div>
-                    <div class="order-cats">
-                        <b>الأصناف:</b>
-                        ${o.cats.map(c => `<div>${c}</div>`).join('')}
-                    </div>
-                </div>
-            `).join('');
+let services=[
+    {name:"باكج#1 - 100 متابع","time":"0-24 ساعة","cost":40.02,"desc":"خدمة جديدة/حصرية - الأسرع, جودة +90%, لا ضمان"},
+    {name:"باكج#2 - 200 متابع","time":"1-48 ساعة","cost":70.0,"desc":"جودة +95%, ضمان 50%"},
+    {name:"باكج#3 - 500 متابع","time":"2-72 ساعة","cost":150.0,"desc":"أفضل جودة, ضمان كامل"}
+];
 
-            document.getElementById('processing-list').innerHTML = data.processing.map(o => `
-                <div class="order" style="border-right: 3px solid #ffcf4b;">
-                    <b>#${o.id}</b> <small style="color:#ffcf4b;">جاري المعالجة...</small>
-                </div>
-            `).join('');
+let selectedServices={};
 
-            document.getElementById('completed-list').innerHTML = data.completed.map(o => `
-                <div class="order" style="opacity:0.5; border-right: 3px solid #00e676;">
-                    <b>#${o.id}</b> <small style="color:#00e676;">اكتمل بنجاح ✅</small>
-                </div>
-            `).join('');
+function render(){
+    const pList=document.getElementById('pending-list');
+    pList.innerHTML=data.pending.map(o=>`
+        <div class="order ${data.selectedIds.includes(o.id)?'selected':''}" onclick="toggleSelect(${o.id})">
+            <input type="checkbox" class="order-check" ${data.selectedIds.includes(o.id)?'checked':''}>
+            <div class="order-info">
+                <b>#${o.id} | ${o.user}</b>
+                <small>${o.service} • الكمية: ${o.qty} • التكلفة: $${o.cost}</small>
+            </div>
+        </div>
+    `).join('');
 
-            document.getElementById('c-p').innerText = data.pending.length;
-            document.getElementById('c-r').innerText = data.processing.length;
-            document.getElementById('c-d').innerText = data.completed.length;
-            document.getElementById('bal').innerText = `$${data.balance.toFixed(2)}`;
+    document.getElementById('processing-list').innerHTML=data.processing.map(o=>`
+        <div class="order" style="border-right:3px solid #ffcf4b;">
+            <b>#${o.id}</b> <small style="color:#ffcf4b;">جاري المعالجة...</small>
+        </div>
+    `).join('');
 
-            const btn = document.getElementById('batchBtn');
-            btn.style.display = data.selectedIds.length > 0 ? 'block' : 'none';
-            document.getElementById('selCount').innerText = data.selectedIds.length;
-        }
+    document.getElementById('completed-list').innerHTML=data.completed.map(o=>`
+        <div class="order" style="opacity:0.5;border-right:3px solid #00e676;">
+            <b>#${o.id}</b> <small style="color:#00e676;">اكتمل بنجاح ✅</small>
+        </div>
+    `).join('');
 
-        function toggleSelect(id) {
-            if(data.selectedIds.includes(id)) data.selectedIds = data.selectedIds.filter(i => i !== id);
-            else data.selectedIds.push(id);
-            render();
-        }
+    document.getElementById('c-p').innerText=data.pending.length;
+    document.getElementById('c-r').innerText=data.processing.length;
+    document.getElementById('c-d').innerText=data.completed.length;
+    document.getElementById('bal').innerText=`$${data.balance.toFixed(2)}`;
 
-        function toggleAll() {
-            if(data.selectedIds.length === data.pending.length) data.selectedIds = [];
-            else data.selectedIds = data.pending.map(o => o.id);
-            render();
-        }
+    const btn=document.getElementById('batchBtn');
+    btn.style.display=data.selectedIds.length>0?'block':'none';
+    document.getElementById('selCount').innerText=data.selectedIds.length;
+}
 
-        function openMassModal() {
-            let total = 0;
-            data.pending.filter(o => data.selectedIds.includes(o.id)).forEach(o => total += o.cost);
-            let totalWithTax = total * 1.1; // +10%
+function toggleSelect(id){
+    if(data.selectedIds.includes(id)) data.selectedIds=data.selectedIds.filter(i=>i!==id);
+    else data.selectedIds.push(id);
+    render();
+}
 
-            document.getElementById('modalContent').innerHTML = `
-                <h2 style="color:var(--fmm-purple); margin:0;">🚀 تنفيذ جماعي</h2>
-                <p style="color:#888; font-size:12px; margin:15px 0;">أنت على وشك تنفيذ ${data.selectedIds.length} طلبات في وقت واحد.</p>
-                <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:20px; text-align:center;">
-                    <small>إجمالي التكلفة (+10%):</small>
-                    <div style="font-size:28px; font-weight:900; color:#00e676;">$${totalWithTax.toFixed(2)}</div>
-                </div>
-                <button class="btn-full btn-primary" onclick="startMassExecution()">تأكيد وإرسال للمزودين ✅</button>
-                <button class="btn-full" style="background:none; border:1px solid #333;" onclick="closeModal()">إلغاء</button>
-            `;
-            document.getElementById('modal').classList.add('active');
-        }
+function toggleAll(){
+    if(data.selectedIds.length===data.pending.length) data.selectedIds=[];
+    else data.selectedIds=data.pending.map(o=>o.id);
+    render();
+}
 
-        function closeModal() { document.getElementById('modal').classList.remove('active'); }
+function openMassModal(){
+    const ids=[...data.selectedIds];
+    if(ids.length===0) return;
 
-        function startMassExecution() {
-            const idsToExec = [...data.selectedIds];
-            data.selectedIds = [];
-            
-            idsToExec.forEach(id => {
-                const idx = data.pending.findIndex(o => o.id === id);
-                if(idx > -1) {
-                    const order = data.pending.splice(idx, 1)[0];
-                    data.balance -= (order.cost * 1.1);
-                    data.processing.push(order);
-                    
-                    setTimeout(() => {
-                        const pIdx = data.processing.findIndex(x => x.id === id);
-                        if(pIdx > -1) {
-                            const done = data.processing.splice(pIdx, 1)[0];
-                            data.completed.unshift(done);
-                            render();
-                        }
-                    }, 5000);
+    let html='';
+    ids.forEach((id,index)=>{
+        const order=data.pending.find(o=>o.id===id);
+        html+=`
+            <div style="margin-bottom:20px;">
+                <h3 style="color:var(--fmm-purple); margin:0;">${order.user} | ${order.service} | ${order.qty}</h3>
+                <p style="font-size:12px;color:#888;">اختر الباكج المناسب:</p>
+                ${services.map((s,i)=>`<div class="rec-option ${i===0?'active':''}" onclick="selectService(${id},${i})" id="svc-${id}-${i}">
+                    <b>${s.name}</b> | متوسط الوقت: ${s.time} | السعر: ${s.cost} SAR
+                    <div style="font-size:10px;color:#aaa;">${s.desc}</div>
+                </div>`).join('')}
+            </div>
+        `;
+
+        selectedServices[id]=0; // افتراضي باكج#1
+    });
+
+    html+=`<div class="total-box">
+        <small>إجمالي التكلفة:</small>
+        <b id="totalCost">0</b> SAR
+    </div>`;
+    html+=`<button class="btn-full btn-primary" onclick="confirmMass()">تأكيد وتنفيذ الكل ✅</button>
+           <button class="btn-full" style="background:none;border:1px solid #333;" onclick="closeModal()">إلغاء</button>`;
+
+    document.getElementById('modalContent').innerHTML=html;
+    document.getElementById('modal').classList.add('active');
+    updateTotalCost();
+}
+
+function selectService(orderId,svcIndex){
+    selectedServices[orderId]=svcIndex;
+    document.querySelectorAll(`#modalContent .rec-option`).forEach(el=>el.classList.remove('active'));
+    document.getElementById(`svc-${orderId}-${svcIndex}`).classList.add('active');
+    updateTotalCost();
+}
+
+function updateTotalCost(){
+    let total=0;
+    Object.keys(selectedServices).forEach(id=>{
+        total+=services[selectedServices[id]].cost;
+    });
+    document.getElementById('totalCost').innerText=total.toFixed(2);
+}
+
+function confirmMass(){
+    Object.keys(selectedServices).forEach(id=>{
+        const idx=data.pending.findIndex(o=>o.id==id);
+        if(idx>-1){
+            const order=data.pending.splice(idx,1)[0];
+            const svcIdx=selectedServices[id];
+            const svc=services[svcIdx];
+            data.balance-=svc.cost;
+            order.serviceChosen=svcIdx;
+            data.processing.push(order);
+            setTimeout(()=>{
+                const pIdx=data.processing.findIndex(x=>x.id==id);
+                if(pIdx>-1){
+                    const done=data.processing.splice(pIdx,1)[0];
+                    data.completed.unshift(done);
+                    render();
                 }
-            });
-            
-            render();
-            closeModal();
+            },5000);
         }
+    });
+    selectedServices={};
+    data.selectedIds=[];
+    render();
+    closeModal();
+}
 
-        window.onload = render;
-    </script>
+function closeModal(){document.getElementById('modal').classList.remove('active');}
+
+window.onload=render;
+</script>
 </body>
 </html>
