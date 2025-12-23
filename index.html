@@ -3,11 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FMM Pro Dashboard</title>
-
+    <title>FMM Bridge Dashboard - Final</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
     <style>
         :root {
             --royal-purple: #7C4DFF;
@@ -20,176 +18,165 @@
         body {
             background-color: var(--deep-black);
             color: white;
-            font-family: 'Inter', system-ui, sans-serif;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
         }
 
-        /* الكروت */
+        /* تصميم البطاقة الملكية المطور */
         .royal-card {
             background: linear-gradient(145deg, #16161d, #0f0f13);
-            border: 1px solid rgba(124, 77, 255, 0.18);
-            border-radius: 22px;
-            box-shadow: 0 10px 28px rgba(0,0,0,0.45);
-            transition: 0.25s ease;
+            border: 1px solid rgba(124, 77, 255, 0.2);
+            border-radius: 24px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            transition: all 0.3s ease;
         }
 
-        .royal-card:active {
-            transform: scale(0.97);
-            border-color: var(--royal-purple);
-        }
+        .royal-card:active { transform: scale(0.97); border-color: var(--royal-purple); }
 
-        /* الهيدر */
-        header {
-            background: rgba(5,5,5,0.85);
-            backdrop-filter: blur(14px);
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
+        .glow-purple { box-shadow: 0 0 30px rgba(124, 77, 255, 0.2); }
 
-        /* فلتر الوقت */
-        .time-select {
-            background: #1a1a20;
-            border: 1px solid rgba(255,255,255,0.1);
-            color: #aaa;
-            font-size: 12px;
-            padding: 6px 14px;
-            border-radius: 12px;
-            outline: none;
-        }
-
-        /* السايدبار */
         #sidebar {
-            background: rgba(18,18,22,0.98);
-            backdrop-filter: blur(25px);
-            border-left: 1px solid rgba(124,77,255,0.2);
-            transition: transform 0.35s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(18, 18, 22, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(124, 77, 255, 0.2);
+            width: 220px;
         }
+
+        .order-row { border-bottom: 1px solid rgba(255,255,255,0.05); }
+        .order-row:last-child { border: none; }
+
+        header { background: rgba(5, 5, 5, 0.8); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.05); }
     </style>
 </head>
+<body>
 
-<body class="overflow-x-hidden">
-
-<!-- HEADER -->
-<header class="p-4 flex justify-between items-center sticky top-0 z-50">
-    <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5">
-        <i class="fas fa-bars-staggered"></i>
-    </button>
-
-    <div class="text-xl italic font-black tracking-tight text-[#7C4DFF]">FMM</div>
-
-    <div class="w-10 h-10 rounded-full border border-purple-500/30 flex items-center justify-center bg-white/5">
-        <i class="fas fa-user-astronaut text-purple-400"></i>
-    </div>
-</header>
-
-<!-- CONTENT -->
-<main class="p-5 space-y-6">
-
-    <div class="flex justify-between items-center">
-        <select class="time-select">
-            <option>هذا الشهر</option>
-            <option>الأسبوع الماضي</option>
-        </select>
-        <span class="text-xs tracking-widest text-gray-500 font-semibold">
-            إحصائيات المنصة
-        </span>
-    </div>
-
-    <!-- DATE -->
-    <div class="royal-card p-5 flex items-center gap-4">
-        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center">
-            <i class="fas fa-calendar-day text-purple-500 text-lg"></i>
-        </div>
-        <div>
-            <p class="text-[11px] text-gray-500 font-medium">تاريخ اليوم</p>
-            <span id="today-date" class="text-[17px] font-semibold"></span>
-        </div>
-    </div>
-
-    <!-- BALANCE -->
-    <div class="royal-card p-7">
-        <div class="flex justify-between items-start">
-            <div>
-                <p class="text-gray-500 text-[11px] font-medium mb-1">الرصيد الإجمالي</p>
-                <h2 class="text-[34px] font-semibold tracking-tight">
-                    18,000 <span class="text-[15px] text-gray-400">ريال</span>
-                </h2>
-                <span class="inline-block mt-2 text-[11px] text-green-400">
-                    +2.4%
-                </span>
-            </div>
-            <div class="w-14 h-14 rounded-2xl bg-[#7C4DFF] flex items-center justify-center">
-                <i class="fas fa-wallet text-white text-lg"></i>
-            </div>
-        </div>
-    </div>
-
-    <!-- STATS -->
-    <div class="grid grid-cols-2 gap-4">
-
-        <div class="royal-card p-5 text-center">
-            <div class="w-10 h-10 mx-auto mb-3 rounded-full bg-white/5 flex items-center justify-center">
-                <i class="fas fa-spinner text-[#FFCF4B]"></i>
-            </div>
-            <p class="text-[11px] text-gray-500">قيد التنفيذ</p>
-            <span class="text-[22px] font-semibold">45</span>
-        </div>
-
-        <div class="royal-card p-5 text-center">
-            <div class="w-10 h-10 mx-auto mb-3 rounded-full bg-white/5 flex items-center justify-center">
-                <i class="fas fa-bolt text-[#7C4DFF]"></i>
-            </div>
-            <p class="text-[11px] text-gray-500">طلبات اليوم</p>
-            <span class="text-[22px] font-semibold">120</span>
-        </div>
-
-        <div class="royal-card p-6 col-span-2 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <div class="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
-                    <i class="fas fa-check-double text-green-400"></i>
-                </div>
-                <div>
-                    <p class="text-[11px] text-gray-500">الطلبات المكتملة</p>
-                    <span class="text-[26px] font-semibold text-green-400">980</span>
-                </div>
-            </div>
-            <i class="fas fa-chevron-left text-gray-700 text-xs"></i>
-        </div>
-
-    </div>
-</main>
-
-<!-- SIDEBAR -->
-<aside id="sidebar" class="fixed inset-y-0 right-0 w-[240px] translate-x-full z-50 p-6">
-    <div class="flex justify-between items-center mb-10">
-        <span class="text-xl italic font-black text-[#7C4DFF]">FMM</span>
-        <button onclick="toggleSidebar()" class="text-gray-500">
-            <i class="fas fa-times"></i>
+    <header class="p-4 flex justify-between items-center sticky top-0 z-50">
+        <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5">
+            <i class="fas fa-bars-staggered text-white"></i>
         </button>
-    </div>
+        <div class="text-xl font-black italic text-[#7C4DFF] tracking-tighter">FMM BRIDGE</div>
+        <div class="w-10 h-10 rounded-full border border-purple-500/30 flex items-center justify-center bg-white/5">
+            <i class="fas fa-user-astronaut text-purple-400"></i>
+        </div>
+    </header>
 
-    <nav class="space-y-4 text-sm">
-        <a href="#" class="flex items-center gap-3 p-4 rounded-2xl bg-purple-500/10 text-purple-400">
-            <i class="fas fa-house"></i> الرئيسية
-        </a>
-        <a href="#" class="flex items-center gap-3 p-4 rounded-2xl text-gray-400 hover:text-white">
-            <i class="fas fa-shopping-cart"></i> الطلبات
-        </a>
-    </nav>
-</aside>
+    <main class="p-5 space-y-6">
 
-<script>
-    function toggleSidebar() {
-        document.getElementById('sidebar').classList.toggle('translate-x-full');
-    }
+        <div class="flex justify-between items-center">
+            <select id="timeFilter" class="bg-[#1a1a20] border border-white/10 text-gray-400 text-xs py-1.5 px-3 rounded-xl outline-none">
+                <option value="this-month" selected>هذا الشهر</option>
+                <option value="this-week">هذا الأسبوع</option>
+                <option value="last-week">الأسبوع الماضي</option>
+                <option value="this-year">السنة الحالية</option>
+                <option value="last-year">السنة الماضية</option>
+                <option value="custom">مخصص...</option>
+            </select>
+            <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">إحصائيات سلة والمزود</span>
+        </div>
 
-    // تاريخ ميلادي تلقائي بالعربي
-    const date = new Date().toLocaleDateString('ar-SA', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-    });
-    document.getElementById('today-date').textContent = date;
-</script>
+        <!-- رصيد المحفظة ومبيعات سلة -->
+        <div class="royal-card glow-purple p-6 border-r-4 border-[#7C4DFF]">
+            <div class="flex justify-between items-center">
+                <div>
+                    <p class="text-gray-500 text-[10px] font-bold uppercase mb-1">رصيد المحفظة</p>
+                    <h2 id="wallet-balance" class="text-3xl font-black tracking-tighter">1,800 <span class="text-sm font-normal text-gray-400">ريال</span></h2>
+                    <p class="text-gray-500 text-[10px] font-bold mt-2 uppercase mb-1">مبيعات سلة</p>
+                    <h2 id="salla-sales" class="text-3xl font-black tracking-tighter">18,000 <span class="text-sm font-normal text-gray-400">ريال</span></h2>
+                </div>
+                <div class="w-12 h-12 rounded-2xl bg-[#7C4DFF] flex items-center justify-center shadow-lg shadow-purple-500/20">
+                    <i class="fas fa-wallet text-white"></i>
+                </div>
+            </div>
+        </div>
 
+        <!-- طلبات -->
+        <div class="grid grid-cols-2 gap-4">
+            <div class="royal-card p-4 flex flex-col items-center border-b-2 border-[#FFCF4B]">
+                <i class="fas fa-clock text-[#FFCF4B] mb-2"></i>
+                <span class="text-[10px] text-gray-500">قيد التنفيذ (SMM)</span>
+                <span class="text-xl font-black">45</span>
+            </div>
+            <div class="royal-card p-4 flex flex-col items-center border-b-2 border-[#00E676]">
+                <i class="fas fa-check-double text-[#00E676] mb-2"></i>
+                <span class="text-[10px] text-gray-400">مكتملة</span>
+                <span class="text-xl font-black">980</span>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- القائمة الجانبية -->
+    <aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full z-[100] p-6 shadow-2xl">
+        <div class="flex justify-between items-center mb-10">
+            <span class="text-2xl font-black italic text-[#7C4DFF]">FMM</span>
+            <button onclick="toggleSidebar()" class="text-gray-500 text-xl"><i class="fas fa-times"></i></button>
+        </div>
+        <nav class="space-y-3">
+            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl bg-purple-500/10 text-[#7C4DFF] text-sm font-bold">
+                <i class="fas fa-chart-pie"></i> نظرة عامة
+            </a>
+            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-500 text-sm hover:text-white transition">
+                <i class="fas fa-store"></i> متجر سلة
+            </a>
+            <a href="#" class="flex items-center gap-4 p-4 rounded-2xl text-gray-400 text-sm hover:text-white transition">
+                <i class="fas fa-robot"></i> إعدادات الأتمتة
+            </a>
+        </nav>
+    </aside>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('translate-x-full');
+        }
+
+        // تحديث التاريخ ميلادي
+        const dateSpan = document.createElement('span');
+        dateSpan.id = 'current-date';
+        document.querySelector('main').prepend(dateSpan);
+        function updateDate() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateSpan.textContent = new Date().toLocaleDateString('en-US', options);
+        }
+        updateDate();
+
+        // تحديث الرصيد والمبيعات حسب الفلتر
+        const timeFilter = document.getElementById('timeFilter');
+        const walletBalance = document.getElementById('wallet-balance');
+        const sallaSales = document.getElementById('salla-sales');
+
+        timeFilter.addEventListener('change', () => {
+            const filter = timeFilter.value;
+            switch(filter) {
+                case 'this-month':
+                    walletBalance.innerHTML = "1,800 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    sallaSales.innerHTML = "18,000 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    break;
+                case 'this-week':
+                    walletBalance.innerHTML = "520 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    sallaSales.innerHTML = "5,200 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    break;
+                case 'last-week':
+                    walletBalance.innerHTML = "480 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    sallaSales.innerHTML = "4,900 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    break;
+                case 'this-year':
+                    walletBalance.innerHTML = "22,500 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    sallaSales.innerHTML = "220,000 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    break;
+                case 'last-year':
+                    walletBalance.innerHTML = "20,000 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    sallaSales.innerHTML = "200,000 <span class='text-sm font-normal text-gray-400'>ريال</span>";
+                    break;
+                case 'custom':
+                    walletBalance.innerHTML = "—";
+                    sallaSales.innerHTML = "—";
+                    break;
+            }
+        });
+    </script>
 </body>
 </html>
