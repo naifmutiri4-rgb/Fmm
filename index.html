@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>FMM Control Panel</title>
+    <style>
+        :root {
+            --bg-deep: #080a0f;
+            --card-glass: rgba(22, 27, 34, 0.95);
+            --accent-glow: #7c4dff; 
+            --success-neon: #00e676; 
+            --warning-gold: #ffab40;
+            --text-bright: #ffffff;
+            --text-muted: #94a3b8;
+            --border-glow: rgba(124, 77, 255, 0.2);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: -apple-system, system-ui, sans-serif;
+            background-color: var(--bg-deep);
+            color: var(--text-bright);
+            margin: 0;
+            direction: rtl;
+        }
+
+        /* الهيدر */
+        .top-bar {
+            background: rgba(13, 17, 23, 0.9);
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-glow);
+            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+        }
+
+        .logo-text { font-size: 22px; font-weight: 900; color: var(--accent-glow); }
+
+        .container { padding: 15px; max-width: 800px; margin: 0 auto; }
+
+        /* الأقسام الرئيسية */
+        .section-header {
+            background: var(--card-glass);
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--border-glow);
+            cursor: pointer;
+        }
+
+        .badge-count {
+            background: var(--accent-glow);
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* جدول الطلبات */
+        .orders-container { display: none; margin-bottom: 20px; }
+        .orders-container.active { display: block; }
+
+        .order-card {
+            background: var(--card-glass);
+            border: 1px solid #30363d;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+
+        .order-summary {
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .details-pane {
+            display: none;
+            padding: 15px;
+            background: rgba(0,0,0,0.3);
+            border-top: 1px solid #30363d;
+            font-size: 13px;
+        }
+
+        .details-pane.open { display: block; }
+
+        /* الجداول داخل التفاصيل */
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; }
+        th { text-align: right; color: var(--text-muted); padding: 8px; border-bottom: 1px solid #30363d; }
+        td { padding: 8px; border-bottom: 1px solid #161b22; }
+
+        input {
+            background: #000; border: 1px solid #444; color: var(--success-neon);
+            padding: 5px; border-radius: 5px; width: 100%; font-size: 12px; margin-top: 3px;
+        }
+
+        .status-tag { padding: 2px 8px; border-radius: 5px; font-size: 11px; font-weight: bold; }
+        .pending { background: rgba(255, 171, 64, 0.1); color: var(--warning-gold); }
+        .gray-wait { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); }
+
+        .btn-group { display: flex; gap: 5px; margin-top: 15px; flex-wrap: wrap; }
+        .btn {
+            flex: 1; padding: 10px; border-radius: 8px; border: none; 
+            font-weight: bold; font-size: 12px; cursor: pointer;
+        }
+        .btn-exec { background: var(--success-neon); color: #000; }
+        .btn-cancel { background: #ff5252; color: #fff; }
+
+    </style>
+</head>
+<body>
+
+    <div class="top-bar">
+        <div class="logo-text">FMM PANEL</div>
+        <div class="badge-count">متصل</div>
+    </div>
+
+    <div class="container">
+        
+        <div class="section-header" onclick="toggleSection('salla-orders')">
+            <span>📦 طلبات سلة #3</span>
+            <span class="badge-count" style="background:var(--warning-gold)">جديد</span>
+        </div>
+
+        <div id="salla-orders" class="orders-container active">
+            
+            <div class="order-card">
+                <div class="order-summary" onclick="toggleDetails(this)">
+                    <div>
+                        <b style="color:var(--accent-glow)">#99821</b><br>
+                        <small>العميل: فهد السبيعي</small>
+                    </div>
+                    <button style="background:none; border:1px solid var(--accent-glow); color:#fff; border-radius:5px; font-size:10px; padding:5px;">المزيد ↓</button>
+                </div>
+                
+                <div class="details-pane">
+                    <b>معلومات المنتج:</b> <span style="color:var(--warning-gold)">باقة المليون مشاهدة</span><br>
+                    <label>رابط المقطع:</label>
+                    <input type="text" value="https://tiktok.com/@fmm/video/7281">
+                    <label>رابط المتابعين:</label>
+                    <input type="text" value="https://instagram.com/fmm_store">
+                    
+                    <table>
+                        <tr><th>النوع</th><th>الكمية</th><th>الحالة</th></tr>
+                        <tr><td>مشاهدات</td><td>1,000,000</td><td class="gray-wait">قيد الانتظار</td></tr>
+                    </table>
+
+                    <div class="btn-group">
+                        <button class="btn btn-exec" onclick="completeOrder(this)">تم التنفيذ ✅</button>
+                        <button class="btn btn-cancel">إلغاء</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="order-card">
+                <div class="order-summary" onclick="toggleDetails(this)">
+                    <div>
+                        <b style="color:var(--accent-glow)">#99822</b><br>
+                        <small>العميل: سارة خالد</small>
+                    </div>
+                    <button style="background:none; border:1px solid var(--accent-glow); color:#fff; border-radius:5px; font-size:10px; padding:5px;">المزيد ↓</button>
+                </div>
+                
+                <div class="details-pane">
+                    <b>معلومات المنتج:</b> <span style="color:var(--warning-gold)">زيادة 5000 متابع</span><br>
+                    <label>الرابط:</label>
+                    <input type="text" value="https://twitter.com/sara_k">
+                    
+                    <table>
+                        <tr><th>النوع</th><th>الكمية</th><th>الحالة</th></tr>
+                        <tr><td>متابعين</td><td>5,000</td><td class="gray-wait">قيد الانتظار</td></tr>
+                    </table>
+
+                    <div class="btn-group">
+                        <button class="btn btn-exec" onclick="completeOrder(this)">تم التنفيذ ✅</button>
+                        <button class="btn btn-cancel">إلغاء</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="section-header" onclick="alert('سيتم عرض الطلبات المنفذة هنا')">
+            <span>✅ تم تنفيذ / #120</span>
+        </div>
+
+        <div class="section-header" onclick="alert('طلبات تحتاج مراجعة يدوية')">
+            <span>⏳ بانتظار المراجعة / #5</span>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleSection(id) {
+            const el = document.getElementById(id);
+            el.classList.toggle('active');
+        }
+
+        function toggleDetails(element) {
+            const pane = element.parentElement.querySelector('.details-pane');
+            pane.classList.toggle('open');
+        }
+
+        function completeOrder(btn) {
+            if(confirm('هل أنت متأكد من تغيير حالة الطلب إلى مكتمل؟')) {
+                const card = btn.closest('.order-card');
+                card.style.opacity = '0.5';
+                btn.innerHTML = 'تم بنجاح';
+                btn.disabled = true;
+                alert('تم التحديث وإشعار العميل ✅');
+            }
+        }
+    </script>
+</body>
+</html
