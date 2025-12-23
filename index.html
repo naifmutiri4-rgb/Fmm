@@ -2,8 +2,8 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FMM Royal Dashboard - Final</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>FMM Royal Dashboard - Ultimate Edition</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
@@ -13,186 +13,186 @@
     --card-bg: #121216;
     --neon-green: #00E676;
     --gold-warning: #FFCF4B;
+    --glass-bg: rgba(20, 20, 30, 0.9);
 }
 body { background-color: var(--deep-black); color: white; font-family: 'Inter', sans-serif; margin:0; }
+
+/* تأثيرات الزجاج والقوة */
 .royal-card { background: linear-gradient(145deg,#16161d,#0f0f13); border:1px solid rgba(124,77,255,0.2); border-radius:24px; position:relative; box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:all 0.3s ease; }
-.royal-card:active { transform:scale(0.97); border-color: var(--royal-purple); }
 .balance-glow { background: linear-gradient(135deg,#121216 0%,#1a1a25 100%); box-shadow:0 0 25px rgba(124,77,255,0.15); position:relative; }
-.balance-glow::after { content:''; position:absolute; top:-50%; right:-50%; width:100%; height:100%; background:radial-gradient(circle, rgba(124,77,255,0.1) 0%,transparent 70%); pointer-events:none; }
-header { background: rgba(5,5,5,0.8); backdrop-filter:blur(15px); border-bottom:1px solid rgba(255,255,255,0.05); }
-.time-select { background:#1a1a20; border:1px solid rgba(255,255,255,0.1); color:#aaa; font-size:12px; padding:5px 15px; border-radius:12px; outline:none; }
-#sidebar { transition: transform 0.4s cubic-bezier(0.4,0,0.2,1); background: rgba(18,18,22,0.98); backdrop-filter: blur(25px); border-left:1px solid rgba(124,77,255,0.2); width:240px; overflow-y:auto; }
-.nav-item { display:flex; align-items:center; justify-between; padding:10px 16px; border-radius:12px; color:#aaa; font-size:14px; cursor:pointer; transition:0.3s; }
-.nav-item:hover { background: rgba(124,77,255,0.1); color: var(--royal-purple); }
-.nav-sub { display:none; flex-direction:column; margin-top:5px; margin-right:10px; }
-.nav-sub a { padding:6px 12px; font-size:13px; border-radius:8px; color:#ccc; margin-top:2px; text-decoration:none; }
-.nav-sub a:hover { background: rgba(124,77,255,0.1); color: var(--royal-purple); }
-.active-section { color: var(--royal-purple); font-weight:bold; }
-.btn-green { background-color: var(--neon-green); color:#050505; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; }
-.btn-gray { background-color:#666; color:#fff; padding:6px 12px; border-radius:8px; font-weight:bold; cursor:pointer; }
+
+/* المربع القزازي للتحليل */
+.glass-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(25px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 15px; }
+.glass-overlay.active { display: flex; }
+.glass-panel { background: var(--glass-bg); border: 1px solid rgba(124,77,255,0.4); width: 100%; max-width: 500px; border-radius: 35px; padding: 25px; box-shadow: 0 0 40px rgba(124,77,255,0.2); }
+
+/* نظام التبويبات */
+.tab-btn { padding: 10px; text-align: center; border-radius: 12px; font-size: 12px; font-weight: bold; color: #888; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
+.tab-btn.active { background: rgba(124,77,255,0.1); color: var(--royal-purple); border-color: rgba(124,77,255,0.3); }
+
+/* أنيميشن */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-in { animation: fadeIn 0.4s ease forwards; }
 </style>
 </head>
 <body>
 
-<header class="p-4 flex justify-between items-center sticky top-0 z-50">
+<header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5">
     <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5">
         <i class="fas fa-bars-staggered text-white"></i>
     </button>
-    <div class="text-xl font-black italic tracking-tighter text-[#7C4DFF]">FMM</div>
+    <div class="text-xl font-black italic tracking-tighter text-[#7C4DFF]">FMM ROYAL</div>
     <div class="w-10 h-10 rounded-full border border-purple-500/30 flex items-center justify-center bg-white/5">
-        <i class="fas fa-user-astronaut text-purple-400"></i>
+        <i class="fas fa-bolt text-yellow-400"></i>
     </div>
 </header>
 
 <main class="p-5 space-y-6">
 
-<div class="flex justify-between items-center">
-    <select id="timeFilter" class="time-select" onchange="updateDateFilter()">
-        <option value="today">اليوم</option>
-        <option value="week">هذا الأسبوع</option>
-        <option value="lastWeek">الأسبوع الماضي</option>
-        <option value="month" selected>هذا الشهر</option>
-        <option value="thisYear">السنة الحالية</option>
-        <option value="lastYear">السنة الماضية</option>
-        <option value="custom">مخصص...</option>
-    </select>
-    <span class="text-xs font-bold text-gray-500 tracking-widest">إحصائيات المنصة</span>
-</div>
-
-<div class="royal-card p-5 flex items-center gap-4 balance-glow">
-    <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
-        <i class="fas fa-wallet text-purple-500 text-xl"></i>
-    </div>
-    <div>
-        <p class="text-[10px] text-gray-500 font-bold uppercase">رصيد المحفظة</p>
-        <h2 class="text-2xl font-black tracking-tighter">1,240.50 <span class="text-sm font-normal text-gray-400">ريال</span></h2>
-        <p class="text-[10px] text-gray-500 font-bold uppercase mt-1">مبيعات سلة: 18,000 ريال</p>
-    </div>
-</div>
-
-<div class="grid grid-cols-2 gap-4">
-    <div class="royal-card p-4 flex flex-col items-center border-b-2 border-[#FFCF4B]">
-        <i class="fas fa-clock text-[#FFCF4B] mb-2"></i>
-        <span class="text-[10px] text-gray-500">قيد التنفيذ (SMM)</span>
-        <span class="text-xl font-black">45</span>
-    </div>
-    <div class="royal-card p-4 flex flex-col items-center border-b-2 border-[#00E676]">
-        <i class="fas fa-check-double text-[#00E676] mb-2"></i>
-        <span class="text-[10px] text-gray-400">مكتملة</span>
-        <span class="text-xl font-black">980</span>
-    </div>
-</div>
-
-<div class="royal-card p-5">
-    <h4 class="text-xs font-bold mb-4 text-[#7C4DFF]"><i class="fas fa-exchange-alt ml-2"></i> آخر الطلبات</h4>
-    <div class="space-y-4" id="ordersList">
-        <div class="order-row pb-3 flex justify-between items-center text-[11px]">
-            <div>
-                <p class="font-bold">طلب #5531 (سلة)</p>
-                <p class="text-gray-500 text-[9px]">متابعين انستقرام - 10K</p>
-            </div>
-            <div class="text-left">
-                <span class="text-[#00E676] font-bold">مكتمل</span>
-                <p class="text-[9px] text-gray-600 font-mono">ID: 88219</p>
-            </div>
+    <div class="royal-card p-5 flex items-center gap-4 balance-glow">
+        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
+            <i class="fas fa-wallet text-purple-500 text-xl"></i>
         </div>
-        <div class="order-row pb-3 flex justify-between items-center text-[11px]">
-            <div>
-                <p class="font-bold">طلب #5532 (سلة)</p>
-                <p class="text-gray-500 text-[9px]">لايكات تيك توك - 5K</p>
+        <div class="flex-1">
+            <p class="text-[10px] text-gray-500 font-bold uppercase">رصيد المحفظة المتاح</p>
+            <h2 class="text-2xl font-black tracking-tighter">1,240.50 <span class="text-sm font-normal text-gray-400">ريال</span></h2>
+        </div>
+        <button class="bg-[#7C4DFF] p-2 rounded-xl px-4 text-xs font-bold" onclick="toggleSelectAll()">تحديد الكل</button>
+    </div>
+
+    <div class="grid grid-cols-3 gap-2 bg-white/5 p-1 rounded-18px">
+        <div class="tab-btn active" id="tab-waiting" onclick="switchTab('waiting')">بالانتظار (2)</div>
+        <div class="tab-btn" id="tab-processing" onclick="switchTab('processing')">قيد التنفيذ</div>
+        <div class="tab-btn" id="tab-done" onclick="switchTab('done')">مكتملة</div>
+    </div>
+
+    <div class="space-y-4" id="ordersContainer">
+        <div class="royal-card p-5 animate-in" data-status="waiting">
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" class="order-checkbox w-5 h-5 accent-[#7C4DFF]">
+                    <div>
+                        <h4 class="font-bold text-sm">بكج تيك توك VIP (#5531)</h4>
+                        <p class="text-[10px] text-gray-500 italic">العميل: فهد محمد</p>
+                    </div>
+                </div>
+                <span class="text-[10px] px-2 py-1 rounded-md bg-yellow-500/10 text-yellow-500 font-bold">انتظار</span>
             </div>
-            <div class="text-left">
-                <span class="text-[#FFCF4B] font-bold">قيد الانتظار</span>
-                <p class="text-[9px] text-gray-600 font-mono">ID: 88240</p>
+            
+            <div class="grid grid-cols-3 gap-2 mb-4">
+                <div class="bg-white/5 p-2 rounded-lg text-center"><p class="text-[9px] text-gray-500">👀</p><b class="text-xs">10k</b></div>
+                <div class="bg-white/5 p-2 rounded-lg text-center"><p class="text-[9px] text-gray-500">❤️</p><b class="text-xs">1k</b></div>
+                <div class="bg-white/5 p-2 rounded-lg text-center"><p class="text-[9px] text-gray-500">👥</p><b class="text-xs">500</b></div>
             </div>
+
+            <button onclick="openAnalyzer('بكج تيك توك', 10000, 1000, 500)" class="w-full bg-[#7C4DFF] py-3 rounded-xl font-black text-xs shadow-lg shadow-purple-500/20 active:scale-95 transition-all">
+                تحليل وتفكيك البكج ⚡
+            </button>
         </div>
     </div>
-</div>
 
 </main>
 
-<aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full z-[100] p-6 shadow-2xl">
-    <div class="flex justify-between items-center mb-6">
-        <span class="text-2xl font-black italic text-[#7C4DFF]">FMM</span>
-        <button onclick="toggleSidebar()" class="text-gray-500"><i class="fas fa-times"></i></button>
+<div class="glass-overlay" id="analyzerOverlay">
+    <div class="glass-panel">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="font-black text-sm text-[#7C4DFF] italic">💎 محلل التوصيات الذكي</h3>
+            <button onclick="closeAnalyzer()" class="text-gray-500"><i class="fas fa-times"></i></button>
+        </div>
+
+        <div class="space-y-3" id="analysisResults">
+            </div>
+
+        <div class="mt-6 p-4 rounded-2xl bg-[#00E676]/10 border border-[#00E676]/20 text-center">
+            <p class="text-[10px] text-[#00E676] font-bold uppercase mb-1">إجمالي تكلفة البكج (أرخص خيار)</p>
+            <h2 class="text-3xl font-black text-[#00E676]" id="totalCost">$0.00</h2>
+            <p class="text-[9px] text-gray-500 mt-2">🛡️ تم اختيار أسرع الخدمات (بدء خلال 1-5 دقائق)</p>
+        </div>
+
+        <button onclick="confirmOrder()" class="w-full bg-[#00E676] text-black py-4 rounded-2xl font-black mt-4 shadow-xl shadow-green-500/20">
+            تأكيد الإرسال للمزود 🚀
+        </button>
     </div>
-    <nav>
-        <div class="nav-item" onclick="toggleSub('financeSub')">
-            <i class="fas fa-money-bill-wave w-5"></i> المالية
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <div class="nav-sub" id="financeSub">
-            <a href="#">المصاريف في المزود</a>
-            <a href="#">مبيعات سلة</a>
-            <a href="#">التوتل الإجمالي</a>
-        </div>
+</div>
 
-        <div class="nav-item" onclick="toggleSub('servicesSub')">
-            <i class="fas fa-cogs w-5"></i> خدمات المزود
-            <i class="fas fa-chevron-left"></i>
+<aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full z-[100] p-6 shadow-2xl transition-transform duration-400 bg-[#121216]/98 backdrop-blur-2xl border-l border-purple-500/20 w-[260px]">
+    <div class="flex justify-between items-center mb-10">
+        <span class="text-2xl font-black italic text-[#7C4DFF]">FMM</span>
+        <button onclick="toggleSidebar()" class="text-gray-500 text-xl"><i class="fas fa-times"></i></button>
+    </div>
+    <nav class="space-y-2">
+        <div class="nav-item group" onclick="toggleSub('automationSub')">
+            <div class="flex items-center gap-3"><i class="fas fa-robot text-purple-500"></i> الأتمتة الآلية</div>
+            <i class="fas fa-chevron-left text-[10px]"></i>
         </div>
-        <div class="nav-sub" id="servicesSub">
-            <a href="#">تنفيذ الطلبات</a>
-            <a href="#">إعدادات الجودة</a>
+        <div class="nav-sub p-2 space-y-2 hidden flex-col" id="automationSub">
+            <a href="#" class="text-xs text-gray-400 hover:text-white">تفعيل Auto-run</a>
+            <a href="#" class="text-xs text-gray-400 hover:text-white">إعدادات الجودة والسعر</a>
         </div>
-
-        <div class="nav-item" onclick="toggleSub('updatesSub')">
-            <i class="fas fa-sync w-5"></i> التحديثات
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <div class="nav-sub" id="updatesSub">
-            <a href="#">آخر التحديثات</a>
-        </div>
-
-        <div class="nav-item" onclick="toggleSub('automationSub')">
-            <i class="fas fa-robot w-5"></i> إعدادات الأتمتة الآلية
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <div class="nav-sub" id="automationSub">
-            <a href="#">تفعيل Auto-run</a>
-            <a href="#">تحديد جودة، سعر، وقت متوسط</a>
-            <a href="#">تحديد كمية يومية</a>
-        </div>
-    </nav>
+        </nav>
 </aside>
 
 <script>
+// تبديل التبويبات
+function switchTab(status) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('tab-' + status).classList.add('active');
+    // هنا يمكن إضافة فلترة حقيقية للعناصر
+}
+
+// تحليل البكج وعرض التوصيات
+function openAnalyzer(type, views, likes, followers) {
+    const results = document.getElementById('analysisResults');
+    const services = [
+        { name: 'مشاهدات (سيرفر #402)', speed: '1-2 دقيقة', price: (views/1000 * 0.02) },
+        { name: 'لايكات (سيرفر #881)', speed: '3 دقائق', price: (likes/1000 * 0.45) },
+        { name: 'متابعين (سيرفر #12)', speed: '5-10 دقائق', price: (followers/1000 * 1.20) }
+    ];
+
+    let total = 0;
+    results.innerHTML = services.map(s => {
+        total += s.price;
+        return `
+            <div class="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
+                <div>
+                    <p class="text-[11px] font-bold">${s.name}</p>
+                    <p class="text-[9px] text-[#FFCF4B]"><i class="fas fa-bolt"></i> بدء: ${s.speed}</p>
+                </div>
+                <span class="text-xs font-mono text-[#00E676]">$${s.price.toFixed(2)}</span>
+            </div>
+        `;
+    }).join('');
+
+    document.getElementById('totalCost').innerText = '$' + total.toFixed(2);
+    document.getElementById('analyzerOverlay').classList.add('active');
+}
+
+function closeAnalyzer() {
+    document.getElementById('analyzerOverlay').classList.remove('active');
+}
+
+function confirmOrder() {
+    alert("تم تفكيك البكج وإرساله بنجاح ✅");
+    closeAnalyzer();
+}
+
 function toggleSidebar() {
     document.getElementById('sidebar').classList.toggle('translate-x-full');
 }
-function toggleSub(id){
+
+function toggleSub(id) {
     const sub = document.getElementById(id);
-    if(sub.style.display==='flex'){ sub.style.display='none'; }
-    else { sub.style.display='flex'; sub.style.flexDirection='column'; }
+    sub.classList.toggle('hidden');
+    sub.classList.toggle('flex');
 }
-function updateDateFilter(){
-    const filter = document.getElementById('timeFilter').value;
-    const today = new Date();
-    let dateText = '';
-    switch(filter){
-        case 'today': dateText = today.toDateString(); break;
-        case 'week':
-            let weekStart = new Date(today); weekStart.setDate(today.getDate()-today.getDay());
-            dateText = weekStart.toDateString() + ' - ' + today.toDateString(); break;
-        case 'lastWeek':
-            let lastWeekStart = new Date(today); lastWeekStart.setDate(today.getDate()-today.getDay()-7);
-            let lastWeekEnd = new Date(today); lastWeekEnd.setDate(today.getDate()-today.getDay()-1);
-            dateText = lastWeekStart.toDateString() + ' - ' + lastWeekEnd.toDateString(); break;
-        case 'month':
-            let monthStart = new Date(today.getFullYear(), today.getMonth(), 1);
-            dateText = monthStart.toDateString() + ' - ' + today.toDateString(); break;
-        case 'thisYear':
-            let yearStart = new Date(today.getFullYear(),0,1);
-            dateText = yearStart.toDateString() + ' - ' + today.toDateString(); break;
-        case 'lastYear':
-            let lastYearStart = new Date(today.getFullYear()-1,0,1);
-            let lastYearEnd = new Date(today.getFullYear()-1,11,31);
-            dateText = lastYearStart.toDateString() + ' - ' + lastYearEnd.toDateString(); break;
-        default: dateText = 'مخصص'; break;
-    }
-    console.log('الفترة المحددة:', dateText);
+
+function toggleSelectAll() {
+    const cbs = document.querySelectorAll('.order-checkbox');
+    const allChecked = Array.from(cbs).every(cb => cb.checked);
+    cbs.forEach(cb => cb.checked = !allChecked);
 }
 </script>
 
 </body>
 </html>
+
