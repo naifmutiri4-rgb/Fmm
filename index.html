@@ -1,188 +1,196 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>FMM Dashboard</title>
-<style>
-:root {
-    --fmm-purple: #8b5cf6;
-    --fmm-gold: #fbbf24;
-    --fmm-glow: rgba(139, 92, 246, 0.4);
-    --bg-deep: #050505;
-    --surface: #121214;
-    --safe-top: env(safe-area-inset-top);
-}
-body {
-    background-color: var(--bg-deep);
-    color: #ffffff;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", sans-serif;
-    margin: 0; padding-top: var(--safe-top);
-}
-.fmm-header {
-    padding: 25px 20px; text-align:center; position:relative;
-}
-.fmm-header h1 { font-size:22px; margin:0; font-weight:900; letter-spacing:-0.5px; color:#fff; text-shadow:0 0 20px var(--fmm-glow);}
-.fmm-stats-grid {
-    display:grid; grid-template-columns:1fr 1fr; gap:15px; padding:0 20px 25px;
-}
-.stat-card {
-    background: var(--surface); padding:20px; border-radius:28px;
-    border:1px solid rgba(255,255,255,0.05); box-shadow:0 10px 30px rgba(0,0,0,0.5);
-}
-.stat-card small { color:#666; font-size:11px; display:block; margin-bottom:8px; }
-.stat-card div { font-size:18px; font-weight:700; color: var(--fmm-purple); }
-.search-area { padding:0 20px 30px; }
-.search-input {
-    width:100%; background:#1a1a1c; border:1px solid #222; padding:16px 20px;
-    border-radius:18px; color:#fff; font-size:15px; transition:0.3s;
-}
-.search-input:focus { border-color: var(--fmm-purple); box-shadow:0 0 15px var(--fmm-glow);}
-.label-row { padding:0 25px 12px; display:flex; justify-content:space-between; font-size:12px; font-weight:600; color:#444; text-transform:uppercase;}
-.fmm-order { margin:0 20px 12px; background: var(--surface); border-radius:24px; padding:20px; border-left:4px solid transparent; transition:0.3s;}
-.fmm-order.pending { border-left-color: var(--fmm-purple); }
-.fmm-order.active { border-left-color: var(--fmm-gold); }
-.order-main { display:flex; justify-content:space-between; align-items:center; cursor:pointer;}
-.order-title { font-weight:600; font-size:15px; }
-.order-sub { font-size:11px; color:#555; margin-top:4px; }
-.order-expand { max-height:0; overflow:hidden; transition:0.4s ease; }
-.order-expand.show { max-height:300px; padding-top:20px; }
-.link-chip { background: rgba(255,255,255,0.03); padding:8px 12px; border-radius:10px; font-size:11px; color:#aaa; margin-bottom:8px; display:inline-block; border:1px solid rgba(255,255,255,0.05);}
-.btn-action { width:100%; padding:18px; background: var(--fmm-purple); border:none; border-radius:20px; color:#fff; font-weight:800; font-size:15px; margin-top:15px; box-shadow:0 10px 25px var(--fmm-glow); }
-.fmm-sheet { position:fixed; inset:0; background:rgba(0,0,0,0.8); backdrop-filter:blur(20px); z-index:10000; display:none; align-items:flex-end;}
-.fmm-sheet.active { display:flex; }
-.sheet-content { background:#111; width:100%; border-radius:35px 35px 0 0; padding:35px 25px 50px; border-top:1px solid var(--fmm-purple); animation: slideUp 0.4s cubic-bezier(0.25,1,0.5,1);}
-.chart-card { background: var(--surface); margin: 20px; border-radius: 25px; padding: 15px; }
-@keyframes slideUp { from { transform:translateY(100%); } to { transform:translateY(0); } }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FMM Mass Control</title>
+    <style>
+        :root {
+            --fmm-purple: #7c4dff;
+            --bg: #050505;
+            --card: #111114;
+            --glass: rgba(20, 20, 25, 0.95);
+            --safe-top: env(safe-area-inset-top);
+        }
+
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: #fff; margin: 0; font-family: -apple-system, sans-serif; padding-top: var(--safe-top); }
+
+        /* Header */
+        .fmm-nav { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1a1a1a; position: sticky; top: 0; background: var(--bg); z-index: 100; }
+        .logo { font-weight: 900; font-size: 24px; color: var(--fmm-purple); }
+
+        /* Dashboard Stats */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 20px 15px; }
+        .s-card { background: var(--card); padding: 12px 5px; border-radius: 12px; text-align: center; border: 1px solid #1f1f23; }
+        .s-card span { display: block; font-size: 8px; color: #555; margin-bottom: 4px; }
+        .s-card b { font-size: 11px; color: var(--fmm-purple); }
+
+        /* Control Bar */
+        .control-bar { padding: 0 15px 15px; display: flex; justify-content: space-between; align-items: center; }
+        .batch-btn { background: #00e676; color: #000; border: none; padding: 8px 15px; border-radius: 10px; font-weight: bold; font-size: 12px; display: none; }
+
+        /* List Sections */
+        .section-label { padding: 10px 20px; font-size: 12px; color: #444; font-weight: bold; background: #08080a; }
+        .list { padding: 0 15px 20px; min-height: 40px; }
+
+        /* Order Card */
+        .order { background: var(--card); margin-bottom: 10px; padding: 15px; border-radius: 18px; border: 1px solid #1f1f23; position: relative; transition: 0.3s; }
+        .order.selected { border-color: var(--fmm-purple); background: rgba(124, 77, 255, 0.05); }
+        .order-check { position: absolute; left: 15px; top: 15px; transform: scale(1.3); }
+        .order-info b { font-size: 14px; display: block; margin-bottom: 5px; }
+        .order-info small { color: #555; font-size: 10px; }
+
+        /* Glass Modal */
+        .glass { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); z-index: 1000; display: none; align-items: flex-end; }
+        .glass.active { display: flex; }
+        .sheet { background: var(--glass); width: 100%; border-radius: 35px 35px 0 0; padding: 30px 20px 40px; border-top: 1px solid var(--fmm-purple); }
+
+        .btn-full { width: 100%; padding: 16px; border-radius: 15px; border: none; font-weight: bold; font-size: 15px; margin-top: 10px; cursor: pointer; }
+        .btn-primary { background: var(--fmm-purple); color: #fff; }
+    </style>
 </head>
 <body>
 
-<header class="fmm-header">
-<h1>FMM DASHBOARD</h1>
-<div style="position:absolute; right:20px; top:28px; opacity:0.5;">🔔</div>
-</header>
+    <nav class="fmm-nav">
+        <div class="logo">FMM</div>
+        <div style="font-size:24px;">☰</div>
+    </nav>
 
-<section class="fmm-stats-grid">
-<div class="stat-card"><small>الرصيد المتاح</small><div id="balance">$285.50</div></div>
-<div class="stat-card"><small>طلبات اليوم</small><div id="todayOrders">12 طلب</div></div>
-</section>
+    <div class="stats-grid">
+        <div class="s-card"><span>الرصيد</span><b id="bal">$2,500.00</b></div>
+        <div class="s-card"><span>انتظار</span><b id="c-p">3</b></div>
+        <div class="s-card"><span>تنفيذ</span><b id="c-r">0</b></div>
+        <div class="s-card"><span>مكتمل</span><b id="c-d">0</b></div>
+    </div>
 
-<div class="search-area">
-<input type="text" class="search-input" placeholder="ابحث في طلبات FMM..." onkeyup="filterOrders(this)">
-</div>
+    <div class="control-bar">
+        <label style="font-size: 12px; color: #888;"><input type="checkbox" id="selectAll" onclick="toggleAll()"> تحديد الكل</label>
+        <button id="batchBtn" class="batch-btn" onclick="openMassModal()">تنفيذ المختار ( <span id="selCount">0</span> ) ⚡</button>
+    </div>
 
-<div class="label-row"><span>بانتظار التنفيذ</span><span id="pendingCount">2 طلب</span></div>
-<div id="pendingList"></div>
+    <div class="section-label">📦 بانتظار المراجعة</div>
+    <div id="pending-list" class="list"></div>
 
-<div class="label-row" style="margin-top:20px;"><span>قيد التنفيذ</span></div>
-<div id="activeList"></div>
+    <div class="section-label">⏳ قيد التنفيذ (متعدد)</div>
+    <div id="processing-list" class="list"></div>
 
-<div class="chart-card">
-<canvas id="financeChart"></canvas>
-</div>
+    <div class="section-label">✅ السجل المكتمل</div>
+    <div id="completed-list" class="list"></div>
 
-<div class="fmm-sheet" id="fmmSheet">
-<div class="sheet-content">
-<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-<b style="font-size:20px;">التحليل الذكي</b>
-<span onclick="closeSheet()" style="background:#222; padding:8px 15px; border-radius:12px; font-size:12px;">إلغاء</span>
-</div>
-<div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:20px; border:1px solid rgba(255,255,255,0.05); margin-bottom:25px;">
-<div style="display:flex; justify-content:space-between; margin-bottom:10px;">
-<span style="color:#888;">الخدمة الموصى بها:</span>
-<span style="color:#00e676;" id="sheetService">#20288</span>
-</div>
-<div style="font-size:24px; font-weight:800; margin:15px 0;"><span id="sheetTotal">$3.00</span> <small style="font-size:12px; color:#555; font-weight:400;">(التكلفة الكلية)</small></div>
-<div style="font-size:12px; color:#777; line-height:1.6;">🛡️ ضمان 365 يوم | ⚡ تنفيذ فوري | ✅ توصية مؤكدة لـ FMM</div>
-</div>
-<button class="btn-action" style="background:#00e676; color:#000; box-shadow:none;" onclick="confirmFMM()">إرسال الطلب الآن 🚀</button>
-</div>
-</div>
+    <div class="glass" id="modal">
+        <div class="sheet" id="modalContent"></div>
+    </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-// بيانات الطلبات
-let orders = [
-    {id:2088,name:"محمد الغامدي",service:"متابعين تيك توك",qty:2500,price:1.20,links:["tiktok.com/@fmm_user","tiktok.com/video/1029384"],status:"pending"},
-    {id:2085,name:"متجر الأناقة",service:"لايكات انستقرام",qty:5000,price:0.50,links:[],status:"active"}
-];
+    <script>
+        let data = {
+            balance: 2500.0,
+            pending: [
+                { id: 101, user: "أحمد علي", cost: 1.2 },
+                { id: 102, user: "سارة محمد", cost: 2.5 },
+                { id: 103, user: "متجر الرواد", cost: 5.0 }
+            ],
+            processing: [],
+            completed: [],
+            selectedIds: []
+        };
 
-let dailyRevenue = [1420, 980, 1200, 1600, 1100, 1350, 1500];
-let dailyOrders = [12,8,10,14,9,11,13];
-let financeChart;
+        function render() {
+            const pList = document.getElementById('pending-list');
+            pList.innerHTML = data.pending.map(o => `
+                <div class="order ${data.selectedIds.includes(o.id) ? 'selected' : ''}" onclick="toggleSelect(${o.id})">
+                    <input type="checkbox" class="order-check" ${data.selectedIds.includes(o.id) ? 'checked' : ''}>
+                    <div class="order-info">
+                        <b>#${o.id} | ${o.user}</b>
+                        <small>متابعين تيك توك • التكلفة: $${o.cost}</small>
+                    </div>
+                </div>
+            `).join('');
 
-function renderOrders() {
-    const pending = document.getElementById('pendingList');
-    const active = document.getElementById('activeList');
-    pending.innerHTML = ""; active.innerHTML = "";
-    let pendingCount = 0;
-    orders.forEach(o => {
-        let orderEl = document.createElement('div');
-        orderEl.className = `fmm-order ${o.status}`;
-        orderEl.innerHTML = `<div class="order-main" onclick="toggleOrder(this)">
-            <div><div class="order-title">#${o.id} | ${o.name}</div>
-            <div class="order-sub">${o.service} • ${o.qty.toLocaleString()} وحدة</div></div>
-            <div style="color:${o.status==='pending'? '--fmm-purple':'#fbbf24'}">●</div>
-        </div>
-        <div class="order-expand">
-            ${o.links.map(l=>`<div class="link-chip">${l}</div>`).join('')}
-            ${o.status==='pending'? `<button class="btn-action" onclick="openSheet('${o.name}',${o.qty},${o.price},${o.id})">تحليل وتحويل للمزود</button>`:""}
-        </div>`;
-        if(o.status==='pending'){pending.appendChild(orderEl); pendingCount++;}
-        else{active.appendChild(orderEl);}
-    });
-    document.getElementById('pendingCount').innerText = `${pendingCount} طلب`;
-    updateFinanceChart();
-}
+            document.getElementById('processing-list').innerHTML = data.processing.map(o => `
+                <div class="order" style="border-right: 3px solid #ffcf4b;">
+                    <b>#${o.id}</b> <small style="color:#ffcf4b;">جاري المعالجة...</small>
+                </div>
+            `).join('');
 
-function toggleOrder(el){ el.nextElementSibling.classList.toggle('show'); }
+            document.getElementById('completed-list').innerHTML = data.completed.map(o => `
+                <div class="order" style="opacity:0.5; border-right: 3px solid #00e676;">
+                    <b>#${o.id}</b> <small style="color:#00e676;">اكتمل بنجاح ✅</small>
+                </div>
+            `).join('');
 
-function openSheet(name, qty, price, id){
-    document.getElementById('sheetService').innerText = `#${id}`;
-    document.getElementById('sheetTotal').innerText = `$${(qty/1000*price).toFixed(2)}`;
-    document.getElementById('fmmSheet').classList.add('active');
-    window.currentOrderId = id;
-}
-
-function closeSheet(){ document.getElementById('fmmSheet').classList.remove('active'); }
-
-function confirmFMM(){
-    let order = orders.find(o=>o.id===window.currentOrderId);
-    if(order){ order.status='active'; alert("تم إرسال الطلب بنجاح ✅"); }
-    closeSheet(); renderOrders();
-}
-
-function filterOrders(input){
-    const val = input.value.toLowerCase();
-    document.querySelectorAll('.fmm-order').forEach(c=>{
-        c.style.display = c.querySelector('.order-title').innerText.toLowerCase().includes(val)? "block":"none";
-    });
-}
-
-// المخطط المالي
-function updateFinanceChart(){
-    const ctx = document.getElementById('financeChart').getContext('2d');
-    const labels = ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
-    if(financeChart) financeChart.destroy();
-    financeChart = new Chart(ctx, {
-        type:'line',
-        data:{
-            labels,
-            datasets:[
-                {label:'المبيعات اليومية (ر.س)', data: dailyRevenue, borderColor:'#8b5cf6', backgroundColor:'rgba(139,92,246,0.2)', fill:true, tension:0.3},
-                {label:'عدد الطلبات', data: dailyOrders, borderColor:'#fbbf24', backgroundColor:'rgba(251,191,36,0.2)', fill:true, tension:0.3}
-            ]
-        },
-        options:{
-            responsive:true,
-            plugins:{legend:{labels:{color:'#fff'}}},
-            scales:{ y:{beginAtZero:true,ticks:{color:'#fff'}}, x:{ticks:{color:'#fff'}}}
+            // تحديث الأرقام
+            document.getElementById('c-p').innerText = data.pending.length;
+            document.getElementById('c-r').innerText = data.processing.length;
+            document.getElementById('c-d').innerText = data.completed.length;
+            document.getElementById('bal').innerText = `$${data.balance.toFixed(2)}`;
+            
+            // تحديث زر الجماعي
+            const btn = document.getElementById('batchBtn');
+            btn.style.display = data.selectedIds.length > 0 ? 'block' : 'none';
+            document.getElementById('selCount').innerText = data.selectedIds.length;
         }
-    });
-}
 
-window.onload = renderOrders;
-</script>
+        function toggleSelect(id) {
+            if(data.selectedIds.includes(id)) data.selectedIds = data.selectedIds.filter(i => i !== id);
+            else data.selectedIds.push(id);
+            render();
+        }
+
+        function toggleAll() {
+            if(data.selectedIds.length === data.pending.length) data.selectedIds = [];
+            else data.selectedIds = data.pending.map(o => o.id);
+            render();
+        }
+
+        function openMassModal() {
+            let total = 0;
+            data.pending.filter(o => data.selectedIds.includes(o.id)).forEach(o => total += o.cost);
+            let totalWithTax = total * 1.1; // +10%
+
+            document.getElementById('modalContent').innerHTML = `
+                <h2 style="color:var(--fmm-purple); margin:0;">🚀 تنفيذ جماعي</h2>
+                <p style="color:#888; font-size:12px; margin:15px 0;">أنت على وشك تنفيذ ${data.selectedIds.length} طلبات في وقت واحد.</p>
+                <div style="background:rgba(255,255,255,0.03); padding:20px; border-radius:20px; text-align:center;">
+                    <small>إجمالي التكلفة (+10%):</small>
+                    <div style="font-size:28px; font-weight:900; color:#00e676;">$${totalWithTax.toFixed(2)}</div>
+                </div>
+                <button class="btn-full btn-primary" onclick="startMassExecution()">تأكيد وإرسال للمزودين ✅</button>
+                <button class="btn-full" style="background:none; border:1px solid #333;" onclick="closeModal()">إلغاء</button>
+            `;
+            document.getElementById('modal').classList.add('active');
+        }
+
+        function closeModal() { document.getElementById('modal').classList.remove('active'); }
+
+        function startMassExecution() {
+            const idsToExec = [...data.selectedIds];
+            data.selectedIds = [];
+            
+            idsToExec.forEach(id => {
+                const idx = data.pending.findIndex(o => o.id === id);
+                if(idx > -1) {
+                    const order = data.pending.splice(idx, 1)[0];
+                    data.balance -= (order.cost * 1.1);
+                    data.processing.push(order);
+                    
+                    // محاكاة دورة حياة مستقلة لكل طلب (5 ثوانٍ)
+                    setTimeout(() => {
+                        const pIdx = data.processing.findIndex(x => x.id === id);
+                        if(pIdx > -1) {
+                            const done = data.processing.splice(pIdx, 1)[0];
+                            data.completed.unshift(done);
+                            render();
+                        }
+                    }, 5000);
+                }
+            });
+            
+            render();
+            closeModal();
+        }
+
+        window.onload = render;
+    </script>
 </body>
 </html>
