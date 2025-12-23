@@ -40,6 +40,8 @@
         .order-check { position: absolute; left: 15px; top: 15px; transform: scale(1.3); }
         .order-info b { font-size: 14px; display: block; margin-bottom: 5px; }
         .order-info small { color: #555; font-size: 10px; }
+        .order-links, .order-cats { font-size: 10px; color: #aaa; margin-top: 5px; }
+        .order-links div, .order-cats div { margin-left: 10px; }
 
         /* Glass Modal */
         .glass { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); z-index: 1000; display: none; align-items: flex-end; }
@@ -86,9 +88,9 @@
         let data = {
             balance: 2500.0,
             pending: [
-                { id: 101, user: "أحمد علي", cost: 1.2 },
-                { id: 102, user: "سارة محمد", cost: 2.5 },
-                { id: 103, user: "متجر الرواد", cost: 5.0 }
+                { id: 101, user: "أحمد علي", cost: 1.2, links: ["tiktok.com/@ahmad", "tiktok.com/v/101"], cats: ["متابعين 2K"] },
+                { id: 102, user: "سارة محمد", cost: 2.5, links: ["tiktok.com/@sara", "tiktok.com/v/102"], cats: ["متابعين 3K", "لايكات 500"] },
+                { id: 103, user: "متجر الرواد", cost: 5.0, links: ["tiktok.com/@rawad", "tiktok.com/v/103"], cats: ["متابعين 5K"] }
             ],
             processing: [],
             completed: [],
@@ -103,6 +105,14 @@
                     <div class="order-info">
                         <b>#${o.id} | ${o.user}</b>
                         <small>متابعين تيك توك • التكلفة: $${o.cost}</small>
+                    </div>
+                    <div class="order-links">
+                        <b>الروابط:</b>
+                        ${o.links.map(l => `<div>${l}</div>`).join('')}
+                    </div>
+                    <div class="order-cats">
+                        <b>الأصناف:</b>
+                        ${o.cats.map(c => `<div>${c}</div>`).join('')}
                     </div>
                 </div>
             `).join('');
@@ -119,13 +129,11 @@
                 </div>
             `).join('');
 
-            // تحديث الأرقام
             document.getElementById('c-p').innerText = data.pending.length;
             document.getElementById('c-r').innerText = data.processing.length;
             document.getElementById('c-d').innerText = data.completed.length;
             document.getElementById('bal').innerText = `$${data.balance.toFixed(2)}`;
-            
-            // تحديث زر الجماعي
+
             const btn = document.getElementById('batchBtn');
             btn.style.display = data.selectedIds.length > 0 ? 'block' : 'none';
             document.getElementById('selCount').innerText = data.selectedIds.length;
@@ -174,7 +182,6 @@
                     data.balance -= (order.cost * 1.1);
                     data.processing.push(order);
                     
-                    // محاكاة دورة حياة مستقلة لكل طلب (5 ثوانٍ)
                     setTimeout(() => {
                         const pIdx = data.processing.findIndex(x => x.id === id);
                         if(pIdx > -1) {
