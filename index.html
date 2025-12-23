@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FMM Royal Dashboard</title>
+    <title>FMM Royal Dashboard - المعتمدة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
@@ -11,24 +11,24 @@
         :root {
             --royal-purple: #7C4DFF;
             --deep-black: #050505;
-            --surface-black: #121216;
             --snow-white: #FFFFFF;
             --gold-status: #FFCF4B;
             --neon-green: #00E676;
-            --glass-border: rgba(124, 77, 255, 0.3);
         }
 
         body {
             background-color: var(--deep-black);
-            color: var(--royal-purple);
+            color: var(--snow-white);
             font-family: 'Inter', 'Segoe UI', sans-serif;
             margin: 0;
             overflow-x: hidden;
         }
 
+        /* بطاقات زجاجية بنفسجي ملكي */
         .card-royal {
-            background: var(--surface-black);
-            border: 1px solid var(--glass-border);
+            background: rgba(124, 77, 255, 0.15); /* بنفسجي ملكي شفاف */
+            backdrop-filter: blur(15px);           /* تأثير الزجاج */
+            border: 1px solid rgba(124, 77, 255, 0.3); /* حدود بنفسجي مضيئة */
             border-radius: 24px;
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -39,17 +39,25 @@
             border-color: var(--royal-purple);
         }
 
+        .card-royal h2,
+        .card-royal h4,
+        .card-royal span,
+        .card-royal p {
+            color: #FFFFFF; /* نصوص بيضاء */
+        }
+
+        /* القائمة الجانبية */
         #sidebar {
-            background: rgba(18, 18, 22, 0.98);
+            background: rgba(18, 18, 22, 0.95);
             backdrop-filter: blur(20px);
-            border-left: 1px solid var(--glass-border);
+            border-left: 1px solid rgba(124,77,255,0.3);
             width: 210px;
             transition: transform 0.4s ease-in-out;
             z-index: 100;
         }
 
         .nav-link {
-            color: #888888;
+            color: #FFFFFF;
             padding: 14px 20px;
             display: flex;
             align-items: center;
@@ -61,12 +69,8 @@
         }
 
         .nav-link.active, .nav-link:hover {
-            background: rgba(124, 77, 255, 0.1);
+            background: rgba(124, 77, 255, 0.2);
             color: var(--royal-purple);
-        }
-
-        .glow-purple {
-            box-shadow: 0 0 25px rgba(124, 77, 255, 0.25);
         }
 
         #overlay {
@@ -76,244 +80,170 @@
             z-index: 90;
         }
 
+        /* تنسيق الفلتر الزمني */
         .filter-select {
-            background: var(--surface-black);
-            border: 1px solid var(--glass-border);
-            color: var(--royal-purple);
+            background: rgba(18,18,22,0.7);
+            border: 1px solid rgba(124,77,255,0.3);
+            color: white;
             padding: 6px 12px;
             border-radius: 10px;
             font-size: 12px;
             outline: none;
         }
-
-        button.apply-btn {
-            background-color: var(--royal-purple);
-            color: white;
-            padding: 4px 10px;
-            border-radius: 8px;
-            font-size: 12px;
-            margin-top: 2px;
-        }
-
-        p, h2, h4, span {
-            color: var(--royal-purple);
-        }
-
-        .divider {
-            border-left: 1px solid rgba(124, 77, 255, 0.3);
-        }
     </style>
 </head>
 <body>
 
-<div id="overlay" class="fixed inset-0" onclick="toggleSidebar()"></div>
+    <div id="overlay" class="fixed inset-0" onclick="toggleSidebar()"></div>
 
-<header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5">
-    <button onclick="toggleSidebar()" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/5 text-white active:scale-90 transition">
-        <i class="fas fa-bars-staggered text-lg"></i>
-    </button>
-    <div class="text-2xl font-black italic tracking-tighter" style="color: var(--royal-purple);">FMM</div>
-    <div class="w-10 h-10 rounded-full border border-purple-500/30 flex items-center justify-center bg-surface-black">
-         <i class="fas fa-user-astronaut text-purple-400"></i>
+    <header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-[#050505]/90 backdrop-blur-md border-b border-white/5">
+        <button onclick="toggleSidebar()" class="w-11 h-11 flex items-center justify-center rounded-2xl bg-white/5 text-white active:scale-90 transition">
+            <i class="fas fa-bars-staggered text-lg"></i>
+        </button>
+        <div class="text-2xl tracking-tighter" style="color: var(--royal-purple); font-weight:600;">FMM</div>
+        <div class="w-10 h-10 rounded-full border border-purple-500/30 flex items-center justify-center bg-[#121216]">
+             <i class="fas fa-user-astronaut text-purple-400"></i>
+        </div>
+    </header>
+
+    <div class="flex">
+        <aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full">
+            <div class="py-10 flex flex-col h-full">
+                <div class="px-8 mb-10">
+                    <h2 class="text-xl font-black text-white">القائمة</h2>
+                </div>
+                <nav class="flex-1">
+                    <a href="#" class="nav-link active"><i class="fas fa-th-large w-5"></i> <span>الرئيسية</span></a>
+                    <a href="#" class="nav-link"><i class="fas fa-shopping-bag w-5"></i> <span>الطلبات</span></a>
+                    <a href="#" class="nav-link"><i class="fas fa-bolt w-5"></i> <span>الخدمات</span></a>
+                    <a href="#" class="nav-link"><i class="fas fa-chart-line w-5"></i> <span>التقارير</span></a>
+                </nav>
+            </div>
+        </aside>
+
+        <main id="main-content" class="w-full p-5 space-y-5 transition-opacity duration-300">
+            
+            <!-- فلتر التاريخ -->
+            <div class="flex flex-col gap-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-sm font-bold text-gray-300 uppercase tracking-widest">إحصائيات المنصة</h3>
+                    <select id="time-filter" onchange="handleTimeChange(this.value)" class="filter-select">
+                        <option value="this-week">هذا الأسبوع</option>
+                        <option value="this-month" selected>هذا الشهر</option>
+                        <option value="last-month">الشهر الماضي</option>
+                        <option value="this-year">السنة الحالية</option>
+                        <option value="last-year">السنة الماضية</option>
+                        <option value="custom">مخصص...</option>
+                    </select>
+                </div>
+                <div id="custom-date-range" class="hidden grid grid-cols-2 gap-2">
+                    <input type="date" class="filter-select w-full" placeholder="من">
+                    <input type="date" class="filter-select w-full" placeholder="إلى">
+                </div>
+            </div>
+
+            <!-- بطاقة تاريخ اليوم -->
+            <div class="card-royal p-6 flex items-center gap-4">
+                <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center">
+                    <i class="fas fa-calendar-alt text-2xl" style="color: var(--royal-purple);"></i>
+                </div>
+                <div>
+                    <p class="text-sm text-white font-medium uppercase">تاريخ اليوم</p>
+                    <span id="current-date" class="text-4xl font-normal"></span>
+                </div>
+            </div>
+
+            <!-- بطاقة الرصيد والمبيعات -->
+            <div class="card-royal p-6 flex flex-col md:flex-row justify-between gap-6 glow-purple">
+                <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
+                    <p class="text-lg text-white font-medium mb-2">رصيد المحفظة</p>
+                    <span id="wallet-balance" class="text-5xl font-normal">1,800 ريال</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
+                    <p class="text-lg text-white font-medium mb-2">رصيد المورد</p>
+                    <span id="supplier-balance" class="text-5xl font-normal">1,800 ريال</span>
+                </div>
+                <div class="flex-1 flex flex-col items-center p-4 rounded-lg bg-transparent">
+                    <p class="text-lg text-white font-medium mb-2">مبيعات منصة سلة</p>
+                    <span id="salla-sales" class="text-5xl font-normal">18,000 ريال</span>
+                </div>
+            </div>
+
+            <!-- بطاقات الطلبات -->
+            <div class="grid grid-cols-2 gap-4">
+                <div class="card-royal p-6 flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3">
+                        <i class="fas fa-fire-alt text-3xl" style="color: var(--royal-purple);"></i>
+                    </div>
+                    <span class="text-lg text-white font-normal mb-1">طلبات اليوم</span>
+                    <span id="today-orders" class="text-3xl font-normal">120</span>
+                </div>
+
+                <div class="card-royal p-6 flex flex-col items-center">
+                    <div class="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-3">
+                        <i class="fas fa-clock text-3xl" style="color: var(--gold-status);"></i>
+                    </div>
+                    <span class="text-lg text-white font-normal mb-1">قيد التنفيذ</span>
+                    <span id="pending-orders" class="text-3xl font-normal">45</span>
+                </div>
+
+                <div class="card-royal p-6 flex items-center justify-between col-span-2">
+                    <div class="flex items-center gap-4">
+                        <div class="w-14 h-14 rounded-full bg-green-500/10 flex items-center justify-center">
+                            <i class="fas fa-check-double text-3xl" style="color: var(--neon-green);"></i>
+                        </div>
+                        <div>
+                            <span class="text-lg text-white font-normal uppercase">الطلبات المكتملة</span>
+                            <h4 id="completed-orders" class="text-3xl font-normal" style="color: var(--neon-green);">980</h4>
+                        </div>
+                    </div>
+                    <i class="fas fa-chevron-left text-gray-700 text-xs"></i>
+                </div>
+            </div>
+
+        </main>
     </div>
-</header>
 
-<div class="flex">
-    <aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full">
-        <div class="py-10 flex flex-col h-full">
-            <div class="px-8 mb-10">
-                <h2 class="text-xl font-black text-white">القائمة</h2>
-            </div>
-            <nav class="flex-1">
-                <a href="#" class="nav-link active"><i class="fas fa-th-large w-5"></i> <span>الرئيسية</span></a>
-                <a href="#" class="nav-link"><i class="fas fa-shopping-bag w-5"></i> <span>الطلبات</span></a>
-                <a href="#" class="nav-link"><i class="fas fa-bolt w-5"></i> <span>الخدمات</span></a>
-                <a href="#" class="nav-link"><i class="fas fa-chart-line w-5"></i> <span>التقارير</span></a>
-            </nav>
-        </div>
-    </aside>
-
-    <main id="main-content" class="w-full p-5 space-y-5 transition-opacity duration-300">
-        
-        <!-- فلتر التاريخ -->
-        <div class="flex flex-col gap-3">
-            <div class="flex justify-between items-center">
-                <h3 class="text-[11px] font-bold text-gray-500 uppercase tracking-widest">إحصائيات المنصة</h3>
-                <select id="time-filter" onchange="handleTimeChange(this.value)" class="filter-select">
-                    <option value="this-week">هذا الأسبوع</option>
-                    <option value="last-week">الأسبوع الماضي</option>
-                    <option value="this-month" selected>هذا الشهر</option>
-                    <option value="last-month">الشهر الماضي</option>
-                    <option value="this-year">السنة الحالية</option>
-                    <option value="last-year">السنة الماضية</option>
-                    <option value="custom">مخصص...</option>
-                </select>
-            </div>
-            <div id="custom-date-range" class="hidden grid grid-cols-3 gap-2 items-center">
-                <input id="custom-start" type="date" class="filter-select w-full" placeholder="من">
-                <input id="custom-end" type="date" class="filter-select w-full" placeholder="إلى">
-                <button class="apply-btn" onclick="applyCustomRange()">تطبيق</button>
-            </div>
-        </div>
-
-        <!-- بطاقة التاريخ -->
-        <div class="card-royal p-4 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center">
-                <i class="fas fa-calendar-alt text-xl" style="color: var(--royal-purple);"></i>
-            </div>
-            <div>
-                <p class="text-[10px] text-gray-500 font-bold uppercase">تاريخ اليوم</p>
-                <span id="current-date" class="text-lg font-bold"></span>
-            </div>
-        </div>
-
-        <!-- بطاقة Total Balance ثلاثة أقسام -->
-        <div class="card-royal p-6 relative overflow-hidden glow-purple flex justify-between">
-            <div class="flex-1 text-center">
-                <p class="text-[10px] uppercase font-bold tracking-widest mb-1">رصيد المحفظة</p>
-                <h2 id="wallet-balance" class="text-2xl font-black tracking-tight">5,000 ر.س</h2>
-            </div>
-            <div class="divider mx-4"></div>
-            <div class="flex-1 text-center">
-                <p class="text-[10px] uppercase font-bold tracking-widest mb-1">رصيد المورد</p>
-                <h2 id="supplier-balance" class="text-2xl font-black tracking-tight">1,800 ر.س</h2>
-            </div>
-            <div class="divider mx-4"></div>
-            <div class="flex-1 text-center">
-                <p class="text-[10px] uppercase font-bold tracking-widest mb-1">مبيعات سلة</p>
-                <h2 id="cart-sales" class="text-2xl font-black tracking-tight">18,000 ر.س</h2>
-            </div>
-        </div>
-
-        <!-- البطاقات الأخرى -->
-        <div class="grid grid-cols-2 gap-4">
-            <div class="card-royal p-5 flex flex-col items-center">
-                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-3">
-                    <i class="fas fa-fire-alt" style="color: var(--royal-purple);"></i>
-                </div>
-                <span class="text-[10px] font-bold mb-1">طلبات اليوم</span>
-                <span id="today-orders" class="text-2xl font-black">120</span>
-            </div>
-
-            <div class="card-royal p-5 flex flex-col items-center">
-                <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-3">
-                    <i class="fas fa-clock" style="color: var(--gold-status);"></i>
-                </div>
-                <span class="text-[10px] font-bold mb-1">قيد التنفيذ</span>
-                <span id="pending-orders" class="text-2xl font-black">45</span>
-            </div>
-
-            <div class="card-royal p-6 flex items-center justify-between col-span-2">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center">
-                        <i class="fas fa-check-double" style="color: var(--neon-green);"></i>
-                    </div>
-                    <div>
-                        <span class="text-[10px] font-bold uppercase">الطلبات المكتملة</span>
-                        <h4 id="completed-orders" class="text-2xl font-black" style="color: var(--neon-green);">980</h4>
-                    </div>
-                </div>
-                <i class="fas fa-chevron-left text-gray-700 text-xs"></i>
-            </div>
-        </div>
-
-    </main>
-</div>
-
-<script>
-function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
-    if (sidebar.classList.contains('translate-x-full')) {
-        sidebar.classList.remove('translate-x-full');
-        overlay.style.display = 'block';
-    } else {
-        sidebar.classList.add('translate-x-full');
-        overlay.style.display = 'none';
-    }
-}
-
-function formatDate(date) {
-    const options = { year: 'numeric', month: 'short', day: 'numeric' };
-    return date.toLocaleDateString('en-US', options);
-}
-
-function updateDateRange(value, customStart, customEnd) {
-    const dateElem = document.getElementById('current-date');
-    const today = new Date();
-    let startDate, endDate;
-
-    if (value === 'custom' && customStart && customEnd) {
-        startDate = new Date(customStart);
-        endDate = new Date(customEnd);
-    } else if (value === 'this-week') {
-        const day = today.getDay();
-        startDate = new Date(today);
-        startDate.setDate(today.getDate() - day + 1);
-        endDate = new Date(today);
-    } else if (value === 'last-week') {
-        const day = today.getDay();
-        endDate = new Date(today);
-        endDate.setDate(today.getDate() - day);
-        startDate = new Date(endDate);
-        startDate.setDate(endDate.getDate() - 6);
-    } else if (value === 'this-month') {
-        startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-        endDate = new Date(today);
-    } else if (value === 'last-month') {
-        startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        endDate = new Date(today.getFullYear(), today.getMonth(), 0);
-    } else if (value === 'this-year') {
-        startDate = new Date(today.getFullYear(), 0, 1);
-        endDate = new Date(today);
-    } else if (value === 'last-year') {
-        startDate = new Date(today.getFullYear() - 1, 0, 1);
-        endDate = new Date(today.getFullYear() - 1, 11, 31);
-    } else {
-        return;
-    }
-
-    dateElem.textContent = `${formatDate(startDate)} - ${formatDate(endDate)}`;
-}
-
-// تغيير مبيعات سلة ديناميكياً حسب الفلتر
-function handleTimeChange(value) {
-    const customRange = document.getElementById('custom-date-range');
-    const mainContent = document.getElementById('main-content');
-    customRange.style.display = (value === 'custom') ? 'grid' : 'none';
-    mainContent.style.opacity = '0.3';
-    setTimeout(() => {
-        const cartSales = document.getElementById('cart-sales');
-        let min, max;
-        switch(value){
-            case 'this-week': min=10000; max=15000; break;
-            case 'last-week': min=9000; max=13000; break;
-            case 'this-month': min=17000; max=20000; break;
-            case 'last-month': min=15000; max=18000; break;
-            case 'this-year': min=150000; max=200000; break;
-            case 'last-year': min=140000; max=190000; break;
-            default: min=18000; max=18000;
+    <script>
+        // فتح وإغلاق القائمة الجانبية
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            if (sidebar.classList.contains('translate-x-full')) {
+                sidebar.classList.remove('translate-x-full');
+                overlay.style.display = 'block';
+            } else {
+                sidebar.classList.add('translate-x-full');
+                overlay.style.display = 'none';
+            }
         }
-        let randomSales = Math.floor(Math.random()*(max-min+1)+min);
-        cartSales.textContent = randomSales.toLocaleString() + " ر.س";
-        updateDateRange(value);
-        mainContent.style.opacity = '1';
-    },400);
-}
 
-function applyCustomRange() {
-    const start = document.getElementById('custom-start').value;
-    const end = document.getElementById('custom-end').value;
-    if(start && end){
-        const cartSales = document.getElementById('cart-sales');
-        const randomSales = Math.floor(Math.random()*(20000-15000+1)+15000);
-        cartSales.textContent = randomSales.toLocaleString() + " ر.س";
-        updateDateRange('custom', start, end);
-    }
-}
+        // تحديث التاريخ تلقائياً بالميلادي
+        function updateDate() {
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-GB', options);
+        }
 
-// تشغيل عند التحميل
-updateDateRange('this-month');
-</script>
+        // محاكاة تغيير البيانات حسب الفلتر الزمني
+        function handleTimeChange(value) {
+            const customRange = document.getElementById('custom-date-range');
+            const mainContent = document.getElementById('main-content');
+            customRange.style.display = (value === 'custom') ? 'grid' : 'none';
+            mainContent.style.opacity = '0.3';
+            
+            setTimeout(() => {
+                if (value === 'this-year') {
+                    document.getElementById('salla-sales').textContent = "48,000 ريال";
+                    document.getElementById('completed-orders').textContent = "12,450";
+                } else {
+                    document.getElementById('salla-sales').textContent = "18,000 ريال";
+                    document.getElementById('completed-orders').textContent = "980";
+                }
+                mainContent.style.opacity = '1';
+            }, 400);
+        }
+
+        updateDate();
+    </script>
 </body>
 </html>
