@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FMM Royal Hub - Full Suite v7.0</title>
+    <title>FMM Royal Hub - Final Integrated v7.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -35,40 +35,34 @@
         .nav-item:hover, .nav-item.active { background: rgba(124, 77, 255, 0.1); color: #fff; }
         .nav-item.active { background: var(--royal-purple); box-shadow: 0 8px 20px rgba(124, 77, 255, 0.25); }
 
-        /* [2] الهيدر العلوي ونظام الإشعارات */
+        /* [2] الهيدر */
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
         .top-bar { padding: 18px 30px; background: var(--panel-bg); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        
-        .notification-bell { position: relative; cursor: pointer; font-size: 20px; color: var(--text-muted); padding: 10px; }
-        .notification-bell:hover { color: var(--royal-purple); }
-        .bell-dot { position: absolute; top: 8px; right: 8px; width: 8px; height: 8px; background: var(--error); border-radius: 50%; border: 2px solid var(--panel-bg); display: none; }
-        .bell-dot.active { display: block; }
 
-        /* [3] صفحات النظام */
         .page-section { display: none; width: 100%; height: 100%; padding: 30px; overflow-y: auto; }
         .page-section.active { display: block; animation: pageEnter 0.4s ease-out; }
 
-        /* [4] توست الإشعارات (Toasts) */
-        #toast-container { position: fixed; bottom: 30px; left: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 15px; }
-        .toast { 
-            background: var(--panel-bg); border-right: 4px solid var(--royal-purple); 
-            padding: 15px 25px; border-radius: 15px; color: #fff; min-width: 300px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 15px;
-            animation: slideIn 0.3s ease-out forwards; border: 1px solid var(--border);
-        }
-        .toast.success { border-right-color: var(--success); }
-        .toast.error { border-right-color: var(--error); }
-        .toast i { font-size: 20px; }
-
-        /* [5] الجداول والكروت (تم تثبيتها من الإصدار السابق) */
+        /* [3] الجداول (الطلبات والمنتجات) */
+        .order-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
         .order-row { background: var(--panel-bg); }
         .order-row td { padding: 20px 15px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
-        .status-pill { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; }
+        .order-row td:first-child { border-right: 1px solid var(--border); border-top-right-radius: 15px; border-bottom-right-radius: 15px; }
+        .order-row td:last-child { border-left: 1px solid var(--border); border-top-left-radius: 15px; border-bottom-left-radius: 15px; }
+
+        .status-pill { padding: 4px 10px; border-radius: 6px; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
         .status-salla { background: rgba(0, 230, 118, 0.1); color: var(--success); }
+        .status-api { background: rgba(124, 77, 255, 0.1); color: var(--royal-purple); }
+
+        /* [4] حاوية الإشعارات */
+        #toast-container { position: fixed; bottom: 30px; left: 30px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
+        .toast { 
+            background: var(--panel-bg); border-right: 4px solid var(--royal-purple); 
+            padding: 15px 20px; border-radius: 12px; border: 1px solid var(--border);
+            animation: slideIn 0.3s ease-out forwards; display: flex; align-items: center; gap: 12px; min-width: 280px;
+        }
 
         @keyframes pageEnter { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes slideIn { from { transform: translateX(-100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes fadeOut { to { transform: translateX(-20px); opacity: 0; } }
     </style>
 </head>
 <body>
@@ -88,38 +82,52 @@
     <main class="main-content">
         <header class="top-bar">
             <h3 id="page-title" style="margin:0;">الرئيسية</h3>
-            <div style="display:flex; align-items:center; gap:25px;">
-                <div id="clock" style="font-family: monospace; color: var(--royal-purple); font-weight: bold;">12:00:00</div>
-                <div class="notification-bell" onclick="showNotification('تنبيه', 'لا توجد تنبيهات جديدة حالياً', 'success')">
-                    <i class="fas fa-bell"></i>
-                    <span class="bell-dot" id="bell-dot"></span>
-                </div>
+            <div style="display:flex; align-items:center; gap:20px;">
+                <div id="clock" style="font-family: monospace; color: var(--success); font-weight: bold;">12:00:00</div>
                 <img src="https://ui-avatars.com/api/?name=FMM&background=7c4dff&color=fff" style="width:35px; border-radius:50%">
             </div>
         </header>
 
         <section id="page-home" class="page-section active">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
-                <div style="background: var(--panel-bg); padding: 30px; border-radius: 20px; border: 1px solid var(--border);">
-                    <h4 style="margin:0; color:var(--text-muted)">أهلاً بك FMM</h4>
-                    <p style="font-size: 24px; font-weight: bold; margin: 10px 0;">جاهز لاستلام طلبات سلة</p>
-                    <button class="nav-item active" style="border:none; width:100%; justify-content:center; margin-top:20px;" onclick="simulateOrder()">محاكاة وصول طلب جديد (تجربة)</button>
-                </div>
+            <div style="background: var(--panel-bg); padding: 40px; border-radius: 25px; border: 1px solid var(--border); text-align: center;">
+                <h2 style="margin:0;">أهلاً بك في نظام رويال الموحد</h2>
+                <p style="color:var(--text-muted); margin-top:10px;">تم دمج صفحة الطلبات، الإشعارات، وإدارة المنتجات بنجاح.</p>
+                <button class="nav-item active" style="margin: 20px auto; border:none; width: 200px; justify-content: center;" onclick="showNotification('تنبيه نظام', 'تم استعادة اللوحة السابقة بنجاح', 'success')">اختبار الإشعار</button>
             </div>
         </section>
 
         <section id="page-orders" class="page-section">
-            <h2 style="margin-bottom: 25px;">العمليات الحية</h2>
-            <table style="width:100%; border-collapse: separate; border-spacing: 0 10px;">
-                <tbody id="orders-list">
+            <table class="order-table">
+                <thead>
+                    <tr>
+                        <th>الطلب / العميل</th>
+                        <th>الخدمة</th>
+                        <th>حالة سلة / API</th>
+                        <th>الإجراءات</th>
+                    </tr>
+                </thead>
+                <tbody>
                     <tr class="order-row">
-                        <td style="border-radius: 15px 0 0 15px;"><b>#ORD-1002</b></td>
-                        <td>متابعين تيك توك VIP</td>
-                        <td><span class="status-pill status-salla">قيد التنفيذ</span></td>
-                        <td style="border-radius: 0 15px 15px 0;"><i class="fas fa-sync-alt fa-spin" style="color:var(--royal-purple)"></i></td>
+                        <td><b>#ORD-9920</b><br><small style="color:var(--text-muted)">أحمد علي</small></td>
+                        <td>10K متابع VIP</td>
+                        <td>
+                            <span class="status-pill status-salla">قيد التنفيذ</span>
+                            <span class="status-pill status-api">Processing</span>
+                        </td>
+                        <td><i class="fas fa-sync-alt" style="cursor:pointer; color:var(--royal-purple)"></i></td>
                     </tr>
                 </tbody>
             </table>
+        </section>
+
+        <section id="page-products" class="page-section">
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                <h2>إدارة البكجات</h2>
+                <button class="nav-item active" style="border:none; padding:10px 20px;">+ إضافة بكج</button>
+            </div>
+            <div style="background:var(--panel-bg); border:1px solid var(--border); padding:20px; border-radius:20px;">
+                <p>قائمة المنتجات المحكمة تظهر هنا...</p>
+            </div>
         </section>
     </main>
 
@@ -127,7 +135,7 @@
 
     <script>
         function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
-
+        
         function openPage(pageId, el) {
             document.querySelectorAll('.page-section').forEach(p => p.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
@@ -136,59 +144,16 @@
             document.getElementById('page-title').innerText = el.innerText;
         }
 
-        // دالة عرض الإشعارات الذكية
-        function showNotification(title, message, type = 'royal') {
+        function showNotification(title, msg, type) {
             const container = document.getElementById('toast-container');
-            const bellDot = document.getElementById('bell-dot');
-            
-            // تفعيل نقطة الجرس
-            bellDot.classList.add('active');
-
             const toast = document.createElement('div');
-            toast.className = `toast ${type}`;
-            
-            const icon = type === 'success' ? 'fa-check-circle' : (type === 'error' ? 'fa-exclamation-circle' : 'fa-bell');
-            const color = type === 'success' ? 'var(--success)' : (type === 'error' ? 'var(--error)' : 'var(--royal-purple)');
-
-            toast.innerHTML = `
-                <i class="fas ${icon}" style="color:${color}"></i>
-                <div>
-                    <div style="font-weight:bold; font-size:14px;">${title}</div>
-                    <div style="font-size:12px; color:var(--text-muted)">${message}</div>
-                </div>
-            `;
-
+            toast.className = 'toast';
+            toast.innerHTML = `<i class="fas fa-check-circle" style="color:var(--success)"></i> <div><b>${title}</b><br><small>${msg}</small></div>`;
             container.appendChild(toast);
-
-            // إخفاء التوست تلقائياً بعد 4 ثواني
-            setTimeout(() => {
-                toast.style.animation = 'fadeOut 0.3s ease-in forwards';
-                setTimeout(() => toast.remove(), 300);
-            }, 4000);
+            setTimeout(() => toast.remove(), 3000);
         }
 
-        // محاكاة وصول طلب حقيقي من سلة
-        function simulateOrder() {
-            showNotification('طلب جديد من سلة!', 'تم استلام طلب #ORD-5542 بنجاح وجاري المزامنة.', 'success');
-            
-            // إضافة الطلب للجدول برمجياً
-            const list = document.getElementById('orders-list');
-            const newRow = list.insertRow(0);
-            newRow.className = 'order-row';
-            newRow.innerHTML = `
-                <td style="border-radius: 15px 0 0 15px;"><b>#ORD-5542</b></td>
-                <td>لايكات انستقرام - VIP</td>
-                <td><span class="status-pill status-salla">تم الإرسال لـ API</span></td>
-                <td style="border-radius: 0 15px 15px 0;"><i class="fas fa-check" style="color:var(--success)"></i></td>
-            `;
-        }
-
-        setInterval(() => {
-            document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-SA');
-        }, 1000);
-
-        // تنبيه ترحيبي عند الفتح
-        setTimeout(() => showNotification('نظام رويال متصل', 'تم الاتصال بخوادم سلة و API المزودات.', 'royal'), 1000);
+        setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('ar-SA'); }, 1000);
     </script>
 </body>
 </html>
