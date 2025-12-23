@@ -3,220 +3,214 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FMM Control Panel</title>
+    <title>FMM Dashboard Pro</title>
     <style>
         :root {
-            --bg-deep: #080a0f;
-            --card-glass: rgba(22, 27, 34, 0.95);
-            --accent-glow: #7c4dff; 
-            --success-neon: #00e676; 
-            --warning-gold: #ffab40;
-            --text-bright: #ffffff;
-            --text-muted: #94a3b8;
-            --border-glow: rgba(124, 77, 255, 0.2);
+            --bg: #080a0f;
+            --panel: #161b22;
+            --accent: #00d4ff;
+            --purple: #7c4dff;
+            --success: #00e676;
+            --text: #ffffff;
+            --dim: #94a3b8;
+            --glass: rgba(255, 255, 255, 0.03);
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body {
-            font-family: -apple-system, system-ui, sans-serif;
-            background-color: var(--bg-deep);
-            color: var(--text-bright);
-            margin: 0;
-            direction: rtl;
-        }
+        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; direction: rtl; overflow-x: hidden; }
 
-        /* الهيدر */
-        .top-bar {
-            background: rgba(13, 17, 23, 0.9);
-            padding: 15px 20px;
+        /* الهيدر النيوني */
+        .header {
+            background: rgba(13, 17, 23, 0.8);
+            padding: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid var(--border-glow);
-            position: sticky; top: 0; z-index: 1000; backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
+        .logo { font-size: 26px; font-weight: 900; color: var(--accent); text-shadow: 0 0 15px rgba(0, 212, 255, 0.5); }
+        .live-status { color: var(--success); font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
+        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); }
 
-        .logo-text { font-size: 22px; font-weight: 900; color: var(--accent-glow); }
+        .container { padding: 20px; max-width: 500px; margin: 0 auto; }
 
-        .container { padding: 15px; max-width: 800px; margin: 0 auto; }
-
-        /* الأقسام الرئيسية */
-        .section-header {
-            background: var(--card-glass);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid var(--border-glow);
-            cursor: pointer;
-        }
-
-        .badge-count {
-            background: var(--accent-glow);
-            padding: 2px 10px;
+        /* كرت الترحيب */
+        .welcome-card {
+            background: linear-gradient(135deg, rgba(124, 77, 255, 0.15), rgba(0, 212, 255, 0.05));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 5px solid var(--success);
             border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
+            padding: 25px;
+            margin-bottom: 25px;
         }
+        .welcome-card h2 { margin: 0; font-size: 24px; color: var(--success); text-shadow: 0 0 10px rgba(0, 230, 118, 0.3); }
+        .welcome-card p { color: var(--dim); font-size: 13px; line-height: 1.6; margin-top: 10px; }
 
-        /* جدول الطلبات */
-        .orders-container { display: none; margin-bottom: 20px; }
-        .orders-container.active { display: block; }
+        /* شبكة الإحصائيات */
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
+        .stat-box { background: var(--glass); padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.05); text-align: center; }
+        .stat-box small { color: var(--dim); font-size: 11px; display: block; margin-bottom: 5px; }
+        .stat-box b { font-size: 18px; color: var(--text); }
 
-        .order-card {
-            background: var(--card-glass);
-            border: 1px solid #30363d;
+        /* الأقسام التفاعلية */
+        .action-list { display: flex; flex-direction: column; gap: 12px; }
+        .action-item {
+            background: rgba(124, 77, 255, 0.08);
+            padding: 20px;
             border-radius: 15px;
-            margin-bottom: 10px;
-            overflow: hidden;
-        }
-
-        .order-summary {
-            padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-right: 4px solid var(--purple);
             cursor: pointer;
+            transition: 0.3s;
         }
+        .action-item:active { transform: scale(0.96); background: rgba(124, 77, 255, 0.15); }
 
-        .details-pane {
+        /* النافذة المنبثقة (Modal) */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.9);
             display: none;
-            padding: 15px;
-            background: rgba(0,0,0,0.3);
-            border-top: 1px solid #30363d;
-            font-size: 13px;
+            justify-content: center;
+            align-items: flex-end;
+            z-index: 2000;
+            backdrop-filter: blur(10px);
         }
-
-        .details-pane.open { display: block; }
-
-        /* الجداول داخل التفاصيل */
-        table { width: 100%; border-collapse: collapse; margin: 10px 0; font-size: 12px; }
-        th { text-align: right; color: var(--text-muted); padding: 8px; border-bottom: 1px solid #30363d; }
-        td { padding: 8px; border-bottom: 1px solid #161b22; }
-
-        input {
-            background: #000; border: 1px solid #444; color: var(--success-neon);
-            padding: 5px; border-radius: 5px; width: 100%; font-size: 12px; margin-top: 3px;
+        .modal-content {
+            background: var(--panel);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 30px 30px 0 0;
+            padding: 30px;
+            border-top: 3px solid var(--accent);
+            transform: translateY(100%);
+            transition: 0.4s ease-out;
         }
+        .modal-overlay.active { display: flex; }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
 
-        .status-tag { padding: 2px 8px; border-radius: 5px; font-size: 11px; font-weight: bold; }
-        .pending { background: rgba(255, 171, 64, 0.1); color: var(--warning-gold); }
-        .gray-wait { background: rgba(148, 163, 184, 0.1); color: var(--text-muted); }
+        .close-btn { background: var(--glass); border: none; color: var(--text); padding: 12px 25px; border-radius: 12px; cursor: pointer; float: left; }
+        
+        .data-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
+        .data-label { color: var(--dim); }
+        .data-value { color: var(--accent); font-weight: bold; }
 
-        .btn-group { display: flex; gap: 5px; margin-top: 15px; flex-wrap: wrap; }
-        .btn {
-            flex: 1; padding: 10px; border-radius: 8px; border: none; 
-            font-weight: bold; font-size: 12px; cursor: pointer;
-        }
-        .btn-exec { background: var(--success-neon); color: #000; }
-        .btn-cancel { background: #ff5252; color: #fff; }
-
+        /* الزر العائم */
+        .fab { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--purple); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 20px var(--purple); font-weight: bold; color: white; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <div class="top-bar">
-        <div class="logo-text">FMM PANEL</div>
-        <div class="badge-count">متصل</div>
+    <div class="header">
+        <div class="logo">FMM</div>
+        <div class="live-status"><div class="dot"></div> LIVE</div>
     </div>
 
     <div class="container">
         
-        <div class="section-header" onclick="toggleSection('salla-orders')">
-            <span>📦 طلبات سلة #3</span>
-            <span class="badge-count" style="background:var(--warning-gold)">جديد</span>
+        <div class="welcome-card">
+            <h2>Welcome in Fmm</h2>
+            <p>نظام الإدارة المتكامل للطلبات والمالية. تحكم في متجرك بكل سلاسة واحترافية.</p>
         </div>
 
-        <div id="salla-orders" class="orders-container active">
-            
-            <div class="order-card">
-                <div class="order-summary" onclick="toggleDetails(this)">
-                    <div>
-                        <b style="color:var(--accent-glow)">#99821</b><br>
-                        <small>العميل: فهد السبيعي</small>
-                    </div>
-                    <button style="background:none; border:1px solid var(--accent-glow); color:#fff; border-radius:5px; font-size:10px; padding:5px;">المزيد ↓</button>
-                </div>
-                
-                <div class="details-pane">
-                    <b>معلومات المنتج:</b> <span style="color:var(--warning-gold)">باقة المليون مشاهدة</span><br>
-                    <label>رابط المقطع:</label>
-                    <input type="text" value="https://tiktok.com/@fmm/video/7281">
-                    <label>رابط المتابعين:</label>
-                    <input type="text" value="https://instagram.com/fmm_store">
-                    
-                    <table>
-                        <tr><th>النوع</th><th>الكمية</th><th>الحالة</th></tr>
-                        <tr><td>مشاهدات</td><td>1,000,000</td><td class="gray-wait">قيد الانتظار</td></tr>
-                    </table>
-
-                    <div class="btn-group">
-                        <button class="btn btn-exec" onclick="completeOrder(this)">تم التنفيذ ✅</button>
-                        <button class="btn btn-cancel">إلغاء</button>
-                    </div>
-                </div>
+        <div class="stats-grid">
+            <div class="stat-box">
+                <small>مبيعات اليوم</small>
+                <b>1,420 ر.س</b>
             </div>
-
-            <div class="order-card">
-                <div class="order-summary" onclick="toggleDetails(this)">
-                    <div>
-                        <b style="color:var(--accent-glow)">#99822</b><br>
-                        <small>العميل: سارة خالد</small>
-                    </div>
-                    <button style="background:none; border:1px solid var(--accent-glow); color:#fff; border-radius:5px; font-size:10px; padding:5px;">المزيد ↓</button>
-                </div>
-                
-                <div class="details-pane">
-                    <b>معلومات المنتج:</b> <span style="color:var(--warning-gold)">زيادة 5000 متابع</span><br>
-                    <label>الرابط:</label>
-                    <input type="text" value="https://twitter.com/sara_k">
-                    
-                    <table>
-                        <tr><th>النوع</th><th>الكمية</th><th>الحالة</th></tr>
-                        <tr><td>متابعين</td><td>5,000</td><td class="gray-wait">قيد الانتظار</td></tr>
-                    </table>
-
-                    <div class="btn-group">
-                        <button class="btn btn-exec" onclick="completeOrder(this)">تم التنفيذ ✅</button>
-                        <button class="btn btn-cancel">إلغاء</button>
-                    </div>
-                </div>
+            <div class="stat-box">
+                <small>الرصيد الحالي</small>
+                <b style="color: var(--accent)">$285.50</b>
             </div>
-
         </div>
 
-        <div class="section-header" onclick="alert('سيتم عرض الطلبات المنفذة هنا')">
-            <span>✅ تم تنفيذ / #120</span>
-        </div>
-
-        <div class="section-header" onclick="alert('طلبات تحتاج مراجعة يدوية')">
-            <span>⏳ بانتظار المراجعة / #5</span>
+        <div class="action-list">
+            <div class="action-item" onclick="openModal('orders')">
+                <span>📦 طلبات المتجر اليوم</span>
+                <span style="color: var(--success); font-weight: bold;">(3) ←</span>
+            </div>
+            <div class="action-item" onclick="openModal('finance')">
+                <span>📊 السجل المالي والأرباح</span>
+                <span style="color: var(--dim);">التفاصيل ←</span>
+            </div>
+            <div class="action-item" onclick="openModal('services')">
+                <span>🔢 قائمة أرقام الخدمات</span>
+                <span style="color: var(--dim);">ID List ←</span>
+            </div>
+            <div class="action-item" onclick="openModal('settings')">
+                <span>⚙️ إعدادات الربط الآلي</span>
+                <span style="color: var(--dim);">تعديل ←</span>
+            </div>
         </div>
 
     </div>
 
+    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="toggleModal(false)">إغلاق</button>
+            <h2 id="modalTitle" style="color: var(--purple); margin-top: 10px;">العنوان</h2>
+            <div id="modalBody" style="margin-top: 20px;">
+                </div>
+        </div>
+    </div>
+
+    <div class="fab">FMM</div>
+
     <script>
-        function toggleSection(id) {
-            const el = document.getElementById(id);
-            el.classList.toggle('active');
-        }
-
-        function toggleDetails(element) {
-            const pane = element.parentElement.querySelector('.details-pane');
-            pane.classList.toggle('open');
-        }
-
-        function completeOrder(btn) {
-            if(confirm('هل أنت متأكد من تغيير حالة الطلب إلى مكتمل؟')) {
-                const card = btn.closest('.order-card');
-                card.style.opacity = '0.5';
-                btn.innerHTML = 'تم بنجاح';
-                btn.disabled = true;
-                alert('تم التحديث وإشعار العميل ✅');
+        const storage = {
+            orders: {
+                title: "📦 طلبات المتجر الحالية",
+                body: `
+                    <div class="data-row"><span class="data-label">طلب #1042</span><span class="data-value">متابعين تيك توك</span></div>
+                    <div class="data-row"><span class="data-label">العميل</span><span class="data-value">نايف السبيعي</span></div>
+                    <div class="data-row"><span class="data-label">الحالة</span><span class="data-value" style="color:orange">قيد الانتظار</span></div>
+                    <button style="width:100%; padding:15px; margin-top:15px; background:var(--success); border:none; border-radius:10px; font-weight:bold;">تنفيذ الطلب فوراً</button>
+                `
+            },
+            finance: {
+                title: "📊 السجل المالي",
+                body: `
+                    <div class="data-row"><span class="data-label">إجمالي الأرباح</span><span class="data-value">+4,500 ر.س</span></div>
+                    <div class="data-row"><span class="data-label">رصيد SMM Panel</span><span class="data-value">$285.50</span></div>
+                    <div class="data-row"><span class="data-label">آخر عملية سحب</span><span class="data-value">منذ ساعتين</span></div>
+                `
+            },
+            services: {
+                title: "🔢 أرقام الخدمات IDs",
+                body: `
+                    <div class="data-row"><span class="data-label">زيادة متابعين</span><span class="data-value">ID: 5542</span></div>
+                    <div class="data-row"><span class="data-label">لايكات عربية</span><span class="data-value">ID: 1020</span></div>
+                    <div class="data-row"><span class="data-label">مشاهدات ترند</span><span class="data-value">ID: 8891</span></div>
+                `
+            },
+            settings: {
+                title: "⚙️ الإعدادات والربط",
+                body: `
+                    <p style="font-size:12px; color:var(--dim)">ضع الـ API Key الخاص بمتجر سلة هنا للربط التلقائي.</p>
+                    <input type="password" placeholder="Salla API Token" style="width:100%; padding:15px; background:#000; border:1px solid #333; color:#fff; border-radius:10px;">
+                    <button style="width:100%; padding:15px; margin-top:10px; background:var(--purple); border:none; border-radius:10px; color:#fff;">حفظ الإعدادات</button>
+                `
             }
+        };
+
+        function openModal(type) {
+            document.getElementById('modalTitle').innerText = storage[type].title;
+            document.getElementById('modalBody').innerHTML = storage[type].body;
+            toggleModal(true);
         }
+
+        function toggleModal(show) {
+            const m = document.getElementById('modalOverlay');
+            show ? m.classList.add('active') : m.classList.remove('active');
+        }
+
+        function closeModal(e) { if(e.target.id === 'modalOverlay') toggleModal(false); }
     </script>
 </body>
-</html
+</html>
