@@ -3,200 +3,145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FMM Royal Dashboard - Final</title>
+<title>FMM Royal Dashboard - كامل</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
 :root {
     --royal-purple: #7C4DFF;
-    --surface-black: #121216;
+    --deep-black: #050505;
+    --card-bg: #121216;
     --neon-green: #00E676;
     --gold-warning: #FFCF4B;
-    --glass-border: rgba(124,77,255,0.2);
 }
-body { background-color: #050505; color: white; font-family: 'Inter', sans-serif; margin:0; }
-.royal-card { background: linear-gradient(145deg,#16161d,#0f0f13); border:1px solid rgba(124,77,255,0.2); border-radius:24px; position:relative; box-shadow:0 10px 40px rgba(0,0,0,0.6); transition:0.3s; padding:1rem; }
-.glow-purple { box-shadow:0 0 30px rgba(124,77,255,0.2); }
-header { background: rgba(5,5,5,0.8); backdrop-filter: blur(15px); border-bottom:1px solid rgba(255,255,255,0.05); }
-#sidebar { background: rgba(18,18,22,0.98); backdrop-filter: blur(20px); border-left:1px solid var(--glass-border); width:280px; transition:transform 0.4s ease; }
-.nav-item { display:flex; align-items:center; gap:12px; padding:12px 20px; margin:4px 10px; border-radius:12px; color:#888; transition:0.3s; font-size:13px; }
-.nav-item:hover, .nav-item.active { background: rgba(124,77,255,0.1); color: var(--royal-purple); }
+body { background-color: var(--deep-black); color: white; font-family: 'Inter', sans-serif; margin:0; }
+.royal-card {
+    background: linear-gradient(145deg, #16161d, #0f0f13);
+    border: 1px solid rgba(124,77,255,0.2);
+    border-radius: 24px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    transition: all 0.3s ease;
+    padding:15px;
+}
+.royal-card:active { transform: scale(0.97); border-color: var(--royal-purple); }
+header { background: rgba(5,5,5,0.8); backdrop-filter: blur(15px); border-bottom:1px solid rgba(255,255,255,0.05); padding:15px; display:flex; justify-content:space-between; align-items:center; }
+#sidebar {
+    position:fixed; inset-y:0; right:0;
+    width:280px;
+    background: rgba(18,18,22,0.98);
+    backdrop-filter: blur(20px);
+    border-left:1px solid rgba(124,77,255,0.2);
+    transform:translateX(100%);
+    transition:0.4s;
+    z-index:100;
+    display:flex; flex-direction:column;
+}
+.nav-item { display:flex; align-items:center; gap:12px; padding:12px 20px; margin:4px 10px; border-radius:12px; color:#888; font-size:13px; transition:0.3s; cursor:pointer; }
+.nav-item.active, .nav-item:hover { background:rgba(124,77,255,0.1); color:var(--royal-purple);}
 .category-title { font-size:10px; font-weight:800; color:#444; padding:20px 25px 5px; letter-spacing:1px; }
 .settings-panel { background: rgba(255,255,255,0.03); border-radius:15px; padding:12px; margin-top:10px; }
 .setting-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; font-size:11px; color:#bbb; }
 .setting-input { background:#1a1a20; border:1px solid #333; color:white; border-radius:5px; padding:2px 5px; width:60px; outline:none; }
-.switch { position: relative; display: inline-block; width: 40px; height: 20px; }
-.switch input { opacity: 0; width: 0; height: 0; }
-.slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color:#333; transition: .4s; border-radius:34px; }
-.slider:before { position:absolute; content:""; height:14px; width:14px; left:3px; bottom:3px; background:white; border-radius:50%; transition:.4s; }
-input:checked + .slider { background: var(--neon-green); }
-input:checked + .slider:before { transform:translateX(20px); }
+.switch { position:relative; display:inline-block; width:40px; height:20px; }
+.switch input { opacity:0; width:0; height:0; }
+.slider { position:absolute; cursor:pointer; top:0; left:0; right:0; bottom:0; background-color:#333; transition:.4s; border-radius:34px;}
+.slider:before { position:absolute; content:""; height:14px; width:14px; left:3px; bottom:3px; background-color:white; transition:.4s; border-radius:50%;}
+input:checked + .slider { background-color:var(--neon-green);}
+input:checked + .slider:before { transform:translateX(20px);}
 </style>
 </head>
 <body>
 
-<header class="p-4 flex justify-between items-center">
-<button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5"><i class="fas fa-bars-staggered text-white"></i></button>
-<div class="text-xl font-black italic text-[#7C4DFF]">FMM</div>
+<header>
+    <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5">
+        <i class="fas fa-bars-staggered text-white"></i>
+    </button>
+    <div class="text-xl font-black italic text-[#7C4DFF]">FMM</div>
+    <div class="w-10 h-10 rounded-full border border-purple-500/30 flex items-center justify-center bg-white/5">
+        <i class="fas fa-user-astronaut text-purple-400"></i>
+    </div>
 </header>
 
-<aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full z-[100]">
-<div class="py-6 flex flex-col h-full overflow-y-auto">
+<aside id="sidebar">
+    <div class="py-6 flex flex-col h-full overflow-y-auto">
+        <div class="px-6 mb-6 flex justify-between items-center">
+            <span class="text-xl font-black text-[#7C4DFF]">القائمة</span>
+            <button onclick="toggleSidebar()" class="text-gray-500"><i class="fas fa-times"></i></button>
+        </div>
 
-<div class="px-6 mb-6 flex justify-between items-center">
-<span class="text-xl font-black text-[#7C4DFF]">القائمة</span>
-<button onclick="toggleSidebar()" class="text-gray-500"><i class="fas fa-times"></i></button>
-</div>
+        <div class="category-title">الرئيسية</div>
+        <nav>
+            <div class="nav-item active" onclick="toggleSubmenu('finance')"><i class="fas fa-chart-pie w-5"></i> المالية</div>
+            <div id="finance" class="ml-6 hidden flex-col gap-2">
+                <div class="text-sm text-gray-300">صرفنا في المزود: 12,000 ريال</div>
+                <div class="text-sm text-gray-300">مبيعات سلة: 18,000 ريال</div>
+                <div class="text-sm text-gray-300">التوتال الإجمالي: 30,000 ريال</div>
+            </div>
+        </nav>
 
-<div class="category-title">الرئيسية</div>
-<nav><a href="#" class="nav-item active"><i class="fas fa-chart-pie w-5"></i> نظرة عامة</a></nav>
+        <div class="category-title">الخدمات</div>
+        <nav>
+            <div class="nav-item" onclick="toggleSubmenu('provider')"><i class="fas fa-robot w-5"></i> خدمات المزود</div>
+            <div id="provider" class="ml-6 hidden flex-col gap-2">
+                <div class="text-sm text-gray-300">طلبات قيد الانتظار: 45</div>
+                <div class="text-sm text-gray-300">طلبات مكتملة: 980</div>
+            </div>
+        </nav>
 
-<div class="category-title">متجر سلة</div>
-<nav>
-<a href="#" class="nav-item"><i class="fas fa-link w-5"></i> الربط والطلبات</a>
-<a href="#" class="nav-item"><i class="fas fa-sync w-5"></i> التحديثات</a>
-</nav>
+        <div class="category-title">التحديثات</div>
+        <nav>
+            <div class="nav-item">فحص التحديثات</div>
+        </nav>
 
-<div class="category-title">منصة المزود</div>
-<nav><a href="#" class="nav-item"><i class="fas fa-tasks w-5"></i> إعداد الطلبات</a></nav>
-
-<div class="mt-auto border-t border-white/5 p-4">
-<div class="flex items-center justify-between bg-white/5 p-3 rounded-xl mb-2">
-<div class="flex flex-col">
-<span class="text-xs font-bold text-white">Auto-run</span>
-<span id="run-status" class="text-[9px] text-gray-500 uppercase">غير نشط</span>
-</div>
-<label class="switch">
-<input type="checkbox" onchange="updateStatus(this)">
-<span class="slider"></span>
-</label>
-</div>
-
-<div class="settings-panel">
-<div class="text-[10px] font-bold text-[#7C4DFF] mb-3 border-b border-white/5 pb-1">إعدادات التشغيل</div>
-
-<div class="setting-row">
-<span>سرعة الفحص (ثانية)</span>
-<input type="number" class="setting-input" value="30">
-</div>
-
-<div class="setting-row">
-<span>تنبيه عند الخطأ</span>
-<label class="switch" style="width:30px; height:15px;">
-<input type="checkbox" checked>
-<span class="slider" style="border-radius:15px;"></span>
-</label>
-</div>
-
-<div class="setting-row">
-<span>إعادة المحاولة تلقائياً</span>
-<label class="switch" style="width:30px; height:15px;">
-<input type="checkbox">
-<span class="slider" style="border-radius:15px;"></span>
-</label>
-</div>
-
-</div>
-</div>
-</div>
+        <div class="category-title">إعدادات الأتمتة الآلية</div>
+        <div class="settings-panel">
+            <div class="setting-row">
+                <span>اختيار أفضل جودة</span>
+                <input type="checkbox" checked>
+            </div>
+            <div class="setting-row">
+                <span>أرخص سعر (من/إلى)</span>
+                <input type="text" class="setting-input" placeholder="0 - 100 ريال">
+            </div>
+            <div class="setting-row">
+                <span>أسرع متوسط وقت (من/إلى)</span>
+                <input type="text" class="setting-input" placeholder="1 - 24 ساعة">
+            </div>
+            <div class="setting-row">
+                <span>الضمان (من/إلى)</span>
+                <input type="text" class="setting-input" placeholder="0 - 30 يوم">
+            </div>
+            <div class="setting-row">
+                <span>كمية يومية ثابتة</span>
+                <input type="text" class="setting-input" placeholder="5000 - 20000">
+            </div>
+            <!-- أزرار الحفظ والتعديل -->
+            <div class="flex justify-end gap-3 mt-4">
+                <button class="bg-green-500 hover:bg-green-600 text-white text-sm font-bold px-4 py-2 rounded-xl transition">حفظ</button>
+                <button class="bg-gray-600 hover:bg-gray-700 text-white text-sm font-bold px-4 py-2 rounded-xl transition">تعديل</button>
+            </div>
+        </div>
+    </div>
 </aside>
 
 <main class="p-5 space-y-6">
-
-<div class="flex justify-between items-center">
-<select id="time-filter" class="bg-[#1a1a20] border border-white/10 text-gray-400 text-xs py-1.5 px-3 rounded-xl outline-none">
-<option value="today">اليوم</option>
-<option value="this-week">هذا الأسبوع</option>
-<option value="last-week">الأسبوع الماضي</option>
-<option value="this-month" selected>هذا الشهر</option>
-<option value="last-month">الشهر الماضي</option>
-<option value="this-year">السنة الحالية</option>
-<option value="last-year">السنة الماضية</option>
-<option value="custom">مخصص</option>
-</select>
-<span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest">إحصائيات المنصة</span>
-</div>
-
-<div class="royal-card glow-purple flex justify-between items-center border-r-4 border-[#7C4DFF]">
-<div>
-<p class="text-gray-500 text-[10px] font-bold uppercase mb-1">رصيد المحفظة</p>
-<h2 id="balance-amount" class="text-3xl font-black tracking-tighter">1,240.50 ريال</h2>
-</div>
-<div>
-<p class="text-gray-500 text-[10px] font-bold uppercase mb-1">مبيعات سلة</p>
-<h2 id="salla-sales" class="text-3xl font-black tracking-tighter">18,000 ريال</h2>
-</div>
-</div>
-
-<div class="grid grid-cols-3 gap-4 mt-4">
-<div class="royal-card p-4 flex flex-col items-center border-b-2 border-[#FFCF4B]">
-<i class="fas fa-clock text-[#FFCF4B] mb-2"></i>
-<span class="text-[10px] text-gray-500">قيد التنفيذ</span>
-<span id="pending-orders" class="text-xl font-black">45</span>
-</div>
-<div class="royal-card p-4 flex flex-col items-center border-b-2 border-[#00E676]">
-<i class="fas fa-check-double text-[#00E676] mb-2"></i>
-<span class="text-[10px] text-gray-400">مكتملة</span>
-<span id="completed-orders" class="text-xl font-black">980</span>
-</div>
-<div class="royal-card p-4 flex flex-col items-center border-b-2 border-[#7C4DFF]">
-<i class="fas fa-hourglass-half text-[#7C4DFF] mb-2"></i>
-<span class="text-[10px] text-gray-500">طلبات قيد الانتظار</span>
-<span id="waiting-orders" class="text-xl font-black">20</span>
-</div>
-</div>
-
-<div class="royal-card mt-4 p-4">
-<p class="text-[9px] text-gray-400 mb-2">التاريخ: <span id="current-date"></span></p>
-</div>
-
+    <div class="royal-card">
+        <h2 class="text-lg font-bold">رصيد المحفظة</h2>
+        <p>1,240.50 ريال</p>
+    </div>
+    <div class="royal-card">
+        <h2 class="text-lg font-bold">مبيعات سلة</h2>
+        <p>18,000 ريال</p>
+    </div>
 </main>
 
 <script>
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('translate-x-full');
+function toggleSidebar() { document.getElementById('sidebar').classList.toggle('translate-x-full'); }
+function toggleSubmenu(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('hidden');
 }
-
-function updateStatus(checkbox) {
-    const statusText = document.getElementById('run-status');
-    if(checkbox.checked){
-        statusText.innerText="نشط الآن";
-        statusText.style.color="#00E676";
-    }else{
-        statusText.innerText="غير نشط";
-        statusText.style.color="#666";
-    }
-}
-
-// تحديث التاريخ ديناميكياً
-function updateDateRange(filter){
-    const el=document.getElementById('current-date');
-    const today=new Date();
-    let start,end;
-
-    switch(filter){
-        case 'today': start=end=today; break;
-        case 'this-week': start=new Date(today); start.setDate(today.getDate()-today.getDay()); end=today; break;
-        case 'last-week': start=new Date(today); start.setDate(today.getDate()-today.getDay()-7); end=new Date(start); end.setDate(start.getDate()+6); break;
-        case 'this-month': start=new Date(today.getFullYear(),today.getMonth(),1); end=today; break;
-        case 'last-month': start=new Date(today.getFullYear(),today.getMonth()-1,1); end=new Date(today.getFullYear(),today.getMonth(),0); break;
-        case 'this-year': start=new Date(today.getFullYear(),0,1); end=today; break;
-        case 'last-year': start=new Date(today.getFullYear()-1,0,1); end=new Date(today.getFullYear()-1,11,31); break;
-        case 'custom': el.textContent="اختر فترة مخصصة"; return;
-    }
-    el.textContent=formatDate(start)+" — "+formatDate(end);
-}
-
-function formatDate(date){
-    return date.toLocaleDateString('en-GB'); // DD/MM/YYYY ميلادي
-}
-
-document.getElementById('time-filter').addEventListener('change',function(){
-    updateDateRange(this.value);
-});
-
-// تشغيل التحديث الأولي
-updateDateRange(document.getElementById('time-filter').value);
 </script>
 
 </body>
