@@ -3,16 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FMM Royal Hub | الإصدار الخامس الشامل</title>
+    <title>FMM ROYAL HUB | THE ULTIMATE ENTERPRISE V6</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* [1] نظام الألوان والتحكم الملكي */
         :root {
             --royal-purple: #7c4dff;
             --royal-dark: #5e35b1;
             --deep-black: #050508;
             --panel-bg: #0d0d12;
-            --sidebar-w: 260px;
-            --sidebar-c: 85px;
+            --sidebar-w: 280px;
+            --sidebar-c: 90px;
             --border: rgba(255, 255, 255, 0.08);
             --success: #00e676;
             --error: #ff5252;
@@ -20,20 +21,23 @@
             --text-main: #ffffff;
             --text-muted: #8e8e93;
             --glass: rgba(255, 255, 255, 0.03);
+            --neon-shadow: 0 0 20px rgba(124, 77, 255, 0.3);
+            --font-main: 'Segoe UI', system-ui, -apple-system, sans-serif;
         }
 
-        * { box-sizing: border-box; transition: all 0.25s ease; scroll-behavior: smooth; }
+        /* [2] التنسيقات الأساسية */
+        * { box-sizing: border-box; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); scrollbar-width: thin; scrollbar-color: var(--royal-purple) transparent; }
         body { 
             background: var(--deep-black); 
             color: var(--text-main); 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            font-family: var(--font-main); 
             margin: 0; 
             display: flex; 
             height: 100vh; 
             overflow: hidden; 
         }
 
-        /* --- السايدبار المطور --- */
+        /* [3] القائمة الجانبية (Sidebar) - تفاصيل كاملة */
         .sidebar { 
             width: var(--sidebar-w); 
             background: #000; 
@@ -42,421 +46,454 @@
             flex-direction: column; 
             z-index: 1000;
             flex-shrink: 0;
+            position: relative;
         }
         .sidebar.collapsed { width: var(--sidebar-c); }
         
         .sidebar-header { 
-            padding: 30px 20px; 
+            padding: 35px 25px; 
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            border-bottom: 1px solid var(--border); 
+            background: linear-gradient(180deg, rgba(124, 77, 255, 0.08) 0%, transparent 100%);
         }
-        .logo-box { display: flex; align-items: center; gap: 10px; }
-        .logo-icon { width: 35px; height: 35px; background: var(--royal-purple); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: bold; }
-        .logo-text { font-size: 18px; font-weight: 900; color: #fff; letter-spacing: 1px; }
-
-        .nav-container { flex: 1; overflow-y: auto; padding: 20px 12px; }
-        .nav-container::-webkit-scrollbar { width: 3px; }
-        .nav-container::-webkit-scrollbar-thumb { background: var(--royal-purple); }
-
-        .nav-group-label { 
-            font-size: 11px; 
-            color: var(--royal-purple); 
-            padding: 20px 15px 10px; 
-            text-transform: uppercase; 
-            font-weight: 800; 
-            letter-spacing: 1.5px;
-        }
-
-        .nav-item { 
-            padding: 14px 16px; 
+        .logo-wrapper { display: flex; align-items: center; gap: 15px; }
+        .logo-box { 
+            width: 42px; height: 42px; 
+            background: linear-gradient(135deg, var(--royal-purple), var(--royal-dark)); 
             border-radius: 14px; 
-            display: flex; 
-            align-items: center; 
-            gap: 15px; 
-            color: var(--text-muted); 
-            cursor: pointer; 
-            margin-bottom: 6px; 
-            font-size: 14px; 
-            position: relative;
-            border: 1px solid transparent;
+            display: flex; align-items: center; justify-content: center; 
+            font-weight: 900; box-shadow: var(--neon-shadow);
+            font-size: 20px;
         }
-        .nav-item:hover { background: var(--glass); color: #fff; border-color: rgba(124, 77, 255, 0.2); }
-        .nav-item.active { 
-            background: linear-gradient(45deg, var(--royal-purple), var(--royal-dark)); 
-            color: #fff; 
-            box-shadow: 0 10px 20px rgba(124, 77, 255, 0.3); 
+        .logo-text { font-size: 22px; font-weight: 900; letter-spacing: 1.5px; background: linear-gradient(to left, #fff, var(--royal-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+        .nav-container { flex: 1; overflow-y: auto; padding: 20px 15px; }
+        .nav-group { margin-bottom: 30px; }
+        .nav-group-title { 
+            font-size: 11px; color: var(--royal-purple); 
+            padding: 0 15px 12px; font-weight: 800; 
+            text-transform: uppercase; letter-spacing: 2.5px; opacity: 0.7;
         }
-        .nav-item i { width: 20px; text-align: center; font-size: 18px; }
+
+        .nav-link { 
+            padding: 15px 18px; border-radius: 18px; 
+            display: flex; align-items: center; gap: 15px; 
+            color: var(--text-muted); cursor: pointer; 
+            margin-bottom: 8px; font-size: 14px; 
+            border: 1px solid transparent; position: relative;
+            text-decoration: none;
+        }
+        .nav-link:hover { background: var(--glass); color: #fff; transform: translateX(-5px); }
+        .nav-link.active { 
+            background: linear-gradient(90deg, var(--royal-purple), var(--royal-dark)); 
+            color: #fff; box-shadow: 0 10px 25px rgba(124, 77, 255, 0.3); 
+            border-color: rgba(255,255,255,0.1);
+        }
+        .nav-link i { width: 22px; text-align: center; font-size: 19px; }
 
         .sidebar.collapsed .logo-text, 
         .sidebar.collapsed .nav-text, 
-        .sidebar.collapsed .nav-group-label,
-        .sidebar.collapsed .badge-count { display: none; }
+        .sidebar.collapsed .nav-group-title,
+        .sidebar.collapsed .badge-new { display: none; }
 
-        .badge-count { 
-            background: var(--error); 
-            color: white; 
-            font-size: 10px; 
-            padding: 2px 7px; 
-            border-radius: 50px; 
-            margin-right: auto; 
+        .badge-new { 
+            background: var(--success); color: #000; 
+            font-size: 9px; padding: 3px 8px; border-radius: 6px; 
+            margin-right: auto; font-weight: 900;
         }
 
-        /* --- منطقة العمل الرئيسية --- */
-        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; background-image: radial-gradient(circle at top right, rgba(124, 77, 255, 0.05), transparent); }
+        /* [4] منطقة العمل والمحتوى */
+        .main-wrapper { flex: 1; display: flex; flex-direction: column; overflow: hidden; background: radial-gradient(circle at top right, rgba(124, 77, 255, 0.05), transparent); }
         
-        .top-bar { 
-            padding: 20px 40px; 
-            background: rgba(13, 13, 18, 0.8); 
-            backdrop-filter: blur(10px);
+        .top-navbar { 
+            padding: 20px 45px; 
+            background: rgba(10, 10, 15, 0.8); 
+            backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--border); 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+            display: flex; justify-content: space-between; align-items: center; 
+            z-index: 900;
         }
 
-        .page-section { display: none; width: 100%; height: 100%; padding: 40px; overflow-y: auto; }
-        .page-section.active { display: block; animation: fadeInUp 0.5s ease; }
+        .page-content { display: none; width: 100%; height: 100%; padding: 45px; overflow-y: auto; }
+        .page-content.active { display: block; animation: fadeInUp 0.5s cubic-bezier(0.23, 1, 0.32, 1); }
 
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- كروت الإحصائيات --- */
-        .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 25px; margin-bottom: 40px; }
-        .stat-card { 
-            background: var(--panel-bg); 
-            border: 1px solid var(--border); 
-            border-radius: 24px; 
-            padding: 25px; 
-            position: relative; 
-            overflow: hidden; 
+        /* [5] بطاقات رويال والشبكة */
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-bottom: 40px; }
+        
+        .royal-card { 
+            background: var(--panel-bg); border: 1px solid var(--border); 
+            border-radius: 32px; padding: 30px; position: relative; overflow: hidden;
         }
-        .stat-card::after { 
-            content: ""; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; 
-            background: linear-gradient(90deg, transparent, var(--royal-purple), transparent); 
+        .royal-card:hover { border-color: var(--royal-purple); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+
+        .card-icon { 
+            width: 55px; height: 55px; border-radius: 18px; 
+            background: rgba(124, 77, 255, 0.1); color: var(--royal-purple); 
+            display: flex; align-items: center; justify-content: center; font-size: 22px; margin-bottom: 20px;
         }
-        .stat-icon { width: 50px; height: 50px; border-radius: 15px; background: rgba(124, 77, 255, 0.1); color: var(--royal-purple); display: flex; align-items: center; justify-content: center; font-size: 20px; margin-bottom: 15px; }
 
-        /* --- الجداول --- */
-        .table-container { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 24px; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: right; padding: 15px 20px; color: var(--text-muted); font-size: 13px; border-bottom: 1px solid var(--border); text-transform: uppercase; }
-        td { padding: 18px 20px; border-bottom: 1px solid rgba(255,255,255,0.02); font-size: 14px; }
-        .status-pill { padding: 5px 12px; border-radius: 50px; font-size: 11px; font-weight: bold; }
-        .status-active { background: rgba(0, 230, 118, 0.1); color: var(--success); }
+        /* [6] الجداول المتقدمة */
+        .table-box { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 30px; padding: 25px; margin-top: 20px; }
+        .custom-table { width: 100%; border-collapse: separate; border-spacing: 0 12px; }
+        .custom-table th { text-align: right; padding: 15px 25px; color: var(--text-muted); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+        .custom-table tr { background: rgba(255,255,255,0.02); }
+        .custom-table td { padding: 20px 25px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); font-size: 14px; }
+        .custom-table td:first-child { border-right: 1px solid var(--border); border-radius: 0 15px 15px 0; }
+        .custom-table td:last-child { border-left: 1px solid var(--border); border-radius: 15px 0 0 15px; }
 
-        /* --- مصمم الصفحات --- */
-        .designer-layout { display: grid; grid-template-columns: 300px 1fr 250px; gap: 20px; height: 600px; }
-        .designer-toolset { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 20px; padding: 20px; }
-        .canvas-area { background: #000; border: 2px dashed var(--border); border-radius: 20px; display: flex; align-items: center; justify-content: center; position: relative; }
-        .tool-btn { background: var(--glass); border: 1px solid var(--border); padding: 12px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; display: flex; align-items: center; gap: 10px; width: 100%; }
-        .tool-btn:hover { border-color: var(--royal-purple); background: rgba(124, 77, 255, 0.1); }
-
-        /* --- أزرار النظام --- */
-        .btn-royal { 
-            background: var(--royal-purple); 
-            color: white; 
-            border: none; 
-            padding: 12px 25px; 
-            border-radius: 14px; 
-            font-weight: 600; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            gap: 10px;
-            box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+        /* [7] عناصر الإدخال والأزرار */
+        .btn-action { 
+            background: var(--royal-purple); color: #fff; border: none; 
+            padding: 16px 32px; border-radius: 18px; font-weight: 800; 
+            cursor: pointer; display: flex; align-items: center; gap: 12px;
+            box-shadow: var(--neon-shadow); font-size: 14px;
         }
-        .btn-royal:hover { transform: translateY(-3px); background: var(--royal-dark); }
-
-        /* --- متجر الخدمات --- */
-        .service-card { 
-            background: linear-gradient(145deg, #0d0d12, #15151f); 
-            border: 1px solid var(--border); 
-            border-radius: 25px; 
-            padding: 30px; 
-            text-align: center;
+        .btn-action:active { transform: scale(0.95); }
+        
+        input, select, textarea { 
+            width: 100%; padding: 15px 20px; background: #000; 
+            border: 1px solid var(--border); border-radius: 15px; 
+            color: #fff; font-size: 14px; outline: none; margin-bottom: 15px;
         }
-        .service-price { font-size: 24px; font-weight: 800; color: var(--success); margin: 15px 0; }
+        input:focus { border-color: var(--royal-purple); box-shadow: 0 0 0 3px rgba(124, 77, 255, 0.1); }
+
+        /* [8] أنظمة خاصة (Designer & Tools) */
+        .designer-container { display: grid; grid-template-columns: 320px 1fr 300px; gap: 25px; height: 700px; }
+        .toolset-panel { background: var(--panel-bg); border: 1px solid var(--border); border-radius: 28px; padding: 25px; overflow-y: auto; }
+        .drop-area { 
+            background: #000; border: 3px dashed var(--border); 
+            border-radius: 40px; display: flex; flex-direction: column; 
+            padding: 30px; position: relative; overflow-y: auto;
+        }
+        .drag-item { 
+            padding: 20px; background: var(--glass); border: 1px solid var(--border); 
+            border-radius: 15px; margin-bottom: 15px; cursor: grab; display: flex; align-items: center; gap: 15px;
+        }
+
+        /* [9] شريط الإشعارات */
+        #toast-box { position: fixed; top: 30px; left: 30px; z-index: 9999; }
+        .toast-msg { 
+            background: #1a1a25; border-right: 6px solid var(--royal-purple); 
+            padding: 20px 30px; border-radius: 15px; margin-bottom: 12px; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6); animation: slideInLeft 0.4s ease;
+        }
+        @keyframes slideInLeft { from { transform: translateX(-100%); } to { transform: translateX(0); } }
 
     </style>
 </head>
 <body>
 
+    <div id="toast-box"></div>
+
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <div class="logo-box">
-                <div class="logo-icon">F</div>
-                <span class="logo-text">ROYAL HUB</span>
+            <div class="logo-wrapper">
+                <div class="logo-box">R</div>
+                <span class="logo-text">FMM HUB</span>
             </div>
-            <i class="fas fa-outdent" id="toggle-icon" style="cursor:pointer; color:var(--text-muted)" onclick="toggleSidebar()"></i>
+            <i class="fas fa-chevron-right" id="collapse-btn" style="cursor:pointer; color:var(--text-muted)" onclick="toggleSidebar()"></i>
         </div>
         
         <div class="nav-container">
-            <div class="nav-group-label">الرئيسية والمبيعات</div>
-            <div class="nav-item active" onclick="openPage('home', this)"><i class="fas fa-chart-line"></i> <span class="nav-text">الرئيسية</span></div>
-            <div class="nav-item" onclick="openPage('products', this)"><i class="fas fa-cubes"></i> <span class="nav-text">المنتجات</span> <span class="badge-count">240</span></div>
-            <div class="nav-item" onclick="openPage('orders', this)"><i class="fas fa-receipt"></i> <span class="nav-text">الطلبات</span> <span class="badge-count" style="background:var(--warning); color:#000">12</span></div>
-            <div class="nav-item" onclick="openPage('customers', this)"><i class="fas fa-user-friends"></i> <span class="nav-text">العملاء</span></div>
+            <div class="nav-group">
+                <div class="nav-group-title">الإدارة العليا</div>
+                <div class="nav-link active" onclick="switchPage('home', this)"><i class="fas fa-chart-pie"></i> <span class="nav-text">الرئيسية</span></div>
+                <div class="nav-link" onclick="switchPage('products', this)"><i class="fas fa-boxes-stacked"></i> <span class="nav-text">المنتجات</span> <span class="badge-new">99+</span></div>
+                <div class="nav-link" onclick="switchPage('orders', this)"><i class="fas fa-cart-arrow-down"></i> <span class="nav-text">الطلبات</span></div>
+                <div class="nav-link" onclick="switchPage('customers', this)"><i class="fas fa-id-card-clip"></i> <span class="nav-text">العملاء</span></div>
+            </div>
 
-            <div class="nav-group-label">أدوات النمو</div>
-            <div class="nav-item" onclick="openPage('marketing', this)"><i class="fas fa-rocket"></i> <span class="nav-text">أدوات التسويق</span></div>
-            <div class="nav-item" onclick="openPage('store-settings', this)"><i class="fas fa-store-alt"></i> <span class="nav-text">المتجر</span></div>
-            <div class="nav-item" onclick="openPage('designer', this)"><i class="fas fa-wand-magic-sparkles"></i> <span class="nav-text">مصمم الصفحات</span></div>
+            <div class="nav-group">
+                <div class="nav-group-title">المحرك التسويقي</div>
+                <div class="nav-link" onclick="switchPage('marketing', this)"><i class="fas fa-rocket"></i> <span class="nav-text">أدوات التسويق</span></div>
+                <div class="nav-link" onclick="switchPage('store', this)"><i class="fas fa-shop"></i> <span class="nav-text">المتجر</span></div>
+                <div class="nav-link" onclick="switchPage('designer', this)"><i class="fas fa-bezier-curve"></i> <span class="nav-text">مصمم الصفحات</span></div>
+            </div>
 
-            <div class="nav-group-label">المستخدمين والخدمات</div>
-            <div class="nav-item" onclick="openPage('users', this)"><i class="fas fa-user-shield"></i> <span class="nav-text">المستخدم</span></div>
-            <div class="nav-item" onclick="openPage('service-store', this)"><i class="fas fa-shopping-basket"></i> <span class="nav-text">متجر الخدمات</span></div>
-            <div class="nav-item" onclick="openPage('free-tools', this)"><i class="fas fa-toolbox"></i> <span class="nav-text">أدوات مجانية</span></div>
+            <div class="nav-group">
+                <div class="nav-group-title">الدعم والمرافق</div>
+                <div class="nav-link" onclick="switchPage('users', this)"><i class="fas fa-user-gear"></i> <span class="nav-text">المستخدم</span></div>
+                <div class="nav-link" onclick="switchPage('services', this)"><i class="fas fa-wand-sparkles"></i> <span class="nav-text">متجر الخدمات</span></div>
+                <div class="nav-link" onclick="switchPage('tools', this)"><i class="fas fa-screwdriver-wrench"></i> <span class="nav-text">أدوات مجانية</span></div>
+            </div>
         </div>
 
-        <div style="padding: 20px; border-top: 1px solid var(--border);">
-            <div class="nav-item" style="margin-bottom:0;"><i class="fas fa-sign-out-alt"></i> <span class="nav-text">تسجيل الخروج</span></div>
+        <div style="padding: 25px; border-top: 1px solid var(--border);">
+            <div class="nav-link" style="margin:0; background:rgba(255,82,82,0.05); color:var(--error); border-color:rgba(255,82,82,0.1);"><i class="fas fa-power-off"></i> <span class="nav-text">خروج آمن</span></div>
         </div>
     </aside>
 
-    <main class="main-content">
-        <header class="top-bar">
-            <div style="display:flex; flex-direction:column;">
-                <h2 id="page-title" style="margin:0; font-size: 22px;">نظرة عامة على الإحصائيات</h2>
-                <span style="font-size: 12px; color: var(--text-muted)">أهلاً بك مجدداً، إليك ما حدث اليوم</span>
+    <div class="main-wrapper">
+        <header class="top-navbar">
+            <div class="page-info">
+                <h2 id="main-title" style="margin:0; font-size: 26px; font-weight: 900;">الرئيسية</h2>
+                <span style="color:var(--text-muted); font-size: 13px;">مرحباً بك، النظام يعمل بكامل طاقته الآن</span>
             </div>
             <div style="display:flex; align-items:center; gap:30px;">
-                <div id="live-clock" style="font-family: 'Courier New', monospace; font-weight: bold; color: var(--royal-purple); background: var(--glass); padding: 8px 15px; border-radius: 10px; border: 1px solid var(--border);">00:00:00</div>
-                <div style="display:flex; align-items:center; gap:12px; border-right: 1px solid var(--border); padding-right: 25px;">
-                    <div style="text-align: right;">
-                        <div style="font-weight: bold; font-size: 14px;">عبدالرحمن محمد</div>
-                        <div style="font-size: 11px; color: var(--success)">متصل الآن (مسؤول)</div>
+                <div id="live-time" style="font-family: monospace; color: var(--royal-purple); font-size: 19px; background: var(--glass); padding: 10px 20px; border-radius: 15px; border: 1px solid var(--border); font-weight: 900;">00:00:00</div>
+                <div style="display:flex; align-items:center; gap:15px; border-right: 1px solid var(--border); padding-right: 30px;">
+                    <div style="text-align: left;">
+                        <div style="font-weight: 800; font-size: 15px;">FMM ADMIN</div>
+                        <div style="font-size: 11px; color: var(--success);">رويال بريميوم <i class="fas fa-crown"></i></div>
                     </div>
-                    <img src="https://ui-avatars.com/api/?name=Admin&background=7c4dff&color=fff" style="width:45px; border-radius:15px; border: 2px solid var(--royal-purple);">
+                    <img src="https://ui-avatars.com/api/?name=FMM+Admin&background=7c4dff&color=fff" style="width:48px; height:48px; border-radius:16px; border: 2px solid var(--royal-purple);">
                 </div>
             </div>
         </header>
 
-        <section id="page-home" class="page-section active">
-            <div class="stat-grid">
-                <div class="stat-card">
-                    <div class="stat-icon"><i class="fas fa-wallet"></i></div>
-                    <span style="color:var(--text-muted); font-size:13px;">الرصيد الكلي</span>
-                    <h2 style="margin:10px 0;">45,920.00 ر.س</h2>
-                    <small style="color:var(--success)"><i class="fas fa-level-up-alt"></i> +8% زيادة</small>
+        <section id="page-home" class="page-content active">
+            <div class="grid-layout">
+                <div class="royal-card">
+                    <div class="card-icon"><i class="fas fa-sack-dollar"></i></div>
+                    <small style="color:var(--text-muted)">إجمالي المبيعات (30 يوم)</small>
+                    <h2 style="font-size: 32px; margin: 10px 0;">128,450.00 ر.س</h2>
+                    <span style="color:var(--success); font-weight: 800;"><i class="fas fa-arrow-trend-up"></i> +24% زيادة</span>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="color:var(--warning); background:rgba(255,214,0,0.1)"><i class="fas fa-hourglass-half"></i></div>
-                    <span style="color:var(--text-muted); font-size:13px;">طلبات معلقة</span>
-                    <h2 style="margin:10px 0;">18 طلب</h2>
-                    <small style="color:var(--text-muted)">تحتاج تدخل سريع</small>
+                <div class="royal-card">
+                    <div class="card-icon" style="color:var(--warning); background:rgba(255,214,0,0.1)"><i class="fas fa-clock-rotate-left"></i></div>
+                    <small style="color:var(--text-muted)">طلبات قيد المعالجة</small>
+                    <h2 style="font-size: 32px; margin: 10px 0;">42 طلب</h2>
+                    <span style="color:var(--text-muted);">تحتاج لإتمام فوري</span>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-icon" style="color:var(--success); background:rgba(0,230,118,0.1)"><i class="fas fa-check-double"></i></div>
-                    <span style="color:var(--text-muted); font-size:13px;">تم تنفيذها</span>
-                    <h2 style="margin:10px 0;">1,429</h2>
-                    <small style="color:var(--success)">عمليات ناجحة</small>
+                <div class="royal-card">
+                    <div class="card-icon" style="color:var(--success); background:rgba(0,230,118,0.1)"><i class="fas fa-users-viewfinder"></i></div>
+                    <small style="color:var(--text-muted)">الزوار الحاليون</small>
+                    <h2 style="font-size: 32px; margin: 10px 0;">1,204</h2>
+                    <span style="color:var(--success); font-weight: 800;">تصفح نشط الآن</span>
                 </div>
             </div>
 
-            <div class="table-container">
+            <div class="table-box">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                    <h4 style="margin:0;">أحدث الطلبات الحية</h4>
-                    <button class="btn-royal" style="padding: 8px 15px; font-size: 12px;">عرض الكل</button>
+                    <h3 style="margin:0;">أحدث العمليات الحية</h3>
+                    <button class="btn-action" style="padding: 10px 20px; font-size: 12px;">تقرير كامل</button>
                 </div>
-                <table>
+                <table class="custom-table">
                     <thead>
-                        <tr>
-                            <th>رقم الطلب</th>
-                            <th>العميل</th>
-                            <th>الخدمة</th>
-                            <th>المبلغ</th>
-                            <th>الحالة</th>
-                        </tr>
+                        <tr><th>المعرف</th><th>الخدمة المطلوبة</th><th>المبلغ</th><th>الحالة</th><th>التوقيت</th></tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td><b style="color:var(--royal-purple)">#88291</b></td>
-                            <td>فهد الأحمد</td>
-                            <td>زيادة متابعين (10K)</td>
-                            <td>150.00 ر.س</td>
-                            <td><span class="status-pill status-active">مكتمل</span></td>
-                        </tr>
-                        <tr>
-                            <td><b style="color:var(--royal-purple)">#88292</b></td>
-                            <td>سارة علي</td>
-                            <td>توثيق حساب سناب</td>
-                            <td>2,500.00 ر.س</td>
-                            <td><span class="status-pill" style="background:rgba(255,214,0,0.1); color:var(--warning)">جاري المعالجة</span></td>
-                        </tr>
-                    </tbody>
+                    <tbody id="live-body">
+                        </tbody>
                 </table>
             </div>
         </section>
 
-        <section id="page-products" class="page-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-                <h2>إدارة المنتجات الذكية</h2>
-                <button class="btn-royal" onclick="alert('فتح نافذة الإضافة')"><i class="fas fa-plus"></i> إضافة منتج جديد</button>
-            </div>
-            <div class="stat-grid" style="grid-template-columns: repeat(2, 1fr);">
-                <div class="table-container">
-                    <h5>تصنيفات المنتجات</h5>
-                    <div class="tool-btn"><span>خدمات انستقرام</span> <span class="badge-count">120</span></div>
-                    <div class="tool-btn"><span>خدمات تيك توك</span> <span class="badge-count">85</span></div>
-                    <div class="tool-btn"><span>خدمات تويتر/X</span> <span class="badge-count">35</span></div>
+        <section id="page-designer" class="page-content">
+            <div class="designer-container">
+                <div class="toolset-panel">
+                    <h4 style="margin-top:0; color:var(--royal-purple)">العناصر المرئية</h4>
+                    <p style="font-size:12px; color:var(--text-muted); margin-bottom:20px;">اسحب العناصر لتصميم صفحة الهبوط</p>
+                    <div class="drag-item" draggable="true" ondragstart="handleDragStart(event)" id="h1-comp"><i class="fas fa-heading"></i> عنوان كبير</div>
+                    <div class="drag-item" draggable="true" ondragstart="handleDragStart(event)" id="p-comp"><i class="fas fa-paragraph"></i> فقرة نصية</div>
+                    <div class="drag-item" draggable="true" ondragstart="handleDragStart(event)" id="img-comp"><i class="fas fa-image"></i> معرض صور</div>
+                    <div class="drag-item" draggable="true" ondragstart="handleDragStart(event)" id="btn-comp"><i class="fas fa-link"></i> زر تحويل</div>
+                    <div class="drag-item" draggable="true" ondragstart="handleDragStart(event)" id="vid-comp"><i class="fas fa-video"></i> فيديو ترويجي</div>
                 </div>
-                <div class="table-container">
-                    <h5>أكثر المنتجات مبيعاً</h5>
-                    <div style="display:flex; align-items:center; gap:15px; margin-bottom:15px;">
-                        <div style="width:50px; height:50px; background:var(--glass); border-radius:10px;"></div>
-                        <div><b>باقة المليون مشاهدة</b><br><small style="color:var(--text-muted)">540 عملية بيع</small></div>
+                <div class="drop-area" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+                    <div id="canvas-placeholder" style="text-align:center; color:var(--text-muted); margin-top: 100px;">
+                        <i class="fas fa-layer-group fa-4x" style="margin-bottom:20px; opacity:0.3"></i>
+                        <h3>لوحة التصميم فارغة</h3>
+                        <p>ابدأ بسحب العناصر هنا لبناء واجهة متجرك الإبداعية</p>
                     </div>
                 </div>
-            </div>
-        </section>
-
-        <section id="page-designer" class="page-section">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h2>مصمم صفحات الهبوط (Drag & Drop)</h2>
-                <div style="display:flex; gap:10px;">
-                    <button class="btn-royal" style="background:var(--glass); border:1px solid var(--border);">معاينة</button>
-                    <button class="btn-royal">نشر الصفحة</button>
-                </div>
-            </div>
-            <div class="designer-layout">
-                <div class="designer-toolset">
-                    <h5>العناصر الرسومية</h5>
-                    <div class="tool-btn"><i class="fas fa-heading"></i> عنوان رئيسي</div>
-                    <div class="tool-btn"><i class="fas fa-paragraph"></i> كتلة نصية</div>
-                    <div class="tool-btn"><i class="fas fa-image"></i> صورة احترافية</div>
-                    <div class="tool-btn"><i class="fas fa-play-circle"></i> فيديو ترويجي</div>
-                    <div class="tool-btn"><i class="fas fa-mouse-pointer"></i> زر اتخاذ إجراء</div>
-                </div>
-                <div class="canvas-area">
-                    <div style="text-align:center; color:var(--text-muted)">
-                        <i class="fas fa-cloud-upload-alt fa-3x" style="margin-bottom:15px; color:var(--royal-purple)"></i>
-                        <p>اسحب العناصر من اليمين وأفلتها هنا لبناء صفحتك</p>
-                    </div>
-                </div>
-                <div class="designer-toolset">
-                    <h5>الخصائص</h5>
-                    <label style="font-size:11px; color:var(--text-muted)">لون الخلفية</label>
-                    <input type="color" style="width:100%; height:40px; border:none; background:none; cursor:pointer;">
+                <div class="toolset-panel">
+                    <h4 style="margin-top:0;">إعدادات العنصر</h4>
                     <hr style="border:0; border-top:1px solid var(--border); margin:20px 0;">
-                    <label style="font-size:11px; color:var(--text-muted)">تباعد العناصر</label>
-                    <input type="range" style="width:100%;">
+                    <label>خلفية الصفحة</label>
+                    <input type="color" style="height:50px;">
+                    <label>التباعد العمودي</label>
+                    <input type="range">
+                    <button class="btn-action" style="width:100%; margin-top:30px;" onclick="pushNotify('تم حفظ التصميم في السحابة!')">نشر الصفحة الآن</button>
                 </div>
             </div>
         </section>
 
-        <section id="page-service-store" class="page-section">
-            <div style="text-align:center; margin-bottom:40px;">
-                <h1 style="color:var(--royal-purple)">متجر خدمات FMM PRO</h1>
-                <p style="color:var(--text-muted)">خدمات حصرية لتطوير أعمالك وتوسيع نطاق متجرك</p>
-            </div>
-            <div class="stat-grid">
-                <div class="service-card">
-                    <i class="fas fa-code fa-3x" style="color:var(--royal-purple)"></i>
-                    <h3>ربط API مخصص</h3>
-                    <p style="font-size:13px; color:var(--text-muted)">ربط متجرك مع أي مزود خدمات عالمي بشكل آلي بالكامل.</p>
-                    <div class="service-price">499 ر.س</div>
-                    <button class="btn-royal" style="width:100%; justify-content:center;">طلب الخدمة الآن</button>
+        <section id="page-tools" class="page-content">
+            <div class="grid-layout">
+                <div class="royal-card">
+                    <h3><i class="fas fa-coins" style="color:var(--success)"></i> حاسبة الأرباح الذكية</h3>
+                    <p style="font-size:12px; color:var(--text-muted)">حساب صافي الربح بعد خصم الضرائب والعمولات.</p>
+                    <label>سعر المنتج النهائي</label>
+                    <input type="number" id="calc_price" placeholder="0.00" oninput="runCalculator()">
+                    <label>تكلفة الخدمة (المزود)</label>
+                    <input type="number" id="calc_cost" placeholder="0.00" oninput="runCalculator()">
+                    <div style="background:var(--glass); padding:20px; border-radius:20px; text-align:center; margin-top:15px;">
+                        <div style="font-size:11px; color:var(--text-muted)">الربح الصافي التقريبي</div>
+                        <h2 id="calc_result" style="color:var(--success); margin:5px 0;">0.00 ر.س</h2>
+                    </div>
                 </div>
-                <div class="service-card">
-                    <i class="fas fa-paint-brush fa-3x" style="color:var(--success)"></i>
-                    <h3>تصميم هوية متكاملة</h3>
-                    <p style="font-size:13px; color:var(--text-muted)">شعار، ألوان، بنرات متحركة، وقوالب تواصل اجتماعي.</p>
-                    <div class="service-price">850 ر.س</div>
-                    <button class="btn-royal" style="width:100%; justify-content:center;">طلب الخدمة الآن</button>
-                </div>
-                <div class="service-card">
-                    <i class="fas fa-search-dollar fa-3x" style="color:var(--warning)"></i>
-                    <h3>تحليل SEO وكلمات</h3>
-                    <p style="font-size:13px; color:var(--text-muted)">تصدر نتائج البحث في جوجل واحصل على زيارات مجانية.</p>
-                    <div class="service-price">299 ر.س</div>
-                    <button class="btn-royal" style="width:100%; justify-content:center;">طلب الخدمة الآن</button>
+                <div class="royal-card">
+                    <h3><i class="fas fa-fingerprint" style="color:var(--royal-purple)"></i> مولد مفاتيح API</h3>
+                    <p style="font-size:12px; color:var(--text-muted)">توليد مفاتيح تشفير آمنة لربط السيرفرات.</p>
+                    <div id="key_display" style="padding:20px; background:#000; border:1px dashed var(--royal-purple); border-radius:15px; text-align:center; font-family:monospace; margin:20px 0; word-break: break-all;">********</div>
+                    <button class="btn-action" style="width:100%; justify-content:center;" onclick="generateAPIKey()">توليد مفتاح جديد</button>
                 </div>
             </div>
         </section>
 
-        <section id="page-free-tools" class="page-section">
-            <h2>صندوق الأدوات المجانية</h2>
-            <div class="stat-grid">
-                <div class="stat-card" style="text-align:center; cursor:pointer;">
-                    <i class="fas fa-calculator fa-2x" style="color:var(--success)"></i>
-                    <h4>حاسبة الأرباح</h4>
-                    <p style="font-size:12px; color:var(--text-muted)">احسب صافي ربحك بعد خصم عمولات الدفع وسلة.</p>
+        <section id="page-services" class="page-content">
+            <div class="grid-layout" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="royal-card" style="text-align:center; border-top: 5px solid var(--royal-purple);">
+                    <i class="fas fa-laptop-code fa-3x" style="color:var(--royal-purple); margin-bottom:15px;"></i>
+                    <h4>برمجة ثيم سلة</h4>
+                    <p style="font-size:12px; color:var(--text-muted)">تحويل متجرك في سلة إلى تحفة فنية برمجية.</p>
+                    <h3 style="color:var(--success)">599 ر.س</h3>
+                    <button class="btn-action" style="width:100%; justify-content:center;">اطلب الآن</button>
                 </div>
-                <div class="stat-card" style="text-align:center; cursor:pointer;">
-                    <i class="fas fa-key fa-2x" style="color:var(--royal-purple)"></i>
-                    <h4>مولد كلمات مرور</h4>
-                    <p style="font-size:12px; color:var(--text-muted)">توليد كلمات مرور مشفرة وقوية جداً لنظامك.</p>
+                <div class="royal-card" style="text-align:center; border-top: 5px solid var(--success);">
+                    <i class="fas fa-chart-simple fa-3x" style="color:var(--success); margin-bottom:15px;"></i>
+                    <h4>حملة إعلانية (Snap)</h4>
+                    <p style="font-size:12px; color:var(--text-muted)">إدارة حملة إعلانية ممولة لمدة أسبوع كامل.</p>
+                    <h3 style="color:var(--success)">850 ر.س</h3>
+                    <button class="btn-action" style="width:100%; justify-content:center;">اطلب الآن</button>
                 </div>
-                <div class="stat-card" style="text-align:center; cursor:pointer;">
-                    <i class="fas fa-sync fa-2x" style="color:var(--warning)"></i>
-                    <h4>محول العملات</h4>
-                    <p style="font-size:12px; color:var(--text-muted)">تحديث لحظي لأسعار صرف العملات العالمية.</p>
+                <div class="royal-card" style="text-align:center; border-top: 5px solid var(--warning);">
+                    <i class="fas fa-headset fa-3x" style="color:var(--warning); margin-bottom:15px;"></i>
+                    <h4>دعم فني 24/7</h4>
+                    <p style="font-size:12px; color:var(--text-muted)">موظف متخصص للرد على عملائك في المتجر.</p>
+                    <h3 style="color:var(--success)">1200 ر.س</h3>
+                    <button class="btn-action" style="width:100%; justify-content:center;">اطلب الآن</button>
                 </div>
             </div>
         </section>
-
-    </main>
+    </div>
 
     <script>
-        // دالة طي القائمة الجانبية
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const icon = document.getElementById('toggle-icon');
-            sidebar.classList.toggle('collapsed');
-            
-            if(sidebar.classList.contains('collapsed')) {
-                icon.classList.replace('fa-outdent', 'fa-indent');
-            } else {
-                icon.classList.replace('fa-indent', 'fa-outdent');
-            }
-        }
+        // 1. نظام التنقل والتبديل (Navigation Logic)
+        function switchPage(pageId, element) {
+            // إخفاء كل الصفحات
+            const pages = document.querySelectorAll('.page-content');
+            pages.forEach(p => p.classList.remove('active'));
 
-        // دالة التنقل بين الصفحات
-        function openPage(pageId, element) {
-            // إخفاء كل السكاشن بـ Animation
-            const sections = document.querySelectorAll('.page-section');
-            sections.forEach(s => s.classList.remove('active'));
-
-            // إظهار السكشن المطلوب
-            const target = document.getElementById('page-' + pageId);
-            if(target) {
-                target.classList.add('active');
-                
-                // تحديث العنوان العلوي
-                const pageTitle = element.querySelector('.nav-text').innerText;
-                document.getElementById('page-title').innerText = pageTitle;
+            // إظهار الصفحة المطلوبة
+            const targetPage = document.getElementById('page-' + pageId);
+            if(targetPage) {
+                targetPage.classList.add('active');
+                document.getElementById('main-title').innerText = element.querySelector('.nav-text').innerText;
             }
 
-            // تحديث حالة الأزرار في السايدبار
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            // تحديث حالة القائمة
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
             element.classList.add('active');
 
-            // غلق السايدبار في الجوال (اختياري)
-            if(window.innerWidth < 768) {
-                toggleSidebar();
-            }
+            // إشعار بسيط
+            pushNotify("انتقلت إلى قسم: " + element.querySelector('.nav-text').innerText);
         }
 
-        // الساعة الحية بتوقيت المملكة العربية السعودية
+        // 2. طي القائمة (Sidebar Toggle)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const btn = document.getElementById('collapse-btn');
+            sidebar.classList.toggle('collapsed');
+            btn.classList.toggle('fa-chevron-right');
+            btn.classList.toggle('fa-chevron-left');
+        }
+
+        // 3. الساعة الحية (Live Clock)
         function updateClock() {
             const now = new Date();
-            const timeString = now.toLocaleTimeString('en-GB', { hour12: false });
-            document.getElementById('live-clock').innerText = timeString;
+            const time = now.toLocaleTimeString('ar-SA', { hour12: false });
+            document.getElementById('live-time').innerText = time;
         }
         setInterval(updateClock, 1000);
-        updateClock();
 
-        // محاكاة تحميل البيانات عند فتح الصفحة
-        window.onload = () => {
-            console.log("FMM Royal Hub V5.0 Started Successfully.");
-        };
+        // 4. حاسبة الأرباح (Profit Calculator Logic)
+        function runCalculator() {
+            const price = parseFloat(document.getElementById('calc_price').value) || 0;
+            const cost = parseFloat(document.getElementById('calc_cost').value) || 0;
+            
+            // معادلة سلة التقريبية (عمولة مدى 1.75% + 1 ريال)
+            const gatewayFee = (price * 0.0175) + 1.0;
+            const netProfit = price - cost - gatewayFee;
+            
+            const resultDisplay = document.getElementById('calc_result');
+            resultDisplay.innerText = netProfit.toFixed(2) + " ر.س";
+            resultDisplay.style.color = netProfit > 0 ? "var(--success)" : "var(--error)";
+        }
+
+        // 5. مولد مفاتيح API (Key Generator)
+        function generateAPIKey() {
+            const pattern = 'FMM-PRO-xxxx-4xxx-yxxx-HUB'.replace(/[xy]/g, function(c) {
+                const r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+                return v.toString(16).toUpperCase();
+            });
+            document.getElementById('key_display').innerText = pattern;
+            pushNotify("تم إنشاء مفتاح API مشفر بنجاح");
+        }
+
+        // 6. نظام الإشعارات (Toast Notification System)
+        function pushNotify(msg) {
+            const box = document.getElementById('toast-box');
+            const toast = document.createElement('div');
+            toast.className = 'toast-msg';
+            toast.innerHTML = `<i class="fas fa-bell" style="color:var(--royal-purple); margin-left:10px;"></i> ${msg}`;
+            box.appendChild(toast);
+            
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateX(-50px)';
+                setTimeout(() => toast.remove(), 500);
+            }, 3500);
+        }
+
+        // 7. محاكي الطلبات الحية (Live Order Simulation)
+        const services = ["متابعين انستا", "توثيق سناب", "خدمات X", "مشاهدات تيك توك", "دعم فني"];
+        const customers = ["عبدالله", "سارة", "محمد", "فهد", "ريم"];
+
+        function addLiveOrder() {
+            const tbody = document.getElementById('live-body');
+            const row = document.createElement('tr');
+            const id = Math.floor(Math.random() * 90000) + 10000;
+            const service = services[Math.floor(Math.random() * services.length)];
+            const customer = customers[Math.floor(Math.random() * customers.length)];
+            const price = (Math.random() * 200 + 50).toFixed(2);
+
+            row.innerHTML = `
+                <td><b style="color:var(--royal-purple)">#${id}</b></td>
+                <td><i class="fas fa-user-circle"></i> ${customer}</td>
+                <td>${service}</td>
+                <td>${price} ر.س</td>
+                <td><span style="color:var(--success); font-size:11px;"><i class="fas fa-circle-check"></i> مكتمل</span></td>
+                <td style="color:var(--text-muted)">الآن</td>
+            `;
+
+            if(tbody.rows.length > 6) tbody.deleteRow(6);
+            tbody.insertBefore(row, tbody.firstChild);
+        }
+        setInterval(addLiveOrder, 5000);
+        addLiveOrder();
+
+        // 8. نظام السحب والإفلات (Drag & Drop Engine)
+        function handleDragStart(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+            ev.target.style.opacity = "0.5";
+        }
+
+        function handleDragOver(ev) {
+            ev.preventDefault();
+        }
+
+        function handleDrop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.setData("text", ev.target.id); // Placeholder
+            document.getElementById('canvas-placeholder').style.display = 'none';
+            
+            const dropArea = ev.target.closest('.drop-area');
+            const newElement = document.createElement('div');
+            newElement.className = "drag-item";
+            newElement.style.cursor = "default";
+            newElement.style.background = "rgba(124, 77, 255, 0.1)";
+            newElement.innerHTML = `<span>تم إضافة عنصر جديد للموقع</span> <i class="fas fa-trash" style="margin-right:auto; cursor:pointer; color:var(--error)" onclick="this.parentElement.remove()"></i>`;
+            
+            dropArea.appendChild(newElement);
+            pushNotify("تم تحديث هيكل الصفحة");
+        }
     </script>
 </body>
 </html>
-
-
