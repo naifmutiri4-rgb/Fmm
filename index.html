@@ -3,214 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FMM Dashboard Pro</title>
+    <title>FMM Pro Dashboard</title>
     <style>
         :root {
-            --bg: #080a0f;
-            --panel: #161b22;
+            --bg: #050508;
+            --panel: #0d0d12;
             --accent: #00d4ff;
             --purple: #7c4dff;
             --success: #00e676;
             --text: #ffffff;
-            --dim: #94a3b8;
-            --glass: rgba(255, 255, 255, 0.03);
+            --dim: #636363;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: -apple-system, system-ui, sans-serif; background: var(--bg); color: var(--text); margin: 0; direction: rtl; overflow-x: hidden; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: sans-serif; }
+        body { background: var(--bg); color: var(--text); margin: 0; direction: rtl; overflow: hidden; }
 
-        /* الهيدر النيوني */
+        /* الهيدر النظيف كما في الصورة */
         .header {
-            background: rgba(13, 17, 23, 0.8);
-            padding: 20px;
+            padding: 25px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 212, 255, 0.2);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
         }
-        .logo { font-size: 26px; font-weight: 900; color: var(--accent); text-shadow: 0 0 15px rgba(0, 212, 255, 0.5); }
-        .live-status { color: var(--success); font-size: 12px; font-weight: bold; display: flex; align-items: center; gap: 5px; }
-        .dot { width: 8px; height: 8px; background: var(--success); border-radius: 50%; box-shadow: 0 0 10px var(--success); }
+        .menu-icon { font-size: 32px; cursor: pointer; color: var(--text); }
+        .logo { font-size: 24px; font-weight: 900; color: var(--accent); letter-spacing: 2px; text-shadow: 0 0 15px rgba(0,212,255,0.3); }
 
-        .container { padding: 20px; max-width: 500px; margin: 0 auto; }
-
-        /* كرت الترحيب */
-        .welcome-card {
-            background: linear-gradient(135deg, rgba(124, 77, 255, 0.15), rgba(0, 212, 255, 0.05));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-right: 5px solid var(--success);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
+        /* الواجهة الرئيسية النظيفة جداً */
+        .hero {
+            height: 60vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
         }
-        .welcome-card h2 { margin: 0; font-size: 24px; color: var(--success); text-shadow: 0 0 10px rgba(0, 230, 118, 0.3); }
-        .welcome-card p { color: var(--dim); font-size: 13px; line-height: 1.6; margin-top: 10px; }
+        .hero h1 { font-size: 32px; margin: 0; font-weight: 200; }
+        .hero span { color: var(--success); font-weight: 900; text-shadow: 0 0 20px rgba(0,230,118,0.3); }
+        .status-bar { font-size: 11px; color: var(--dim); margin-top: 10px; display: flex; align-items: center; gap: 5px; }
+        .dot { width: 7px; height: 7px; background: var(--success); border-radius: 50%; box-shadow: 0 0 8px var(--success); }
 
-        /* شبكة الإحصائيات */
-        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px; }
-        .stat-box { background: var(--glass); padding: 20px; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.05); text-align: center; }
-        .stat-box small { color: var(--dim); font-size: 11px; display: block; margin-bottom: 5px; }
-        .stat-box b { font-size: 18px; color: var(--text); }
+        /* القائمة الجانبية (الأقسام) */
+        .sidebar {
+            position: fixed;
+            top: 0; right: -100%; width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 2000;
+            transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+            padding: 40px 25px;
+        }
+        .sidebar.active { right: 0; }
+        .close-menu { font-size: 40px; color: var(--dim); cursor: pointer; margin-bottom: 30px; display: block; }
+        
+        .nav-item {
+            font-size: 22px;
+            padding: 20px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        .count-badge { background: var(--purple); font-size: 12px; padding: 2px 10px; border-radius: 10px; }
 
-        /* الأقسام التفاعلية */
-        .action-list { display: flex; flex-direction: column; gap: 12px; }
-        .action-item {
-            background: rgba(124, 77, 255, 0.08);
-            padding: 20px;
+        /* نافذة البيانات (الطلبات وغيرها) */
+        .data-panel {
+            position: fixed;
+            bottom: -100%; left: 0; width: 100%; height: 85%;
+            background: var(--panel);
+            border-top: 2px solid var(--purple);
+            border-radius: 30px 30px 0 0;
+            padding: 30px 20px;
+            z-index: 3000;
+            transition: 0.4s ease;
+            overflow-y: auto;
+        }
+        .data-panel.active { bottom: 0; }
+
+        /* تصميم كرت الطلب المطور */
+        .order-card {
+            background: rgba(255,255,255,0.02);
+            margin-bottom: 12px;
+            padding: 18px;
             border-radius: 15px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            border-right: 4px solid var(--purple);
+            gap: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+        .order-num { color: var(--purple); font-weight: bold; font-size: 18px; min-width: 30px; }
+        .order-info { flex-grow: 1; }
+        .order-info b { display: block; font-size: 14px; margin-bottom: 4px; }
+        .order-info small { color: var(--dim); font-size: 12px; }
+
+        .copy-btn {
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 11px;
             cursor: pointer;
-            transition: 0.3s;
         }
-        .action-item:active { transform: scale(0.96); background: rgba(124, 77, 255, 0.15); }
-
-        /* النافذة المنبثقة (Modal) */
-        .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            justify-content: center;
-            align-items: flex-end;
-            z-index: 2000;
-            backdrop-filter: blur(10px);
-        }
-        .modal-content {
-            background: var(--panel);
-            width: 100%;
-            max-width: 500px;
-            border-radius: 30px 30px 0 0;
-            padding: 30px;
-            border-top: 3px solid var(--accent);
-            transform: translateY(100%);
-            transition: 0.4s ease-out;
-        }
-        .modal-overlay.active { display: flex; }
-        .modal-overlay.active .modal-content { transform: translateY(0); }
-
-        .close-btn { background: var(--glass); border: none; color: var(--text); padding: 12px 25px; border-radius: 12px; cursor: pointer; float: left; }
-        
-        .data-row { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 14px; }
-        .data-label { color: var(--dim); }
-        .data-value { color: var(--accent); font-weight: bold; }
-
-        /* الزر العائم */
-        .fab { position: fixed; bottom: 25px; left: 25px; width: 60px; height: 60px; background: var(--purple); border-radius: 50%; display: flex; justify-content: center; align-items: center; box-shadow: 0 0 20px var(--purple); font-weight: bold; color: white; cursor: pointer; }
     </style>
 </head>
 <body>
 
     <div class="header">
+        <div class="menu-icon" onclick="toggleSidebar(true)">☰</div>
         <div class="logo">FMM</div>
-        <div class="live-status"><div class="dot"></div> LIVE</div>
+        <div style="width:32px"></div>
     </div>
 
-    <div class="container">
-        
-        <div class="welcome-card">
-            <h2>Welcome in Fmm</h2>
-            <p>نظام الإدارة المتكامل للطلبات والمالية. تحكم في متجرك بكل سلاسة واحترافية.</p>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-box">
-                <small>مبيعات اليوم</small>
-                <b>1,420 ر.س</b>
-            </div>
-            <div class="stat-box">
-                <small>الرصيد الحالي</small>
-                <b style="color: var(--accent)">$285.50</b>
-            </div>
-        </div>
-
-        <div class="action-list">
-            <div class="action-item" onclick="openModal('orders')">
-                <span>📦 طلبات المتجر اليوم</span>
-                <span style="color: var(--success); font-weight: bold;">(3) ←</span>
-            </div>
-            <div class="action-item" onclick="openModal('finance')">
-                <span>📊 السجل المالي والأرباح</span>
-                <span style="color: var(--dim);">التفاصيل ←</span>
-            </div>
-            <div class="action-item" onclick="openModal('services')">
-                <span>🔢 قائمة أرقام الخدمات</span>
-                <span style="color: var(--dim);">ID List ←</span>
-            </div>
-            <div class="action-item" onclick="openModal('settings')">
-                <span>⚙️ إعدادات الربط الآلي</span>
-                <span style="color: var(--dim);">تعديل ←</span>
-            </div>
-        </div>
-
+    <div class="hero">
+        <h1>Welcome in <span>Fmm</span></h1>
+        <div class="status-bar"><div class="dot"></div> System Online</div>
     </div>
 
-    <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-        <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="toggleModal(false)">إغلاق</button>
-            <h2 id="modalTitle" style="color: var(--purple); margin-top: 10px;">العنوان</h2>
-            <div id="modalBody" style="margin-top: 20px;">
-                </div>
+    <div class="sidebar" id="sidebar">
+        <span class="close-menu" onclick="toggleSidebar(false)">×</span>
+        <div class="nav-item" onclick="showData('orders')">
+            <span>📦 طلبات المتجر</span>
+            <span class="count-badge">3 طلبات</span>
+        </div>
+        <div class="nav-item" onclick="showData('finance')">
+            <span>💰 سجل المالية</span>
+            <span style="color:var(--success); font-size:14px;">+540 ر.س</span>
+        </div>
+        <div class="nav-item" onclick="showData('services')">
+            <span>🔢 أرقام الخدمات</span>
+            <span style="color:var(--dim); font-size:14px;">ID List</span>
         </div>
     </div>
 
-    <div class="fab">FMM</div>
+    <div class="data-panel" id="dataPanel">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:25px;">
+            <h2 id="panelTitle" style="margin:0; font-size:20px;">التفاصيل</h2>
+            <button onclick="hidePanel()" style="background:none; border:none; color:var(--dim); font-size:18px;">إغلاق</button>
+        </div>
+        <div id="panelBody"></div>
+    </div>
 
     <script>
-        const storage = {
-            orders: {
-                title: "📦 طلبات المتجر الحالية",
-                body: `
-                    <div class="data-row"><span class="data-label">طلب #1042</span><span class="data-value">متابعين تيك توك</span></div>
-                    <div class="data-row"><span class="data-label">العميل</span><span class="data-value">نايف السبيعي</span></div>
-                    <div class="data-row"><span class="data-label">الحالة</span><span class="data-value" style="color:orange">قيد الانتظار</span></div>
-                    <button style="width:100%; padding:15px; margin-top:15px; background:var(--success); border:none; border-radius:10px; font-weight:bold;">تنفيذ الطلب فوراً</button>
-                `
-            },
-            finance: {
-                title: "📊 السجل المالي",
-                body: `
-                    <div class="data-row"><span class="data-label">إجمالي الأرباح</span><span class="data-value">+4,500 ر.س</span></div>
-                    <div class="data-row"><span class="data-label">رصيد SMM Panel</span><span class="data-value">$285.50</span></div>
-                    <div class="data-row"><span class="data-label">آخر عملية سحب</span><span class="data-value">منذ ساعتين</span></div>
-                `
-            },
-            services: {
-                title: "🔢 أرقام الخدمات IDs",
-                body: `
-                    <div class="data-row"><span class="data-label">زيادة متابعين</span><span class="data-value">ID: 5542</span></div>
-                    <div class="data-row"><span class="data-label">لايكات عربية</span><span class="data-value">ID: 1020</span></div>
-                    <div class="data-row"><span class="data-label">مشاهدات ترند</span><span class="data-value">ID: 8891</span></div>
-                `
-            },
-            settings: {
-                title: "⚙️ الإعدادات والربط",
-                body: `
-                    <p style="font-size:12px; color:var(--dim)">ضع الـ API Key الخاص بمتجر سلة هنا للربط التلقائي.</p>
-                    <input type="password" placeholder="Salla API Token" style="width:100%; padding:15px; background:#000; border:1px solid #333; color:#fff; border-radius:10px;">
-                    <button style="width:100%; padding:15px; margin-top:10px; background:var(--purple); border:none; border-radius:10px; color:#fff;">حفظ الإعدادات</button>
-                `
+        function toggleSidebar(s) { document.getElementById('sidebar').classList.toggle('active', s); }
+
+        function showData(type) {
+            const panel = document.getElementById('dataPanel');
+            const body = document.getElementById('panelBody');
+            const title = document.getElementById('panelTitle');
+            
+            if(type === 'orders') {
+                title.innerText = "طلبات اليوم الحالية";
+                body.innerHTML = `
+                    <div class="order-card">
+                        <div class="order-num">01</div>
+                        <div class="order-info"><b>نايف المطيري</b><small>5000 متابع - قيد الانتظار</small></div>
+                        <button class="copy-btn" onclick="copyText('@naif_user')">نسخ الرابط</button>
+                    </div>
+                    <div class="order-card">
+                        <div class="order-num">02</div>
+                        <div class="order-info"><b>فهد السبيعي</b><small>1000 لايك - مكتمل</small></div>
+                        <button class="copy-btn" style="border-color:var(--success); color:var(--success);">تم النسخ</button>
+                    </div>
+                `;
+            } else if(type === 'finance') {
+                title.innerText = "التقرير المالي";
+                body.innerHTML = `
+                    <div style="background:var(--bg); padding:20px; border-radius:15px; border:1px solid #1a1a1a">
+                        <p style="margin:0; color:var(--dim)">أرباح اليوم الصافية</p>
+                        <h1 style="color:var(--success); margin:10px 0;">540.00 ر.س</h1>
+                        <small style="color:var(--purple)">رصيد SMM Panel الحالي: $214.00</small>
+                    </div>
+                `;
             }
-        };
-
-        function openModal(type) {
-            document.getElementById('modalTitle').innerText = storage[type].title;
-            document.getElementById('modalBody').innerHTML = storage[type].body;
-            toggleModal(true);
+            panel.classList.add('active');
         }
 
-        function toggleModal(show) {
-            const m = document.getElementById('modalOverlay');
-            show ? m.classList.add('active') : m.classList.remove('active');
+        function hidePanel() { document.getElementById('dataPanel').classList.remove('active'); }
+        
+        function copyText(text) {
+            navigator.clipboard.writeText(text);
+            alert("تم نسخ الرابط: " + text);
         }
-
-        function closeModal(e) { if(e.target.id === 'modalOverlay') toggleModal(false); }
     </script>
 </body>
 </html>
