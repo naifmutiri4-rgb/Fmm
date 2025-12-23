@@ -1,198 +1,165 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>FMM Royal Dashboard - Ultimate Edition</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<style>
-:root {
-    --royal-purple: #7C4DFF;
-    --deep-black: #050505;
-    --card-bg: #121216;
-    --neon-green: #00E676;
-    --gold-warning: #FFCF4B;
-    --glass-bg: rgba(20, 20, 30, 0.9);
-}
-body { background-color: var(--deep-black); color: white; font-family: 'Inter', sans-serif; margin:0; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>FMM Royal Control Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --royal-purple: #7c4dff;
+            --deep-black: #050508;
+            --glass-bg: rgba(15, 15, 25, 0.95);
+            --border: rgba(124, 77, 255, 0.35);
+            --success: #00e676;
+            --lightning: #ffee00;
+        }
 
-/* تأثيرات الزجاج والقوة */
-.royal-card { background: linear-gradient(145deg,#16161d,#0f0f13); border:1px solid rgba(124,77,255,0.2); border-radius:24px; position:relative; box-shadow:0 10px 30px rgba(0,0,0,0.5); transition:all 0.3s ease; }
-.balance-glow { background: linear-gradient(135deg,#121216 0%,#1a1a25 100%); box-shadow:0 0 25px rgba(124,77,255,0.15); position:relative; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; font-family: -apple-system, sans-serif; }
+        body { background: var(--deep-black); color: #fff; margin: 0; overflow-x: hidden; }
 
-/* المربع القزازي للتحليل */
-.glass-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(25px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 15px; }
-.glass-overlay.active { display: flex; }
-.glass-panel { background: var(--glass-bg); border: 1px solid rgba(124,77,255,0.4); width: 100%; max-width: 500px; border-radius: 35px; padding: 25px; box-shadow: 0 0 40px rgba(124,77,255,0.2); }
+        /* الهيدر */
+        .header { padding: 18px; display: flex; justify-content: space-between; align-items: center; background: #000; border-bottom: 1px solid var(--border); sticky; top: 0; z-index: 1000; }
+        .logo { font-weight: 900; color: var(--royal-purple); font-size: 22px; letter-spacing: -1px; }
 
-/* نظام التبويبات */
-.tab-btn { padding: 10px; text-align: center; border-radius: 12px; font-size: 12px; font-weight: bold; color: #888; transition: 0.3s; cursor: pointer; border: 1px solid transparent; }
-.tab-btn.active { background: rgba(124,77,255,0.1); color: var(--royal-purple); border-color: rgba(124,77,255,0.3); }
+        /* القائمة الجانبية (Sidebar) */
+        .sidebar {
+            position: fixed; top: 0; right: -280px; width: 280px; height: 100%;
+            background: var(--glass-bg); backdrop-filter: blur(20px);
+            z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 1px solid var(--border); padding: 20px;
+            overflow-y: auto;
+        }
+        .sidebar.active { right: 0; }
+        .sidebar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 15px; }
+        
+        .menu-list { list-style: none; padding: 0; margin: 0; }
+        .menu-item { 
+            padding: 14px 15px; margin-bottom: 8px; border-radius: 12px; 
+            display: flex; align-items: center; gap: 12px; color: #ccc;
+            transition: 0.3s; cursor: pointer; font-size: 14px;
+        }
+        .menu-item i { width: 20px; color: var(--royal-purple); font-size: 16px; }
+        .menu-item:hover { background: rgba(124, 77, 255, 0.1); color: #fff; }
+        .menu-item.active { background: var(--royal-purple); color: #fff; }
+        .menu-item.active i { color: #fff; }
 
-/* أنيميشن */
-@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-.animate-in { animation: fadeIn 0.4s ease forwards; }
-</style>
+        /* المحتوى الرئيسي */
+        .tabs-container { display: flex; background: #111; padding: 5px; margin: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.05); }
+        .tab { flex: 1; padding: 12px; text-align: center; font-size: 12px; border-radius: 10px; cursor: pointer; color: #888; }
+        .tab.active { background: var(--royal-purple); color: white; }
+
+        .order-card { margin: 15px; background: #0d0d0d; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); overflow: hidden; }
+        .order-header { padding: 18px; display: flex; justify-content: space-between; align-items: center; }
+        .order-details { display: none; padding: 20px; border-top: 1px solid var(--border); background: rgba(124,77,255,0.02); }
+        .order-details.active { display: block; }
+
+        .package-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 15px; }
+        .pkg-item { background: rgba(255,255,255,0.03); padding: 10px; border-radius: 12px; text-align: center; font-size: 10px; }
+        .pkg-item b { display: block; color: var(--royal-purple); margin-top: 4px; }
+
+        /* المربع القزازي للتحليل */
+        .glass-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(25px); z-index: 9999; display: none; align-items: center; justify-content: center; padding: 20px; }
+        .glass-overlay.active { display: flex; }
+        .glass-panel { background: var(--glass-bg); border: 1px solid var(--border); width: 100%; max-width: 450px; border-radius: 30px; padding: 25px; }
+
+        .btn-royal { width: 100%; padding: 16px; background: var(--royal-purple); border: none; border-radius: 15px; color: white; font-weight: bold; box-shadow: 0 5px 0 #4e29b3; margin-top: 10px; }
+        
+        /* غطاء الخلفية عند فتح المنيو */
+        .overlay-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
+        .overlay-bg.active { display: block; }
+    </style>
 </head>
 <body>
 
-<header class="p-4 flex justify-between items-center sticky top-0 z-50 bg-[#050505]/80 backdrop-blur-xl border-b border-white/5">
-    <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5">
-        <i class="fas fa-bars-staggered text-white"></i>
-    </button>
-    <div class="text-xl font-black italic tracking-tighter text-[#7C4DFF]">FMM ROYAL</div>
-    <div class="w-10 h-10 rounded-full border border-purple-500/30 flex items-center justify-center bg-white/5">
-        <i class="fas fa-bolt text-yellow-400"></i>
-    </div>
-</header>
-
-<main class="p-5 space-y-6">
-
-    <div class="royal-card p-5 flex items-center gap-4 balance-glow">
-        <div class="w-12 h-12 rounded-2xl bg-purple-500/10 flex items-center justify-center border border-purple-500/20">
-            <i class="fas fa-wallet text-purple-500 text-xl"></i>
+    <div class="overlay-bg" id="overlay" onclick="toggleMenu()"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <span style="font-weight: 900; color: var(--royal-purple);">القوائم الرئيسية</span>
+            <i class="fas fa-times" onclick="toggleMenu()" style="cursor:pointer;"></i>
         </div>
-        <div class="flex-1">
-            <p class="text-[10px] text-gray-500 font-bold uppercase">رصيد المحفظة المتاح</p>
-            <h2 class="text-2xl font-black tracking-tighter">1,240.50 <span class="text-sm font-normal text-gray-400">ريال</span></h2>
+        <ul class="menu-list">
+            <li class="menu-item active"><i class="fas fa-home"></i> الرئيسية</li>
+            <li class="menu-item"><i class="fas fa-box"></i> المنتجات</li>
+            <li class="menu-item"><i class="fas fa-shopping-cart"></i> الطلبات</li>
+            <li class="menu-item"><i class="fas fa-users"></i> العملاء</li>
+            <li class="menu-item"><i class="fas fa-bullhorn"></i> أدوات التسويق</li>
+            <li class="menu-item"><i class="fas fa-store"></i> المتجر</li>
+            <li class="menu-item"><i class="fas fa-user-gear"></i> المستخدم</li>
+            <li class="menu-item"><i class="fas fa-pen-nib"></i> مصمم الصفحات</li>
+            <li class="menu-item"><i class="fas fa-server"></i> متجر الخدمات</li>
+            <li class="menu-item"><i class="fas fa-screwdriver-wrench"></i> أدوات مجانية</li>
+        </ul>
+    </aside>
+
+    <header class="header">
+        <i class="fas fa-bars-staggered" onclick="toggleMenu()" style="font-size: 20px; cursor: pointer;"></i>
+        <div class="logo">FMM ENTERPRISE</div>
+        <div class="w-8 h-8 rounded-full bg-purple-500/20 border border-purple-500/40 flex items-center justify-center">
+            <i class="fas fa-shield-halved text-[12px] text-purple-400"></i>
         </div>
-        <button class="bg-[#7C4DFF] p-2 rounded-xl px-4 text-xs font-bold" onclick="toggleSelectAll()">تحديد الكل</button>
+    </header>
+
+    <div class="tabs-container">
+        <div class="tab active">بالانتظار (2)</div>
+        <div class="tab">قيد التنفيذ</div>
+        <div class="tab">مكتملة</div>
     </div>
 
-    <div class="grid grid-cols-3 gap-2 bg-white/5 p-1 rounded-18px">
-        <div class="tab-btn active" id="tab-waiting" onclick="switchTab('waiting')">بالانتظار (2)</div>
-        <div class="tab-btn" id="tab-processing" onclick="switchTab('processing')">قيد التنفيذ</div>
-        <div class="tab-btn" id="tab-done" onclick="switchTab('done')">مكتملة</div>
+    <div class="order-card">
+        <div class="order-header" onclick="this.nextElementSibling.classList.toggle('active')">
+            <div style="display:flex; align-items:center; gap:12px;">
+                <input type="checkbox" style="width:17px; height:17px;">
+                <b>#6602 | عميل متجر سلة</b>
+            </div>
+            <i class="fas fa-chevron-down text-gray-600"></i>
+        </div>
+        <div class="order-details">
+            <div class="package-grid">
+                <div class="pkg-item">👀 مشاهدات<b>5,000</b></div>
+                <div class="pkg-item">❤️ لايكات<b>500</b></div>
+                <div class="pkg-item">👥 متابعين<b>200</b></div>
+            </div>
+            <button class="btn-royal" onclick="openPkgAnalysis(6602)">تحليل وتفكيك البكج ⚡</button>
+        </div>
     </div>
 
-    <div class="space-y-4" id="ordersContainer">
-        <div class="royal-card p-5 animate-in" data-status="waiting">
-            <div class="flex justify-between items-start mb-4">
-                <div class="flex items-center gap-3">
-                    <input type="checkbox" class="order-checkbox w-5 h-5 accent-[#7C4DFF]">
-                    <div>
-                        <h4 class="font-bold text-sm">بكج تيك توك VIP (#5531)</h4>
-                        <p class="text-[10px] text-gray-500 italic">العميل: فهد محمد</p>
-                    </div>
-                </div>
-                <span class="text-[10px] px-2 py-1 rounded-md bg-yellow-500/10 text-yellow-500 font-bold">انتظار</span>
+    <div class="glass-overlay" id="analyzer">
+        <div class="glass-panel">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+                <b style="color:var(--royal-purple);">💎 محلل الخدمات الذكي</b>
+                <i class="fas fa-times" onclick="closeA()" style="cursor:pointer;"></i>
             </div>
             
-            <div class="grid grid-cols-3 gap-2 mb-4">
-                <div class="bg-white/5 p-2 rounded-lg text-center"><p class="text-[9px] text-gray-500">👀</p><b class="text-xs">10k</b></div>
-                <div class="bg-white/5 p-2 rounded-lg text-center"><p class="text-[9px] text-gray-500">❤️</p><b class="text-xs">1k</b></div>
-                <div class="bg-white/5 p-2 rounded-lg text-center"><p class="text-[9px] text-gray-500">👥</p><b class="text-xs">500</b></div>
-            </div>
-
-            <button onclick="openAnalyzer('بكج تيك توك', 10000, 1000, 500)" class="w-full bg-[#7C4DFF] py-3 rounded-xl font-black text-xs shadow-lg shadow-purple-500/20 active:scale-95 transition-all">
-                تحليل وتفكيك البكج ⚡
-            </button>
-        </div>
-    </div>
-
-</main>
-
-<div class="glass-overlay" id="analyzerOverlay">
-    <div class="glass-panel">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="font-black text-sm text-[#7C4DFF] italic">💎 محلل التوصيات الذكي</h3>
-            <button onclick="closeAnalyzer()" class="text-gray-500"><i class="fas fa-times"></i></button>
-        </div>
-
-        <div class="space-y-3" id="analysisResults">
-            </div>
-
-        <div class="mt-6 p-4 rounded-2xl bg-[#00E676]/10 border border-[#00E676]/20 text-center">
-            <p class="text-[10px] text-[#00E676] font-bold uppercase mb-1">إجمالي تكلفة البكج (أرخص خيار)</p>
-            <h2 class="text-3xl font-black text-[#00E676]" id="totalCost">$0.00</h2>
-            <p class="text-[9px] text-gray-500 mt-2">🛡️ تم اختيار أسرع الخدمات (بدء خلال 1-5 دقائق)</p>
-        </div>
-
-        <button onclick="confirmOrder()" class="w-full bg-[#00E676] text-black py-4 rounded-2xl font-black mt-4 shadow-xl shadow-green-500/20">
-            تأكيد الإرسال للمزود 🚀
-        </button>
-    </div>
-</div>
-
-<aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full z-[100] p-6 shadow-2xl transition-transform duration-400 bg-[#121216]/98 backdrop-blur-2xl border-l border-purple-500/20 w-[260px]">
-    <div class="flex justify-between items-center mb-10">
-        <span class="text-2xl font-black italic text-[#7C4DFF]">FMM</span>
-        <button onclick="toggleSidebar()" class="text-gray-500 text-xl"><i class="fas fa-times"></i></button>
-    </div>
-    <nav class="space-y-2">
-        <div class="nav-item group" onclick="toggleSub('automationSub')">
-            <div class="flex items-center gap-3"><i class="fas fa-robot text-purple-500"></i> الأتمتة الآلية</div>
-            <i class="fas fa-chevron-left text-[10px]"></i>
-        </div>
-        <div class="nav-sub p-2 space-y-2 hidden flex-col" id="automationSub">
-            <a href="#" class="text-xs text-gray-400 hover:text-white">تفعيل Auto-run</a>
-            <a href="#" class="text-xs text-gray-400 hover:text-white">إعدادات الجودة والسعر</a>
-        </div>
-        </nav>
-</aside>
-
-<script>
-// تبديل التبويبات
-function switchTab(status) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.getElementById('tab-' + status).classList.add('active');
-    // هنا يمكن إضافة فلترة حقيقية للعناصر
-}
-
-// تحليل البكج وعرض التوصيات
-function openAnalyzer(type, views, likes, followers) {
-    const results = document.getElementById('analysisResults');
-    const services = [
-        { name: 'مشاهدات (سيرفر #402)', speed: '1-2 دقيقة', price: (views/1000 * 0.02) },
-        { name: 'لايكات (سيرفر #881)', speed: '3 دقائق', price: (likes/1000 * 0.45) },
-        { name: 'متابعين (سيرفر #12)', speed: '5-10 دقائق', price: (followers/1000 * 1.20) }
-    ];
-
-    let total = 0;
-    results.innerHTML = services.map(s => {
-        total += s.price;
-        return `
-            <div class="flex justify-between items-center p-3 rounded-xl bg-white/5 border border-white/5">
-                <div>
-                    <p class="text-[11px] font-bold">${s.name}</p>
-                    <p class="text-[9px] text-[#FFCF4B]"><i class="fas fa-bolt"></i> بدء: ${s.speed}</p>
+            <div style="background:rgba(255,255,255,0.03); padding:15px; border-radius:15px; margin-bottom:15px; border-right:3px solid var(--royal-purple);">
+                <div style="display:flex; justify-content:space-between; font-size:13px;">
+                    <span>خادم المشاهدات السريع (#402)</span>
+                    <span style="color:var(--success)">$0.02</span>
                 </div>
-                <span class="text-xs font-mono text-[#00E676]">$${s.price.toFixed(2)}</span>
+                <small style="color:var(--lightning); font-size:10px;">⚡ البدء: خلال 1 دقيقة</small>
             </div>
-        `;
-    }).join('');
 
-    document.getElementById('totalCost').innerText = '$' + total.toFixed(2);
-    document.getElementById('analyzerOverlay').classList.add('active');
-}
+            <div style="text-align:center; padding:15px; background:rgba(0,230,118,0.05); border-radius:20px; border:1px dashed var(--success);">
+                <small style="color:var(--success)">إجمالي تكلفة التنفيذ:</small>
+                <div style="font-size:32px; font-weight:900;">$0.65</div>
+            </div>
 
-function closeAnalyzer() {
-    document.getElementById('analyzerOverlay').classList.remove('active');
-}
+            <button class="btn-royal" onclick="alert('تم الإرسال للمزود ✅')">تأكيد الإرسال الفوري 🚀</button>
+        </div>
+    </div>
 
-function confirmOrder() {
-    alert("تم تفكيك البكج وإرساله بنجاح ✅");
-    closeAnalyzer();
-}
-
-function toggleSidebar() {
-    document.getElementById('sidebar').classList.toggle('translate-x-full');
-}
-
-function toggleSub(id) {
-    const sub = document.getElementById(id);
-    sub.classList.toggle('hidden');
-    sub.classList.toggle('flex');
-}
-
-function toggleSelectAll() {
-    const cbs = document.querySelectorAll('.order-checkbox');
-    const allChecked = Array.from(cbs).every(cb => cb.checked);
-    cbs.forEach(cb => cb.checked = !allChecked);
-}
-</script>
-
+    <script>
+        function toggleMenu() {
+            document.getElementById('sidebar').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+        function openPkgAnalysis(id) {
+            document.getElementById('analyzer').classList.add('active');
+        }
+        function closeA() {
+            document.getElementById('analyzer').classList.remove('active');
+        }
+    </script>
 </body>
 </html>
 
