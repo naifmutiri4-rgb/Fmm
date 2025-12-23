@@ -3,139 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FMM Royal Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        /* تأثيرات 3D للبطاقات */
-        .card-3d {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05), 0 6px 6px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease;
+        /* إعدادات الألوان الملكية */
+        :root {
+            --royal-purple: #7C4DFF;
+            --deep-black: #050505;
+            --surface-black: #121216;
+            --snow-white: #FFFFFF;
+            --gold-status: #FFCF4B;
+            --neon-green: #00E676;
+            --glass-border: rgba(124, 77, 255, 0.3);
         }
-        .card-3d:active {
-            transform: scale(0.98);
+
+        body {
+            background-color: var(--deep-black);
+            color: var(--snow-white);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
         }
-        /* تنحيف القائمة الجانبية وحركتها */
+
+        /* تأثير البطاقات الزجاجي 3D */
+        .card-royal {
+            background: var(--surface-black);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card-royal:active {
+            transform: scale(0.96);
+            border-color: var(--royal-purple);
+        }
+
+        /* القائمة الجانبية المضيئة */
         #sidebar {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            width: 200px; /* حجم أصغر للقائمة */
+            background: rgba(18, 18, 22, 0.98);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid var(--glass-border);
+            width: 210px;
+            transition: transform 0.4s ease-in-out;
         }
-        /* غطاء شفاف خلف القائمة عند ظهورها */
+
+        .nav-link {
+            color: #888888;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-radius: 12px;
+            margin: 5px 10px;
+            transition: 0.3s;
+        }
+
+        .nav-link.active, .nav-link:hover {
+            background: rgba(124, 77, 255, 0.1);
+            color: var(--royal-purple);
+            box-shadow: inset 0 0 10px rgba(124, 77, 255, 0.05);
+        }
+
+        /* تأثير التوهج */
+        .glow-purple {
+            box-shadow: 0 0 20px rgba(124, 77, 255, 0.4);
+        }
+
         #overlay {
             display: none;
-            background: rgba(0, 0, 0, 0.3);
-            backdrop-filter: blur(2px);
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
         }
     </style>
 </head>
-<body class="bg-[#f8f9fe] font-sans overflow-x-hidden">
+<body>
 
     <div id="overlay" class="fixed inset-0 z-40" onclick="toggleSidebar()"></div>
 
-    <header class="p-4 flex justify-between items-center bg-white shadow-sm sticky top-0 z-30">
-        <button onclick="toggleSidebar()" class="text-[#3f3d91] p-2 hover:bg-gray-100 rounded-lg transition">
-            <i class="fas fa-bars text-xl"></i>
+    <header class="p-4 flex justify-between items-center sticky top-0 z-30 bg-[#050505]/80 backdrop-blur-md border-b border-white/5">
+        <button onclick="toggleSidebar()" class="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 text-white active:bg-purple-500/20">
+            <i class="fas fa-bars-staggered"></i>
         </button>
-        <div class="flex items-center gap-2">
-            <span class="text-xs text-gray-400 font-bold">4G</span>
-            <i class="fas fa-battery-half text-gray-400"></i>
+        <div class="text-xl font-black italic tracking-tighter" style="color: var(--royal-purple);">FMM</div>
+        <div class="w-10 h-10 rounded-full border border-purple-500/30 flex items-center justify-center bg-surface-black overflow-hidden">
+             <i class="fas fa-user-astronaut text-xs text-purple-400"></i>
         </div>
     </header>
 
     <div class="flex">
-        <aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full bg-[#3f3d91] text-white z-50 shadow-2xl overflow-hidden rounded-l-2xl">
-            <div class="p-5 flex flex-col h-full">
-                <div class="flex justify-between items-center mb-8 border-b border-white/10 pb-4">
-                    <span class="text-xl font-bold tracking-wider">FMM</span>
-                    <button onclick="toggleSidebar()" class="text-white/50 hover:text-white">
-                        <i class="fas fa-times"></i>
-                    </button>
+        <aside id="sidebar" class="fixed inset-y-0 right-0 transform translate-x-full z-50">
+            <div class="py-8 flex flex-col h-full">
+                <div class="px-6 mb-10">
+                    <h2 class="text-2xl font-black text-white">Menu</h2>
                 </div>
-                
-                <nav class="space-y-2">
-                    <a href="#" class="flex items-center gap-3 p-3 bg-white/10 rounded-xl text-sm transition">
-                        <i class="fas fa-home w-5"></i> <span>الرئيسية</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl text-sm text-white/70 transition">
-                        <i class="fas fa-shopping-cart w-5"></i> <span>الطلبات</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl text-sm text-white/70 transition">
-                        <i class="fas fa-layer-group w-5"></i> <span>الخدمات</span>
-                    </a>
-                    <a href="#" class="flex items-center gap-3 p-3 hover:bg-white/5 rounded-xl text-sm text-white/70 transition">
-                        <i class="fas fa-chart-pie w-5"></i> <span>التقارير</span>
-                    </a>
+                <nav class="flex-1">
+                    <a href="#" class="nav-link active"><i class="fas fa-th-large"></i> <span>الرئيسية</span></a>
+                    <a href="#" class="nav-link"><i class="fas fa-shopping-bag"></i> <span>الطلبات</span></a>
+                    <a href="#" class="nav-link"><i class="fas fa-bolt"></i> <span>الخدمات</span></a>
+                    <a href="#" class="nav-link"><i class="fas fa-chart-line"></i> <span>التقارير</span></a>
                 </nav>
-
-                <div class="mt-auto pt-4 border-t border-white/10">
-                    <a href="#" class="flex items-center gap-3 p-3 text-sm text-white/50">
-                        <i class="fas fa-user-shield w-5"></i> <span>الإدارة</span>
-                    </a>
-                </div>
             </div>
         </aside>
 
-        <main class="w-full p-4 space-y-5">
+        <main class="w-full p-5 space-y-6">
             
-            <div class="card-3d p-6 relative overflow-hidden">
-                <div class="absolute -left-4 -top-4 w-16 h-16 bg-blue-500/10 rounded-full"></div>
-                <div class="flex justify-between items-start">
+            <div class="card-royal p-6 relative overflow-hidden glow-purple" style="background: linear-gradient(135deg, #121216 0%, #1a1a25 100%);">
+                <div class="flex justify-between items-start relative z-10">
                     <div>
-                        <p class="text-gray-400 text-xs font-bold mb-1">الرصيد الكلي</p>
-                        <h2 class="text-3xl font-black text-[#1a1c2e]">$5,250.00</h2>
+                        <p style="color: #888888;" class="text-[10px] uppercase font-bold tracking-widest mb-1">Total Balance</p>
+                        <h2 class="text-3xl font-black">$5,250.00</h2>
+                        <div class="mt-2 flex items-center gap-2">
+                             <span style="color: var(--neon-green);" class="text-[11px] font-bold">+2.4%</span>
+                             <i class="fas fa-arrow-trend-up text-[10px]" style="color: var(--neon-green);"></i>
+                        </div>
                     </div>
-                    <div class="bg-blue-500 p-3 rounded-2xl shadow-lg shadow-blue-200">
+                    <div class="w-12 h-12 rounded-2xl flex items-center justify-center" style="background: var(--royal-purple); box-shadow: 0 0 15px var(--royal-purple);">
                         <i class="fas fa-wallet text-white"></i>
                     </div>
                 </div>
+                <div class="absolute -right-10 -bottom-10 w-32 h-32 rounded-full bg-purple-600/10 blur-3xl"></div>
             </div>
 
             <div class="grid grid-cols-2 gap-4">
-                <div class="card-3d p-4 flex flex-col items-center justify-center border-b-2 border-blue-400">
-                    <div class="w-10 h-10 bg-blue-50 rounded-full flex items-center justify-center mb-2">
-                        <i class="far fa-calendar-alt text-blue-500"></i>
+                <div class="card-royal p-4 flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-2">
+                        <i class="fas fa-calendar-check" style="color: var(--royal-purple);"></i>
                     </div>
-                    <span class="text-[10px] text-gray-400 uppercase font-bold">طلبات اليوم</span>
-                    <span class="text-xl font-bold text-gray-800">120</span>
+                    <span style="color: #888888;" class="text-[10px] font-bold">اليوم</span>
+                    <span class="text-xl font-bold">120</span>
                 </div>
 
-                <div class="card-3d p-4 flex flex-col items-center justify-center border-b-2 border-orange-400">
-                    <div class="w-10 h-10 bg-orange-50 rounded-full flex items-center justify-center mb-2">
-                        <i class="far fa-clock text-orange-500"></i>
+                <div class="card-royal p-4 flex flex-col items-center">
+                    <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center mb-2">
+                        <i class="fas fa-spinner" style="color: var(--gold-status);"></i>
                     </div>
-                    <span class="text-[10px] text-gray-400 uppercase font-bold">الجارية</span>
-                    <span class="text-xl font-bold text-gray-800">45</span>
+                    <span style="color: #888888;" class="text-[10px] font-bold">الجارية</span>
+                    <span class="text-xl font-bold">45</span>
                 </div>
 
-                <div class="card-3d p-4 flex flex-col items-center justify-center border-b-2 border-green-400">
-                    <div class="w-10 h-10 bg-green-50 rounded-full flex items-center justify-center mb-2">
-                        <i class="far fa-check-circle text-green-500"></i>
-                    </div>
-                    <span class="text-[10px] text-gray-400 uppercase font-bold">المكتملة</span>
-                    <span class="text-xl font-bold text-gray-800">980</span>
-                </div>
-
-                <div class="card-3d p-4 flex flex-col items-center justify-center border-b-2 border-purple-400">
-                    <div class="w-10 h-10 bg-purple-50 rounded-full flex items-center justify-center mb-2">
-                        <i class="fas fa-chart-line text-purple-500"></i>
-                    </div>
-                    <span class="text-[10px] text-gray-400 uppercase font-bold">الإيرادات</span>
-                    <div class="flex items-baseline gap-1">
-                        <span class="text-xl font-bold text-gray-800">85%</span>
-                        <i class="fas fa-caret-up text-green-500 text-[10px]"></i>
+                <div class="card-royal p-4 flex flex-col items-center col-span-2 py-6">
+                    <div class="flex items-center gap-4 w-full px-4">
+                        <div class="flex-1">
+                            <span style="color: #888888;" class="text-[10px] font-bold uppercase">الطلبات المكتملة</span>
+                            <h4 class="text-2xl font-black" style="color: var(--neon-green);">980</h4>
+                        </div>
+                        <i class="fas fa-circle-check text-3xl" style="color: var(--neon-green); opacity: 0.5;"></i>
                     </div>
                 </div>
-            </div>
-
-            <div class="card-3d p-4 bg-gradient-to-l from-white to-gray-50 border-r-4 border-[#3f3d91]">
-               <div class="flex justify-between items-center">
-                   <span class="text-sm font-bold text-gray-700">تحليل الأداء الشهري</span>
-                   <span class="text-[10px] bg-gray-100 px-2 py-1 rounded text-gray-500">مباشر</span>
-               </div>
-               <div class="mt-4 h-2 bg-gray-100 rounded-full overflow-hidden">
-                   <div class="h-full bg-[#3f3d91] w-[70%] rounded-full shadow-inner"></div>
-               </div>
             </div>
 
         </main>
@@ -145,7 +161,6 @@
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('overlay');
-            
             if (sidebar.classList.contains('translate-x-full')) {
                 sidebar.classList.remove('translate-x-full');
                 overlay.style.display = 'block';
