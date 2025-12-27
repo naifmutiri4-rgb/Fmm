@@ -3,148 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم | SallaSync</title>
+    <title>SallaSync | المنصة رقم #1 للأتمتة</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Tajawal', sans-serif; }
-        .sidebar { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .sidebar.closed { transform: translateX(100%); }
-        .overlay { display: none; }
-        .overlay.active { display: block; }
-        .card-hover:hover { transform: translateY(-5px); transition: all 0.3s ease; }
+        body { font-family: 'Tajawal', sans-serif; background: #fafafa; }
+        .btn-premium { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); transition: all 0.3s ease; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,0,0,0.05); }
     </style>
 </head>
-<body class="bg-gray-50 overflow-x-hidden">
-
-    <div id="overlay" onclick="toggleSidebar()" class="overlay fixed inset-0 bg-black/50 z-40 backdrop-blur-sm"></div>
-
-    <aside id="sidebar" class="sidebar fixed top-0 right-0 h-full w-72 bg-white border-l border-gray-100 z-50 shadow-2xl md:shadow-none closed md:transform-none">
-        <div class="p-8">
-            <div class="flex items-center gap-3 mb-12">
-                <div class="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-200">
-                    <i class="fas fa-sync-alt fa-spin"></i>
-                </div>
-                <span class="text-2xl font-black text-blue-900">SallaSync</span>
-            </div>
-
-            <nav class="space-y-2">
-                <a href="#" class="flex items-center gap-4 p-4 bg-blue-50 text-blue-600 rounded-2xl font-bold transition">
-                    <i class="fas fa-th-large w-6 text-center"></i> الرئيسية
-                </a>
-                <a href="#" class="flex items-center gap-4 p-4 text-gray-500 hover:bg-gray-50 rounded-2xl font-bold transition">
-                    <i class="fas fa-link w-6 text-center"></i> ربط الخدمات
-                </a>
-                <a href="#" class="flex items-center gap-4 p-4 text-gray-500 hover:bg-gray-50 rounded-2xl font-bold transition">
-                    <i class="fas fa-history w-6 text-center"></i> سجل الطلبات
-                </a>
-                <a href="#" class="flex items-center gap-4 p-4 text-gray-500 hover:bg-gray-50 rounded-2xl font-bold transition border-t pt-8 mt-4">
-                    <i class="fas fa-cog w-6 text-center"></i> الإعدادات
-                </a>
-                <a href="index.html" class="flex items-center gap-4 p-4 text-red-500 hover:bg-red-50 rounded-2xl font-bold transition">
-                    <i class="fas fa-sign-out-alt w-6 text-center"></i> تسجيل الخروج
-                </a>
-            </nav>
+<body class="overflow-x-hidden">
+    <nav class="fixed top-0 w-full z-50 glass py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 btn-premium rounded-xl flex items-center justify-center text-white shadow-lg"><i class="fas fa-bolt"></i></div>
+            <span class="text-2xl font-black text-blue-900 tracking-tighter">SallaSync</span>
         </div>
-    </aside>
+        <button onclick="window.location.href='dashboard.html'" class="btn-premium text-white px-8 py-2 rounded-2xl font-bold shadow-lg shadow-blue-100">دخول التاجر</button>
+    </nav>
 
-    <main class="md:mr-72 min-h-screen">
-        <header class="bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 p-6 flex justify-between items-center px-4 md:px-10">
-            <button onclick="toggleSidebar()" class="md:hidden bg-gray-100 p-3 rounded-xl text-gray-600">
-                <i class="fas fa-bars"></i>
-            </button>
-            
-            <div class="flex items-center gap-4">
-                <div class="hidden md:block text-left">
-                    <p class="text-xs text-gray-400 font-bold">باقة الاحتراف</p>
-                    <p class="text-sm font-black">متجر الأساطير ✨</p>
-                </div>
-                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center text-blue-600 font-bold border-2 border-white shadow-sm">
-                    ت
-                </div>
-            </div>
-        </header>
-
-        <div class="p-4 md:p-10 max-w-6xl mx-auto">
-            
-            <div class="mb-10 animate-fade-in-up">
-                <h2 class="text-3xl font-black text-gray-900 mb-2">أهلاً بك في "مكينة" الأرباح 💸</h2>
-                <p class="text-gray-500">نظامك يعمل الآن بكفاءة 100%</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                <div class="bg-white p-6 rounded-[32px] shadow-sm border border-gray-100 card-hover">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="bg-blue-50 p-3 rounded-2xl text-blue-600"><i class="fas fa-shopping-cart"></i></div>
-                        <span class="text-green-500 text-xs font-bold">+12% اليوم</span>
-                    </div>
-                    <p class="text-gray-400 text-sm font-bold">إجمالي الطلبات</p>
-                    <p class="text-3xl font-black mt-1 text-gray-900">2,840</p>
-                </div>
-                
-                <div class="bg-white p-6 rounded-[32px] shadow-sm border border-gray-100 card-hover">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="bg-orange-50 p-3 rounded-2xl text-orange-600"><i class="fas fa-wallet"></i></div>
-                    </div>
-                    <p class="text-gray-400 text-sm font-bold">رصيد السيرفرات</p>
-                    <p class="text-3xl font-black mt-1 text-gray-900">$1,249</p>
-                </div>
-
-                <div class="bg-blue-600 p-6 rounded-[32px] shadow-lg shadow-blue-100 card-hover text-white">
-                    <div class="flex justify-between items-start mb-4">
-                        <div class="bg-blue-500 p-3 rounded-2xl"><i class="fas fa-clock"></i></div>
-                    </div>
-                    <p class="text-blue-100 text-sm font-bold italic">وقت تم توفيره</p>
-                    <p class="text-3xl font-black mt-1">154 ساعة</p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-[40px] shadow-sm border border-gray-100 overflow-hidden">
-                <div class="p-8 border-b border-gray-100 flex justify-between items-center">
-                    <h3 class="font-black text-xl">خارطة الخدمات</h3>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-2xl transition shadow-lg shadow-blue-100">
-                        <i class="fas fa-plus"></i>
-                    </button>
-                </div>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-right">
-                        <thead>
-                            <tr class="text-gray-400 text-xs font-bold uppercase tracking-wider">
-                                <th class="p-6">منتج سلة</th>
-                                <th class="p-6">المزود</th>
-                                <th class="p-6 text-center">ID الخدمة</th>
-                                <th class="p-6">الأتمتة</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-50">
-                            <tr class="hover:bg-gray-50 transition">
-                                <td class="p-6 font-bold">1000 متابع تيك توك</td>
-                                <td class="p-6">
-                                    <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-lg text-xs font-bold">PerfectSMM</span>
-                                </td>
-                                <td class="p-6 text-center font-mono text-gray-400 font-bold">#9920</td>
-                                <td class="p-6">
-                                    <div class="w-12 h-6 bg-green-500 rounded-full relative shadow-inner">
-                                        <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full shadow-md"></div>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+    <header class="pt-40 pb-20 px-6 text-center bg-gradient-to-b from-blue-50 to-white">
+        <h1 class="text-5xl md:text-7xl font-black text-slate-900 mb-6 leading-tight">متجرك في سلة.. <br><span class="text-blue-600 italic">يعمل بالذكاء!</span></h1>
+        <p class="text-xl text-gray-500 max-w-2xl mx-auto mb-10 font-medium">اربط طلباتك بمزودي خدمات الـ SMM عالمياً، وفر وقتك وضاعف أرباحك بضغطة زر واحدة.</p>
+        <div class="flex flex-wrap justify-center gap-4">
+            <button onclick="window.location.href='dashboard.html'" class="btn-premium text-white px-12 py-4 rounded-[2rem] text-xl font-black shadow-2xl hover:scale-105 transition transform">ابدأ تجربتك الآن</button>
         </div>
-    </main>
+    </header>
 
-    <script>
-        function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            const overlay = document.getElementById('overlay');
-            sidebar.classList.toggle('closed');
-            overlay.classList.toggle('active');
-        }
-    </script>
+    <section id="pricing" class="py-20 px-6">
+        <h2 class="text-4xl font-black text-center mb-16">باقات تناسب نموك</h2>
+        <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-10">
+            <div class="bg-white p-10 rounded-[3rem] border-2 border-gray-50 shadow-xl hover:border-blue-500 transition">
+                <h3 class="text-2xl font-black mb-4">باقة الاحتراف</h3>
+                <div class="text-5xl font-black mb-8 text-blue-900">249 <span class="text-lg font-bold text-gray-400">ريال/شهر</span></div>
+                <ul class="space-y-4 mb-10 text-gray-600 font-medium">
+                    <li><i class="fas fa-check text-blue-600 ml-2"></i> أتمتة كاملة للطلبات</li>
+                    <li><i class="fas fa-check text-blue-600 ml-2"></i> ربط عدد غير محدود من الخدمات</li>
+                    <li><i class="fas fa-check text-blue-600 ml-2"></i> تحديث حالة الطلب في سلة</li>
+                </ul>
+                <button onclick="window.location.href='dashboard.html'" class="w-full py-4 btn-premium text-white rounded-2xl font-black shadow-lg">اشترك الآن</button>
+            </div>
+            <div class="bg-slate-900 p-10 rounded-[3rem] text-white shadow-2xl relative overflow-hidden">
+                <div class="absolute top-4 left-4 bg-blue-600 px-3 py-1 rounded-full text-[10px] font-black uppercase">White Label</div>
+                <h3 class="text-2xl font-black mb-4 italic">لوحة خاصة باسمك</h3>
+                <div class="text-4xl font-black mb-8">تواصل معنا</div>
+                <ul class="space-y-4 mb-10 text-slate-400 font-medium">
+                    <li><i class="fas fa-check text-blue-400 ml-2"></i> دومين خاص (براندك الخاص)</li>
+                    <li><i class="fas fa-check text-blue-400 ml-2"></i> لوحة تحكم لإدارة عملائك</li>
+                    <li><i class="fas fa-check text-blue-400 ml-2"></i> تخصيص كامل للواجهة</li>
+                </ul>
+                <button onclick="window.location.href='https://wa.me/yournumber'" class="w-full py-4 bg-white text-slate-900 rounded-2xl font-black shadow-lg hover:bg-gray-100 transition">اطلبها الآن</button>
+            </div>
+        </div>
+    </section>
 </body>
 </html>
