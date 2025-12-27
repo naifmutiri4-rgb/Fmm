@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | SallaSync</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; background: #f8fafc; }
+        .sidebar { transition: transform 0.3s ease; }
+        .sidebar.closed { transform: translateX(100%); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+
+    <aside id="sidebar" class="sidebar fixed top-0 right-0 h-full w-72 bg-white border-l z-50 shadow-2xl closed md:transform-none">
+        <div class="p-8">
+            <div onclick="window.location.href='index.html'" class="flex items-center gap-2 mb-12 cursor-pointer">
+                <div class="bg-blue-600 p-2 rounded-xl text-white shadow-lg shadow-blue-200"><i class="fas fa-bolt"></i></div>
+                <span class="text-2xl font-black text-blue-900">SallaSync</span>
+            </div>
+            <nav class="space-y-3">
+                <button onclick="showTab('home')" class="w-full flex items-center gap-4 p-4 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-2xl font-bold transition"><i class="fas fa-home"></i> الرئيسية</button>
+                <button onclick="showTab('mapping')" class="w-full flex items-center gap-4 p-4 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-2xl font-bold transition"><i class="fas fa-link"></i> ربط المنتجات</button>
+                <button onclick="showTab('logs')" class="w-full flex items-center gap-4 p-4 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-2xl font-bold transition"><i class="fas fa-history"></i> سجل العمليات</button>
+                <button onclick="showTab('settings')" class="w-full flex items-center gap-4 p-4 hover:bg-blue-50 text-gray-600 hover:text-blue-600 rounded-2xl font-bold transition border-t pt-8 mt-4"><i class="fas fa-cog"></i> الإعدادات</button>
+                <button onclick="window.location.href='index.html'" class="w-full flex items-center gap-4 p-4 text-red-500 hover:bg-red-50 rounded-2xl font-bold transition"><i class="fas fa-sign-out-alt"></i> خروج</button>
+            </nav>
+        </div>
+    </aside>
+
+    <main class="md:mr-72 min-h-screen">
+        <header class="bg-white border-b p-6 flex justify-between items-center sticky top-0 z-40 px-4 md:px-10">
+            <button onclick="toggleSidebar()" class="md:hidden bg-gray-100 p-3 rounded-xl text-gray-600"><i class="fas fa-bars"></i></button>
+            <div class="flex items-center gap-3"><span class="font-black text-blue-900">متجر الأساطير ✨</span></div>
+        </header>
+
+        <div class="p-4 md:p-10 max-w-6xl mx-auto">
+            <div id="home-tab" class="tab-content active">
+                <h2 class="text-3xl font-black mb-8 text-slate-900 italic">مرحباً بك مجدداً.. 🚀</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                    <div class="bg-white p-6 rounded-[30px] shadow-sm border border-gray-100 italic">
+                        <p class="text-gray-400 text-sm font-bold">إجمالي الأتمتة</p>
+                        <p class="text-4xl font-black text-blue-600">4,129</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-[30px] shadow-sm border border-gray-100 italic">
+                        <p class="text-gray-400 text-sm font-bold">رصيد المزود</p>
+                        <p class="text-4xl font-black text-orange-500">$542.10</p>
+                    </div>
+                    <div class="bg-blue-600 p-6 rounded-[30px] text-white italic">
+                        <p class="text-blue-200 text-sm font-bold">باقة نشطة</p>
+                        <p class="text-4xl font-black">احترافية</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mapping-tab" class="tab-content">
+                <div class="bg-white rounded-[30px] shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-8 border-b border-gray-100 flex justify-between items-center">
+                        <h3 class="font-black text-xl">خارطة الخدمات</h3>
+                        <button class="bg-blue-600 text-white px-6 py-2 rounded-xl font-bold">+ إضافة ربط</button>
+                    </div>
+                    <table class="w-full text-right">
+                        <thead class="bg-gray-50 text-xs font-bold text-gray-400">
+                            <tr><th class="p-6">منتج سلة</th><th class="p-6 text-center">ID الخدمة</th><th class="p-6">الحالة</th></tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-50">
+                            <tr>
+                                <td class="p-6 font-bold">1000 متابع تيك توك</td>
+                                <td class="p-6 text-center"><span class="bg-gray-100 px-4 py-2 rounded-xl text-blue-600 font-mono">#928</span></td>
+                                <td class="p-6"><span class="text-green-600 font-black italic">متصل ✅</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="logs-tab" class="tab-content">
+                <div class="bg-white rounded-[30px] shadow-sm border border-gray-100 p-8">
+                    <h3 class="font-black text-xl mb-6 italic">سجل العمليات الآلي</h3>
+                    <div class="space-y-4">
+                        <div class="flex justify-between p-5 bg-gray-50 rounded-2xl border-r-4 border-green-500">
+                            <div><p class="font-bold">طلب #1092</p><p class="text-xs text-gray-400">انتهى بنجاح من PerfectSMM</p></div>
+                            <span class="text-green-600 font-bold">مكتمل ✅</span>
+                        </div>
+                        <div class="flex justify-between p-5 bg-gray-50 rounded-2xl border-r-4 border-blue-500 italic">
+                            <div><p class="font-bold text-gray-400">طلب #1093</p><p class="text-xs text-gray-400 italic font-bold">جاري المزامنة مع السيرفر..</p></div>
+                            <span class="text-blue-600 font-bold italic animate-pulse">جاري ⏳</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('closed');
+        }
+        function showTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName + '-tab').classList.add('active');
+            if(window.innerWidth < 768) toggleSidebar();
+        }
+    </script>
+</body>
+</html>
