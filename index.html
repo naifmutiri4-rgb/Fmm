@@ -1,30 +1,103 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SallaSync | إدارة أتمتة المتاجر</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Tajawal', sans-serif; background-color: #f4f5f7; }
-        .h-blue { background-color: #2f3367; } /* لون هوستنجر الشهير */
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SallaSync | منصة الأتمتة الذكية</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  body { font-family: 'Tajawal', sans-serif; transition: background 0.3s, color 0.3s; }
+  .dark-mode { background: #12121a; color: #f5f5f5; }
+  .dark-mode .bg-white { background: #1e1e2a; }
+  .dark-mode .text-gray-500 { color: #c1c1c1; }
+  .dark-mode .bg-gray-100 { background: #2a2a3c; }
+  .btn-gradient { background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); transition: all 0.3s ease; }
+  .btn-gradient:hover { transform: translateY(-2px); }
+</style>
 </head>
-<body>
-    <nav class="h-blue p-4 text-white shadow-md flex justify-between items-center px-8">
-        <div class="flex items-center gap-2">
-            <i class="fas fa-layer-group text-xl"></i>
-            <span class="text-xl font-bold">SallaSync</span>
-        </div>
-        <button onclick="window.location.href='dashboard.html'" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded font-bold transition">دخول التاجر</button>
-    </nav>
+<body class="bg-slate-50 text-gray-900">
 
-    <header class="py-24 text-center">
-        <h1 class="text-4xl md:text-6xl font-black text-gray-800 mb-6">منصة الأتمتة الاحترافية</h1>
-        <p class="text-gray-500 max-w-2xl mx-auto mb-10 font-bold">اربط متجرك بسيرفرات SMM بكل سهولة، وتابع عملياتك من لوحة تحكم واحدة.</p>
-        <button onclick="window.location.href='dashboard.html'" class="h-blue text-white px-10 py-4 rounded shadow-xl font-bold hover:opacity-90 transition">ابدأ الآن مجاناً</button>
-    </header>
+<!-- NAV -->
+<nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-md px-6 py-4 flex justify-between items-center">
+  <div class="flex items-center gap-3">
+    <div class="w-10 h-10 btn-gradient rounded-xl flex items-center justify-center text-white shadow-lg"><i class="fas fa-bolt"></i></div>
+    <span class="text-2xl font-black tracking-tighter">SallaSync</span>
+  </div>
+  <div class="flex items-center gap-4">
+    <button id="modeToggle" class="px-4 py-2 border rounded-lg font-bold text-sm">🌙 داكن/فاتح</button>
+    <button onclick="window.location.href='dashboard.html'" class="btn-gradient text-white px-6 py-2 rounded-2xl font-bold shadow-lg">دخول التاجر</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="pt-32 pb-20 text-center px-6">
+  <h1 class="text-5xl md:text-6xl font-black mb-6 leading-tight">وداعاً للعمل اليدوي<br><span class="text-blue-600 italic">اربط متجرك بالعالم</span></h1>
+  <p class="text-lg text-gray-500 mb-10 max-w-2xl mx-auto font-medium">المنصة الأولى لربط متجرك بسيرفرات SMM آلياً بالكامل. أتمتة، سرعة، أمان.</p>
+  <div class="flex flex-wrap justify-center gap-4">
+    <button onclick="window.location.href='dashboard.html'" class="btn-gradient text-white px-10 py-4 rounded-full font-bold shadow-2xl">ابدأ تجربتك الآن</button>
+    <button class="bg-white border px-10 py-4 rounded-full font-bold hover:bg-gray-50 transition">تواصل مع المبيعات</button>
+  </div>
+</header>
+
+<!-- FEATURES -->
+<section id="features" class="py-20 px-6 max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-center">
+  <div class="bg-white p-10 rounded-[2rem] shadow-lg hover:shadow-2xl transition">
+    <i class="fas fa-bolt text-4xl text-blue-600 mb-4"></i>
+    <h3 class="font-black mb-2 text-xl">أتمتة كاملة</h3>
+    <p class="text-gray-500">معالجة كل الطلبات بدون تدخل يدوي.</p>
+  </div>
+  <div class="bg-white p-10 rounded-[2rem] shadow-lg hover:shadow-2xl transition">
+    <i class="fas fa-clock text-4xl text-orange-500 mb-4"></i>
+    <h3 class="font-black mb-2 text-xl">توفير الوقت</h3>
+    <p class="text-gray-500">وفر ساعات العمل اليومية مع سيرفرات SMM سريعة.</p>
+  </div>
+  <div class="bg-white p-10 rounded-[2rem] shadow-lg hover:shadow-2xl transition">
+    <i class="fas fa-lock text-4xl text-green-500 mb-4"></i>
+    <h3 class="font-black mb-2 text-xl">أمان كامل</h3>
+    <p class="text-gray-500">معايير أمان عالية لحماية بيانات متجرك وعملائك.</p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="py-20 px-6 max-w-5xl mx-auto">
+  <h2 class="text-4xl font-black text-center mb-16">باقات تناسبك</h2>
+  <div class="grid md:grid-cols-2 gap-8">
+    <div class="bg-white p-12 rounded-[3rem] border shadow-xl hover:border-blue-500 transition">
+      <h3 class="text-2xl font-black mb-4">باقة النمو</h3>
+      <div class="text-5xl font-black mb-6 text-blue-900">249 <span class="text-lg font-bold text-gray-400">ر.س/شهرياً</span></div>
+      <ul class="space-y-4 mb-8 text-gray-600 font-medium">
+        <li><i class="fas fa-check text-blue-600 ml-2"></i> ربط متجر واحد</li>
+        <li><i class="fas fa-check text-blue-600 ml-2"></i> أتمتة الطلبات غير محدودة</li>
+        <li><i class="fas fa-check text-blue-600 ml-2"></i> دعم فني مباشر</li>
+      </ul>
+      <button onclick="window.location.href='dashboard.html'" class="w-full py-4 btn-gradient text-white rounded-2xl font-black shadow-lg">اشترك الآن</button>
+    </div>
+    <div class="bg-blue-600 text-white p-12 rounded-[3rem] relative overflow-hidden shadow-2xl">
+      <div class="absolute top-4 left-4 bg-blue-200 px-3 py-1 rounded-full text-[10px] font-black uppercase">White Label</div>
+      <h3 class="text-2xl font-black mb-4">الوكيل المعتمد</h3>
+      <p class="mb-8 italic text-blue-100">امتلك النظام بالكامل باسمك، وبيع الاشتراكات لعملائك.</p>
+      <button class="w-full py-4 bg-white text-blue-600 rounded-2xl font-black">تحدث مع مستشار</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-gray-100 dark:bg-[#1e1e2a] mt-20 py-10 text-center">
+  <p class="text-gray-500 dark:text-gray-400 mb-4">© 2025 SallaSync. جميع الحقوق محفوظة.</p>
+  <div class="flex justify-center gap-6 text-gray-500 dark:text-gray-400">
+    <a href="#" class="hover:text-blue-600 transition"><i class="fab fa-whatsapp"></i> واتساب</a>
+    <a href="#" class="hover:text-blue-600 transition"><i class="fab fa-instagram"></i> إنستقرام</a>
+    <a href="#" class="hover:text-blue-600 transition"><i class="fab fa-twitter"></i> تويتر</a>
+  </div>
+</footer>
+
+<script>
+  const toggle = document.getElementById('modeToggle');
+  toggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+  });
+</script>
 </body>
 </html>
