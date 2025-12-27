@@ -3,50 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SallaSync | أتمتة متجر سلة</title>
+    <title>SallaSync | منصة أتمتة المتاجر</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
-    <style>body { font-family: 'Tajawal', sans-serif; }</style>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Tajawal', sans-serif; scroll-behavior: smooth; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
 </head>
-<body class="bg-gray-50">
-    <nav class="p-6 bg-white shadow-sm flex justify-between items-center">
-        <h1 class="text-2xl font-bold text-blue-600">SallaSync</h1>
-        <a href="#pricing" class="bg-blue-600 text-white px-6 py-2 rounded-full hover:bg-blue-700">ابدأ الآن</a>
+<body class="bg-gray-50 text-gray-800">
+
+    <nav class="bg-white shadow-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-2">
+                <div class="bg-blue-600 p-2 rounded-lg text-white"><i class="fas fa-sync-alt fa-spin"></i></div>
+                <span class="text-2xl font-bold text-blue-900 tracking-tighter">SallaSync</span>
+            </div>
+            <div class="hidden md:flex gap-8 font-medium">
+                <button onclick="showTab('home')" class="hover:text-blue-600">الرئيسية</button>
+                <button onclick="showTab('dashboard')" class="hover:text-blue-600">لوحة التحكم (تجربة)</button>
+                <a href="#pricing" class="hover:text-blue-600">الباقات</a>
+            </div>
+            <button onclick="showTab('dashboard')" class="bg-blue-600 text-white px-5 py-2 rounded-xl font-bold hover:bg-blue-700 transition">دخول التاجر</button>
+        </div>
     </nav>
 
-    <header class="text-center py-20 px-4">
-        <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-6">حوّل متجرك في سلة إلى "آلة" تعمل تلقائياً</h2>
-        <p class="text-xl text-gray-600 mb-8">اربط طلبات زبائنك بمزودي خدمات SMM بضغطة زر. وفر وقتك وضاعف أرباحك.</p>
-        <img src="https://via.placeholder.com/800x400" alt="Dashboard Preview" class="mx-auto rounded-lg shadow-2xl">
-    </header>
+    <div id="home" class="tab-content active">
+        <header class="py-20 px-4 text-center bg-gradient-to-b from-white to-blue-50">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-blue-900 mb-6 leading-tight">وداعاً للعمل اليدوي في سلة</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto mb-10">اربط متجرك بسيرفرات الـ SMM عالمياً، وخلّ الطلبات تتنفذ وأنت نايم. نظام ذكي، سريع، ومؤمن بالكامل.</p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <button onclick="showTab('dashboard')" class="bg-blue-600 text-white px-8 py-4 rounded-2xl text-lg font-bold shadow-lg hover:shadow-blue-200 transition">ابدأ رحلة الأتمتة</button>
+                <button class="bg-white border-2 border-gray-200 px-8 py-4 rounded-2xl text-lg font-bold hover:bg-gray-50 transition">شاهد الشرح</button>
+            </div>
+        </header>
 
-    <section id="pricing" class="py-16 bg-gray-100">
-        <div class="max-w-6xl mx-auto px-4">
-            <h3 class="text-3xl font-bold text-center mb-12">باقات الاشتراك</h3>
-            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="bg-white p-8 rounded-2xl shadow-lg border-2 border-transparent hover:border-blue-500 transition">
-                    <h4 class="text-xl font-bold mb-4">الباقة الشهرية</h4>
-                    <div class="text-4xl font-bold mb-6">249 ريال <span class="text-sm font-normal text-gray-500">/شهرياً</span></div>
-                    <ul class="text-gray-600 mb-8 space-y-3">
-                        <li>✅ ربط متجر سلة واحد</li>
-                        <li>✅ ربط عدد غير محدود من المزودين</li>
-                        <li>✅ تحديث حالة الطلب تلقائياً</li>
-                        <li>✅ دعم فني 24/7</li>
+        <section id="pricing" class="py-20 px-4">
+            <h2 class="text-3xl font-bold text-center mb-16">اختر الباقة المناسبة لنمو تجارتك</h2>
+            <div class="max-w-5xl mx-auto grid md:grid-cols-2 gap-8">
+                <div class="bg-white p-10 rounded-3xl border border-gray-100 shadow-xl relative overflow-hidden">
+                    <h3 class="text-xl font-bold mb-2">باقة الاحتراف</h3>
+                    <p class="text-gray-500 mb-6">مثالية لأصحاب المتاجر النشطة</p>
+                    <div class="text-5xl font-black mb-8">249 <span class="text-lg font-medium text-gray-400">ريال/شهر</span></div>
+                    <ul class="space-y-4 mb-10">
+                        <li><i class="fas fa-check text-green-500 ml-2"></i> أتمتة كاملة للطلبات</li>
+                        <li><i class="fas fa-check text-green-500 ml-2"></i> ربط عدد غير محدود من الخدمات</li>
+                        <li><i class="fas fa-check text-green-500 ml-2"></i> تحديث حالة الطلب في سلة</li>
+                        <li><i class="fas fa-check text-green-500 ml-2"></i> دعم فني واتساب</li>
                     </ul>
-                    <button class="w-full py-3 bg-blue-600 text-white rounded-xl font-bold">اشترك الآن</button>
+                    <button class="w-full py-4 bg-blue-600 text-white rounded-2xl font-bold shadow-lg hover:bg-blue-700 transition">اشترك الآن</button>
                 </div>
-                <div class="bg-blue-900 p-8 rounded-2xl shadow-lg text-white">
-                    <h4 class="text-xl font-bold mb-4">لوحة تحكم خاصة (White Label)</h4>
-                    <div class="text-4xl font-bold mb-6">تواصل معنا</div>
-                    <ul class="text-blue-100 mb-8 space-y-3">
-                        <li>✅ دومين خاص بشعارك</li>
-                        <li>✅ لوحة تحكم كاملة لك ولعملائك</li>
-                        <li>✅ تحكم كامل في الأكواد والسيرفر</li>
+                <div class="bg-blue-900 p-10 rounded-3xl text-white shadow-xl relative shadow-blue-200">
+                    <div class="absolute top-4 left-4 bg-blue-500 text-xs px-3 py-1 rounded-full uppercase">الأكثر طلباً</div>
+                    <h3 class="text-xl font-bold mb-2">لوحة خاصة White Label</h3>
+                    <p class="text-blue-300 mb-6">امتلك النظام باسمك وشعارك الخاص</p>
+                    <div class="text-4xl font-black mb-8 font-bold text-white">تواصل معنا</div>
+                    <ul class="space-y-4 mb-10">
+                        <li><i class="fas fa-check text-blue-400 ml-2"></i> دومين خاص (براندك الخاص)</li>
+                        <li><i class="fas fa-check text-blue-400 ml-2"></i> لوحة تحكم لإدارة عملائك</li>
+                        <li><i class="fas fa-check text-blue-400 ml-2"></i> تحكم كامل في الأكواد والسيرفر</li>
+                        <li><i class="fas fa-check text-blue-400 ml-2"></i> عمولة 0% على عملياتك</li>
                     </ul>
-                    <button class="w-full py-3 bg-white text-blue-900 rounded-xl font-bold">اطلب نسختك</button>
+                    <button class="w-full py-4 bg-white text-blue-900 rounded-2xl font-bold hover:bg-gray-100 transition">اطلب عرض سعر</button>
                 </div>
             </div>
+        </section>
+    </div>
+
+    <div id="dashboard" class="tab-content">
+        <div class="max-w-7xl mx-auto px-4 py-8">
+            <div class="flex justify-between items-center mb-10">
+                <h2 class="text-2xl font-black text-gray-900">لوحة التحكم <span class="text-blue-600">(تجريبي)</span></h2>
+                <div class="flex items-center gap-4">
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm font-bold">متصل بمتجر سلة ✅</span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-10">
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="text-gray-400 text-sm mb-2">طلبات اليوم المؤتمتة</div>
+                    <div class="text-3xl font-black">124</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="text-gray-400 text-sm mb-2">الرصيد عند المزود</div>
+                    <div class="text-3xl font-black text-blue-600">$452.20</div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="text-gray-400 text-sm mb-2">توفير الوقت اليدوي</div>
+                    <div class="text-3xl font-black text-green-600">14 ساعة</div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden mb-10">
+                <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                    <h3 class="font-bold">ربط الخدمات (Salla <-> SMM)</h3>
+                    <button class="bg-blue-50 text-blue-600 px-4 py-2 rounded-xl text-sm font-bold hover:bg-blue-100">+ إضافة ربط جديد</button>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-right">
+                        <thead class="bg-gray-50 text-gray-500 text-sm">
+                            <tr>
+                                <th class="p-4">اسم المنتج في سلة</th>
+                                <th class="p-4">مزود الخدمة</th>
+                                <th class="p-4">رقم الخدمة (ID)</th>
+                                <th class="p-4">الحالة</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr>
+                                <td class="p-4 font-medium">1000 متابع انستقرام - سريع</td>
+                                <td class="p-4 text-blue-600">PerfectSMM</td>
+                                <td class="p-4"><span class="bg-gray-100 px-3 py-1 rounded-lg">#502</span></td>
+                                <td class="p-4"><span class="text-green-600 font-bold italic">مفعل</span></td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 font-medium">مشاهدات تيك توك حقيقية</td>
+                                <td class="p-4 text-blue-600">GlobalSMM</td>
+                                <td class="p-4"><span class="bg-gray-100 px-3 py-1 rounded-lg">#1290</span></td>
+                                <td class="p-4"><span class="text-green-600 font-bold italic">مفعل</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <p class="text-center text-gray-400 text-sm">هذه النسخة للعرض فقط، الوظائف البرمجية يتم تفعيلها عند الربط بالسيرفر الخاص بك.</p>
         </div>
-    </section>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            // إخفاء كل التبويبات
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // إظهار التبويب المطلوب
+            document.getElementById(tabId).classList.add('active');
+            // سكرول للأعلى
+            window.scrollTo(0,0);
+        }
+    </script>
 </body>
 </html>
