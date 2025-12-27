@@ -3,61 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SallaSync | مستقبل أتمتة التجارة</title>
+    <title>SallaSync | إدارة أتمتة المتاجر</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body { font-family: 'Tajawal', sans-serif; background: #ffffff; color: #1a1a1a; }
-        .hero-bg { background: radial-gradient(circle at 50% -20%, #eff6ff 0%, #ffffff 80%); }
-        .btn-dark { background: #1a1a1a; transition: all 0.3s ease; }
-        .btn-dark:hover { background: #333; transform: translateY(-2px); }
-        .feature-card { border: 1px solid #f0f0f0; transition: all 0.3s ease; }
-        .feature-card:hover { border-color: #3b82f6; background: #fafafa; }
+        body { font-family: 'Tajawal', sans-serif; background-color: #f4f5f7; }
+        .h-blue { background-color: #2f3367; } /* لون هوستنجر الشهير */
     </style>
 </head>
-<body class="hero-bg">
-    <nav class="flex justify-between items-center px-8 py-6 max-w-7xl mx-auto">
+<body>
+    <nav class="h-blue p-4 text-white shadow-md flex justify-between items-center px-8">
         <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white"><i class="fas fa-sync-alt"></i></div>
-            <span class="text-xl font-black tracking-tight">SallaSync</span>
+            <i class="fas fa-layer-group text-xl"></i>
+            <span class="text-xl font-bold">SallaSync</span>
         </div>
-        <div class="hidden md:flex gap-8 font-bold text-sm text-gray-500">
-            <a href="#features">المميزات</a>
-            <a href="#pricing">الباقات</a>
-        </div>
-        <button onclick="window.location.href='dashboard.html'" class="btn-dark text-white px-6 py-2.5 rounded-full text-sm font-bold">دخول التاجر</button>
+        <button onclick="window.location.href='dashboard.html'" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded font-bold transition">دخول التاجر</button>
     </nav>
 
-    <section class="pt-24 pb-16 px-6 text-center">
-        <h1 class="text-5xl md:text-7xl font-black mb-6 tracking-tighter">أتمتة متجرك <span class="text-blue-600 underline">تبدأ هنا.</span></h1>
-        <p class="text-lg text-gray-500 max-w-2xl mx-auto mb-10 leading-relaxed font-medium">الربط الأذكى بين "سلة" ومزودي خدمات الـ SMM. وفر 90% من وقتك التشغيلي الآن.</p>
-        <div class="flex flex-wrap justify-center gap-4">
-            <button onclick="window.location.href='dashboard.html'" class="btn-dark text-white px-10 py-4 rounded-full font-bold">ابدأ تجربتك المجانية</button>
-            <button class="bg-white border px-10 py-4 rounded-full font-bold hover:bg-gray-50">تواصل مع المبيعات</button>
-        </div>
-    </section>
-
-    <section id="pricing" class="py-20 px-6 max-w-5xl mx-auto">
-        <div class="grid md:grid-cols-2 gap-8">
-            <div class="feature-card p-10 rounded-[2rem] bg-white">
-                <span class="text-blue-600 font-bold text-sm uppercase tracking-widest">باقة النمو</span>
-                <h3 class="text-4xl font-black mt-4 mb-6 italic">249 <span class="text-lg font-normal text-gray-400">ر.س/شهرياً</span></h3>
-                <ul class="space-y-4 mb-10 text-gray-500">
-                    <li><i class="fas fa-check text-blue-600 ml-2"></i> ربط متجر سلة واحد</li>
-                    <li><i class="fas fa-check text-blue-600 ml-2"></i> معالجة طلبات غير محدودة</li>
-                    <li><i class="fas fa-check text-blue-600 ml-2"></i> دعم فني متقدم</li>
-                </ul>
-                <button onclick="window.location.href='dashboard.html'" class="w-full py-4 bg-gray-100 rounded-2xl font-bold hover:bg-blue-600 hover:text-white transition">اشترك الآن</button>
-            </div>
-            <div class="p-10 rounded-[2rem] bg-blue-600 text-white relative overflow-hidden shadow-2xl">
-                <span class="font-bold text-sm uppercase tracking-widest text-blue-200">الوكيل المعتمد</span>
-                <h3 class="text-4xl font-black mt-4 mb-6">White Label</h3>
-                <p class="mb-8 text-blue-100 font-medium italic leading-relaxed">امتلك النظام بالكامل تحت اسمك وشعارك الخاص، وقم ببيع الاشتراكات لعملائك.</p>
-                <button class="w-full py-4 bg-white text-blue-600 rounded-2xl font-bold">تحدث مع مستشار</button>
-            </div>
-        </div>
-    </section>
+    <header class="py-24 text-center">
+        <h1 class="text-4xl md:text-6xl font-black text-gray-800 mb-6">منصة الأتمتة الاحترافية</h1>
+        <p class="text-gray-500 max-w-2xl mx-auto mb-10 font-bold">اربط متجرك بسيرفرات SMM بكل سهولة، وتابع عملياتك من لوحة تحكم واحدة.</p>
+        <button onclick="window.location.href='dashboard.html'" class="h-blue text-white px-10 py-4 rounded shadow-xl font-bold hover:opacity-90 transition">ابدأ الآن مجاناً</button>
+    </header>
 </body>
 </html>
-
