@@ -248,3 +248,145 @@ tr:hover{
 </div>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FMM Pro Dashboard</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<style>
+:root{
+  --royal:#7c4dff;
+  --bg:#050508;
+  --panel:#12121a;
+  --border:rgba(255,255,255,.08);
+  --muted:#9ca3af;
+}
+body{background:var(--bg);color:#fff;font-family:system-ui}
+
+/* Hamburger */
+.hamburger{font-size:24px;cursor:pointer}
+.side-menu{
+  position:fixed;top:0;right:-280px;width:280px;height:100%;
+  background:var(--panel);border-left:1px solid var(--border);
+  padding:25px;transition:.3s ease;z-index:50
+}
+.side-menu.active{right:0}
+.menu-links a{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 15px;margin-bottom:8px;
+  border-radius:14px;cursor:pointer;
+  color:#e5e7eb
+}
+.menu-links a:hover,.menu-links a.active{
+  background:linear-gradient(45deg,var(--royal),#5e35b1);
+}
+
+/* Header */
+.page-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:30px
+}
+.page-header h1{font-size:28px;margin:0}
+.breadcrumb{font-size:14px;color:var(--muted)}
+
+/* Pages */
+.page-section{display:none;animation:fade .4s ease}
+.page-section.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
+.info-card{
+  background:var(--panel);border:1px solid var(--border);
+  border-radius:20px;padding:25px;max-width:500px
+}
+</style>
+</head>
+<body class="p-6">
+
+<!-- Top Bar -->
+<div class="flex justify-between items-center mb-6">
+  <div class="hamburger" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
+  <div class="font-bold">FMM PRO</div>
+</div>
+
+<!-- Slide Menu -->
+<aside class="side-menu" id="menu">
+  <nav class="menu-links">
+    <a onclick="openPage('dashboard')" class="active"><i class="fas fa-chart-pie"></i>لوحة التحكم</a>
+    <a onclick="openPage('products')"><i class="fas fa-box-open"></i>المنتجات</a>
+    <a onclick="openPage('orders')"><i class="fas fa-shopping-cart"></i>إدارة الطلبات</a>
+    <a onclick="openPage('providers')"><i class="fas fa-link"></i>ربط المورد</a>
+    <a onclick="openPage('settings')"><i class="fas fa-sliders-h"></i>الإعدادات</a>
+  </nav>
+</aside>
+
+<!-- Header -->
+<div class="page-header">
+  <div>
+    <h1 id="pageTitle">لوحة التحكم</h1>
+    <p id="pageDesc" class="text-gray-400">نظرة عامة على أداء النظام</p>
+  </div>
+  <div class="breadcrumb" id="breadcrumb">الرئيسية / لوحة التحكم</div>
+</div>
+
+<!-- Pages -->
+<main>
+<section id="dashboard" class="page-section active">
+  <div class="info-card">
+    <h3>إحصائيات عامة</h3>
+    <p>عدد الطلبات – الأرباح – حالة النظام</p>
+  </div>
+</section>
+
+<section id="products" class="page-section">
+  <div class="info-card">
+    <h3>إدارة المنتجات</h3>
+    <p>إضافة وتعديل وربط الخدمات بالموردين</p>
+  </div>
+</section>
+
+<section id="orders" class="page-section">
+  <div class="info-card">
+    <h3>الطلبات</h3>
+    <p>متابعة تنفيذ الطلبات وحالاتها</p>
+  </div>
+</section>
+
+<section id="providers" class="page-section">
+  <div class="info-card">
+    <h3>الموردين</h3>
+    <p>إعداد API والمزامنة التلقائية</p>
+  </div>
+</section>
+
+<section id="settings" class="page-section">
+  <div class="info-card">
+    <h3>الإعدادات</h3>
+    <p>التحكم بالحساب والنظام والواجهة</p>
+  </div>
+</section>
+</main>
+
+<script>
+const pages={
+ dashboard:{t:'لوحة التحكم',d:'نظرة عامة على أداء النظام',c:'الرئيسية / لوحة التحكم'},
+ products:{t:'المنتجات',d:'إدارة الخدمات والمنتجات',c:'الرئيسية / المنتجات'},
+ orders:{t:'إدارة الطلبات',d:'متابعة وتنفيذ الطلبات',c:'الرئيسية / إدارة الطلبات'},
+ providers:{t:'ربط المورد',d:'إعداد وربط الموردين',c:'الرئيسية / ربط المورد'},
+ settings:{t:'الإعدادات',d:'إعدادات النظام والحساب',c:'الرئيسية / الإعدادات'}
+};
+function toggleMenu(){menu.classList.toggle('active')}
+function openPage(id){
+ document.querySelectorAll('.page-section').forEach(p=>p.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ pageTitle.textContent=pages[id].t;
+ pageDesc.textContent=pages[id].d;
+ breadcrumb.textContent=pages[id].c;
+ document.querySelectorAll('.menu-links a').forEach(a=>a.classList.remove('active'));
+ event.target.closest('a').classList.add('active');
+ toggleMenu();
+}
+</script>
+</body>
+</html>
