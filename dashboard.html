@@ -3,143 +3,396 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>لوحة التحكم | SallaSync</title>
+    <title>فلاش ستور | Flash Store - المنصة الرقمية</title>
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { font-family: 'Tajawal', sans-serif; background: #f9fbff; }
-        .sidebar { transition: all 0.3s ease; width: 280px; }
-        .sidebar.collapsed { width: 0; transform: translateX(100%); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .active-link { background: #eff6ff; color: #2563eb; border-left: 4px solid #2563eb; }
-    </style>
-</head>
-<body class="flex min-h-screen overflow-hidden">
-
-    <aside id="sidebar" class="sidebar bg-white border-l h-screen sticky top-0 z-50 overflow-y-auto">
-        <div class="p-8">
-            <div class="flex items-center gap-3 mb-10 cursor-pointer" onclick="window.location.href='index.html'">
-                <div class="bg-blue-600 p-2 rounded-lg text-white"><i class="fas fa-bolt"></i></div>
-                <span class="text-2xl font-black text-slate-800">SallaSync</span>
-            </div>
-            
-            <nav class="space-y-1">
-                <button onclick="showTab('home', this)" class="w-full flex items-center gap-4 p-4 font-bold text-gray-500 rounded-xl active-link">
-                    <i class="fas fa-th-large"></i> الرئيسية
-                </button>
-                <button onclick="showTab('mapping', this)" class="w-full flex items-center gap-4 p-4 font-bold text-gray-500 rounded-xl hover:bg-gray-50">
-                    <i class="fas fa-project-diagram"></i> ربط الخدمات
-                </button>
-                <button onclick="showTab('logs', this)" class="w-full flex items-center gap-4 p-4 font-bold text-gray-500 rounded-xl hover:bg-gray-50">
-                    <i class="fas fa-list-ul"></i> سجل العمليات
-                </button>
-                <button onclick="showTab('settings', this)" class="w-full flex items-center gap-4 p-4 font-bold text-gray-500 rounded-xl hover:bg-gray-50">
-                    <i class="fas fa-sliders-h"></i> الإعدادات
-                </button>
-            </nav>
-
-            <div class="mt-20 p-6 bg-blue-50 rounded-[2rem]">
-                <p class="text-xs font-black text-blue-600 mb-2 italic underline">باقة برو نشطة</p>
-                <p class="text-xs text-blue-400 font-bold leading-relaxed tracking-tight">باقي 24 يوم على تجديد الاشتراك.</p>
-            </div>
-        </div>
-    </aside>
-
-    <main class="flex-1 h-screen overflow-y-auto">
-        <header class="bg-white/80 backdrop-blur px-8 py-4 flex justify-between items-center border-b sticky top-0 z-40">
-            <button onclick="toggleSidebar()" class="p-2 bg-gray-100 rounded-lg"><i class="fas fa-bars"></i></button>
-            <div class="flex items-center gap-4">
-                <span class="font-bold text-sm">متجر نايف ✨</span>
-                <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center font-bold text-blue-600 uppercase italic">ن</div>
-            </div>
-        </header>
-
-        <div class="p-8 max-w-6xl mx-auto">
-            
-            <div id="home" class="tab-content active">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                    <div class="bg-white p-8 rounded-[2rem] border shadow-sm italic group hover:shadow-md transition">
-                        <p class="text-gray-400 text-xs font-bold mb-1">طلبات تمت أتمتتها</p>
-                        <p class="text-4xl font-black">12,402</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-[2rem] border shadow-sm italic">
-                        <p class="text-gray-400 text-xs font-bold mb-1">توفير يدوي (ساعات)</p>
-                        <p class="text-4xl font-black text-blue-600">310</p>
-                    </div>
-                    <div class="bg-white p-8 rounded-[2rem] border shadow-sm italic">
-                        <p class="text-gray-400 text-xs font-bold mb-1">رصيد السيرفرات</p>
-                        <p class="text-4xl font-black text-green-600">$840.50</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="mapping" class="tab-content">
-                <div class="bg-white rounded-[2rem] border shadow-sm overflow-hidden italic font-bold">
-                    <div class="p-8 border-b flex justify-between items-center">
-                        <h3 class="text-xl font-black">خارطة الربط 🔗</h3>
-                        <button class="bg-blue-600 text-white px-6 py-2 rounded-xl text-sm">+ ربط جديد</button>
-                    </div>
-                    <div class="p-8">
-                        <table class="w-full text-right">
-                            <thead class="text-gray-400 text-xs uppercase tracking-widest border-b">
-                                <tr><th class="pb-4">منتج سلة</th><th class="pb-4">المزود (SMM)</th><th class="pb-4">ID</th><th class="pb-4">الحالة</th></tr>
-                            </thead>
-                            <tbody class="text-sm">
-                                <tr class="border-b last:border-0 hover:bg-gray-50 transition"><td class="py-6">متابعين تيك توك 1k</td><td class="py-6 text-blue-600 italic">Perfect SMM</td><td class="py-6">#220</td><td class="py-6 text-green-500">نشط ✅</td></tr>
-                                <tr class="border-b last:border-0 hover:bg-gray-50 transition"><td class="py-6">لايكات انستقرام خليجي</td><td class="py-6 text-blue-600 italic">Global SMM</td><td class="py-6">#881</td><td class="py-6 text-green-500">نشط ✅</td></tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div id="logs" class="tab-content">
-                <div class="bg-white rounded-[2rem] border p-8">
-                    <h3 class="text-xl font-black mb-6 italic underline">سجل العمليات الأخير</h3>
-                    <div class="space-y-4">
-                        <div class="p-5 bg-gray-50 rounded-2xl flex justify-between items-center border-r-4 border-green-500">
-                            <div><p class="font-bold text-sm">طلب #10928 - سلة</p><p class="text-xs text-gray-400 italic">تم الإرسال لـ المزود بنجاح الساعة 04:20م</p></div>
-                            <span class="bg-green-100 text-green-700 px-3 py-1 rounded-lg text-[10px] font-black italic">مكتمل</span>
-                        </div>
-                        <div class="p-5 bg-gray-50 rounded-2xl flex justify-between items-center border-r-4 border-blue-500">
-                            <div><p class="font-bold text-sm text-gray-400">طلب #10927 - سلة</p><p class="text-xs text-gray-400 italic">بانتظار رد السيرفر (API Processing)..</p></div>
-                            <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-[10px] font-black italic animate-pulse">جاري..</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="settings" class="tab-content">
-                <div class="bg-white rounded-[2rem] border p-10 max-w-2xl">
-                    <h3 class="text-xl font-black mb-8 italic">إعدادات الربط التقني</h3>
-                    <div class="space-y-6 font-bold">
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2">Salla Webhook URL</label>
-                            <input type="text" readonly value="https://sallasync.com/api/webhook/user_772" class="w-full p-4 bg-gray-50 rounded-xl text-xs font-mono border">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-400 mb-2 italic">SMM Server API Key</label>
-                            <input type="password" value="************************" class="w-full p-4 bg-gray-50 rounded-xl text-xs border">
-                        </div>
-                        <button class="bg-blue-600 text-white w-full py-4 rounded-xl shadow-lg shadow-blue-100 italic">حفظ الإعدادات ✨</button>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </main>
-
+    <!-- Tajawal Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    
     <script>
-        function toggleSidebar() { document.getElementById('sidebar').classList.toggle('collapsed'); }
-        function showTab(tabId, btn) {
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('nav button').forEach(b => b.classList.remove('active-link'));
-            document.getElementById(tabId).classList.add('active');
-            btn.classList.add('active-link');
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            DEFAULT: '#FC9E01',
+                            hover: '#e08c00',
+                            dark: '#121212',
+                            card: '#1E1E1E',
+                            border: '#2A2A2A'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Tajawal', 'sans-serif']
+                    }
+                }
+            }
         }
     </script>
+    <style>
+        body {
+            background-color: #121212;
+            color: #E5E7EB;
+            font-family: 'Tajawal', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2A2A2A;
+            border-radius: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #FC9E01;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-50 bg-[#121212]/90 backdrop-blur-md border-b border-brand-border">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- Logo -->
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-brand flex items-center justify-center text-black text-2xl font-black shadow-lg shadow-brand/20">
+                        ⚡
+                    </div>
+                    <span class="text-2xl font-extrabold tracking-wide text-white">فلاش <span class="text-brand">ستور</span></span>
+                </div>
+
+                <!-- Search Bar -->
+                <div class="flex-1 max-w-xl hidden md:block">
+                    <div class="relative">
+                        <input type="text" placeholder="ابحث عن خدمة، اشتراك، أو بطاقة رقمية..." 
+                               class="w-full bg-[#1E1E1E] text-sm text-white placeholder-gray-400 rounded-xl pt-3 pb-3 pr-11 pl-4 border border-brand-border focus:outline-none focus:border-brand transition-all">
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-gray-400">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- User Controls -->
+                <div class="flex items-center gap-3">
+                    <button class="flex items-center gap-2 bg-[#1E1E1E] border border-brand-border hover:border-brand px-4 py-2.5 rounded-xl text-sm font-medium transition-all">
+                        <i class="fa-solid fa-wallet text-brand"></i>
+                        <span class="hidden sm:inline">المحفظة:</span>
+                        <span class="text-brand font-bold">0.00 ر.س</span>
+                    </button>
+                    <button class="bg-brand hover:bg-brand-hover text-black font-bold px-5 py-2.5 rounded-xl text-sm transition-all shadow-md shadow-brand/10">
+                        تسجيل الدخول
+                    </button>
+                </div>
+            </div>
+
+            <!-- Categories Mega Navigation -->
+            <nav class="flex items-center gap-6 py-3 border-t border-brand-border/50 overflow-x-auto custom-scrollbar text-sm font-medium">
+                <a href="#" class="text-brand font-bold whitespace-nowrap flex items-center gap-2">
+                    <i class="fa-solid fa-border-all"></i> جميع الخدمات
+                </a>
+                <a href="#" class="text-gray-300 hover:text-brand whitespace-nowrap transition-colors">خدمات التسويق والتفاعل</a>
+                <a href="#" class="text-gray-300 hover:text-brand whitespace-nowrap transition-colors">الاشتراكات الرقمية</a>
+                <a href="#" class="text-gray-300 hover:text-brand whitespace-nowrap transition-colors">حلول سلة والمتاجر</a>
+                <a href="#" class="text-gray-300 hover:text-brand whitespace-nowrap transition-colors">بطاقات الألعاب</a>
+                <a href="#" class="text-gray-300 hover:text-brand whitespace-nowrap transition-colors">أدوات المطورين & API</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 flex-1 w-full">
+
+        <!-- Hero & Quick Finder Section -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-stretch">
+            
+            <!-- Hero Banner -->
+            <div class="lg:col-span-2 bg-gradient-to-r from-[#1E1E1E] to-[#181818] border border-brand-border rounded-3xl p-8 flex flex-col justify-between relative overflow-hidden">
+                <div class="absolute -left-10 -bottom-10 w-60 h-60 bg-brand/10 rounded-full blur-3xl pointer-events-none"></div>
+                <div class="space-y-4 z-10 max-w-lg">
+                    <span class="bg-brand/10 text-brand text-xs font-bold px-3 py-1.5 rounded-full border border-brand/20">
+                        ⚡ أتمتة تنفيذ فورية 24/7
+                    </span>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-white leading-tight">
+                        منصتك الشاملة للخدمات والحلول الرقمية
+                    </h1>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        نوفر لك أسرع الخدمات الرقمية، حلول ربط المتاجر، واشتراكات التطبيقات بأعلى جودة وتنفيذ آلي مباشر.
+                    </p>
+                </div>
+                <div class="pt-6 z-10 flex flex-wrap gap-4">
+                    <a href="#services" class="bg-brand hover:bg-brand-hover text-black font-bold px-6 py-3 rounded-xl transition-all">
+                        تصفح الخدمات
+                    </a>
+                    <a href="#" class="bg-[#2A2A2A] hover:bg-[#333] text-white font-medium px-6 py-3 rounded-xl transition-all border border-brand-border">
+                        مستندات API والربط
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Service Finder Box -->
+            <div class="bg-brand-card border border-brand-border rounded-3xl p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-white mb-2 flex items-center gap-2">
+                        <i class="fa-solid fa-bolt text-brand"></i> الوصول السريع للخدمة
+                    </h3>
+                    <p class="text-xs text-gray-400 mb-6">اختر الفئة والخدمة للوصول المباشر للطلب</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">قسم الخدمة</label>
+                            <select class="w-full bg-[#121212] border border-brand-border text-white text-sm rounded-xl p-3 focus:border-brand focus:outline-none">
+                                <option>خدمات تيك توك</option>
+                                <option>اشتراكات الترفيه</option>
+                                <option>تطبيقات وحلول سلة</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-400 mb-1">نوع الخدمة</label>
+                            <select class="w-full bg-[#121212] border border-brand-border text-white text-sm rounded-xl p-3 focus:border-brand focus:outline-none">
+                                <option>متابعين مع ضمان</option>
+                                <option>مشاهدات فورية</option>
+                                <option>إعجابات وتفاعل</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="w-full bg-brand hover:bg-brand-hover text-black font-bold py-3 rounded-xl text-sm transition-all mt-6">
+                    انتقل للخدمة مباشرة <i class="fa-solid fa-arrow-left mr-2"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section>
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-brand"></i> الأقسام الرئيسية
+                </h2>
+            </div>
+            
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+                <!-- Category 1 -->
+                <a href="#" class="bg-brand-card border border-brand-border hover:border-brand p-5 rounded-2xl flex flex-col items-center text-center group transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-brands fa-tiktok"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white group-hover:text-brand transition-colors">خدمات التسويق</span>
+                    <span class="text-[10px] text-gray-400 mt-1"> أكثر من 40 خدمة</span>
+                </a>
+
+                <!-- Category 2 -->
+                <a href="#" class="bg-brand-card border border-brand-border hover:border-brand p-5 rounded-2xl flex flex-col items-center text-center group transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-tv"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white group-hover:text-brand transition-colors">الاشتراكات الرقمية</span>
+                    <span class="text-[10px] text-gray-400 mt-1">تسليم آلي</span>
+                </a>
+
+                <!-- Category 3 -->
+                <a href="#" class="bg-brand-card border border-brand-border hover:border-brand p-5 rounded-2xl flex flex-col items-center text-center group transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-code"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white group-hover:text-brand transition-colors">حلول المتاجر</span>
+                    <span class="text-[10px] text-gray-400 mt-1">سلة & Webhooks</span>
+                </a>
+
+                <!-- Category 4 -->
+                <a href="#" class="bg-brand-card border border-brand-border hover:border-brand p-5 rounded-2xl flex flex-col items-center text-center group transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-gamepad"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white group-hover:text-brand transition-colors">بطاقات الألعاب</span>
+                    <span class="text-[10px] text-gray-400 mt-1">شحن فوري</span>
+                </a>
+
+                <!-- Category 5 -->
+                <a href="#" class="bg-brand-card border border-brand-border hover:border-brand p-5 rounded-2xl flex flex-col items-center text-center group transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white group-hover:text-brand transition-colors">سكربتات وأتمتة</span>
+                    <span class="text-[10px] text-gray-400 mt-1">أنظمة برمجية</span>
+                </a>
+
+                <!-- Category 6 -->
+                <a href="#" class="bg-brand-card border border-brand-border hover:border-brand p-5 rounded-2xl flex flex-col items-center text-center group transition-all">
+                    <div class="w-12 h-12 rounded-xl bg-brand/10 text-brand flex items-center justify-center text-xl mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <span class="text-sm font-bold text-white group-hover:text-brand transition-colors">مفاتيح API</span>
+                    <span class="text-[10px] text-gray-400 mt-1">ربط الموزعين</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Featured Products & Services -->
+        <section id="services">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-fire text-brand"></i> الأكثر طلباً الآن
+                </h2>
+                <a href="#" class="text-sm text-brand hover:underline">عرض الكل</a>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                
+                <!-- Service Card 1: Interactive SMM Service -->
+                <div class="bg-brand-card border border-brand-border rounded-3xl p-6 flex flex-col justify-between hover:border-brand/50 transition-all">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-green-500/10 text-green-400 text-xs font-bold px-3 py-1 rounded-full border border-green-500/20 flex items-center gap-1">
+                                <span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> تنفيذ فوري
+                            </span>
+                            <span class="text-xs text-gray-400">ID: #SKU-882</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">زيادة متابعين تيك توك (حسابات حقيقية)</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">خدمة سريعة مع ضمان عدم النقصان لمدة 30 يوم وتنفيذ تلقائي فور الطلب.</p>
+                        
+                        <!-- Interactive Form Inside Card -->
+                        <div class="space-y-3 bg-[#121212] p-4 rounded-2xl border border-brand-border/60">
+                            <div>
+                                <label class="block text-[11px] font-medium text-gray-400 mb-1">رابط الحساب / اسم المستخدم</label>
+                                <input type="text" placeholder="https://www.tiktok.com/@username" class="w-full bg-[#1E1E1E] text-xs text-white p-2.5 rounded-xl border border-brand-border focus:border-brand focus:outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-[11px] font-medium text-gray-400 mb-1">الكمية المطلوبة</label>
+                                <input type="number" value="1000" min="100" step="100" class="w-full bg-[#1E1E1E] text-xs text-white p-2.5 rounded-xl border border-brand-border focus:border-brand focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 flex justify-between items-center border-t border-brand-border/50 mt-6">
+                        <div>
+                            <span class="text-xs text-gray-400 block">الإجمالي:</span>
+                            <span class="text-xl font-black text-brand">15.00 ر.س</span>
+                        </div>
+                        <button class="bg-brand hover:bg-brand-hover text-black font-bold px-5 py-2.5 rounded-xl text-sm transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-cart-shopping"></i> اطلب الآن
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Service Card 2: Digital Subscription -->
+                <div class="bg-brand-card border border-brand-border rounded-3xl p-6 flex flex-col justify-between hover:border-brand/50 transition-all">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-brand/10 text-brand text-xs font-bold px-3 py-1 rounded-full border border-brand/20">
+                                كود تسليم آلي
+                            </span>
+                            <span class="text-xs text-gray-400">ID: #SUB-102</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">اشتراك VIP الترفيهي (12 شهر)</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">وصول كامل لجميع المحتويات بجودة 4K على جهازين في وقت واحد مع ضمان كامل الفترة.</p>
+                        
+                        <div class="space-y-2 bg-[#121212] p-4 rounded-2xl border border-brand-border/60 text-xs">
+                            <div class="flex justify-between text-gray-300">
+                                <span><i class="fa-solid fa-check text-brand ml-1"></i> تسليم فوري للأكواد:</span>
+                                <span class="text-green-400 font-bold">متاح</span>
+                            </div>
+                            <div class="flex justify-between text-gray-300">
+                                <span><i class="fa-solid fa-check text-brand ml-1"></i> مدة الضمان:</span>
+                                <span>365 يوم</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 flex justify-between items-center border-t border-brand-border/50 mt-6">
+                        <div>
+                            <span class="text-xs text-gray-400 block">السعر:</span>
+                            <span class="text-xl font-black text-brand">49.00 ر.س</span>
+                        </div>
+                        <button class="bg-brand hover:bg-brand-hover text-black font-bold px-5 py-2.5 rounded-xl text-sm transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-bolt"></i> شراء فوري
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Service Card 3: Developer / Store Automation -->
+                <div class="bg-brand-card border border-brand-border rounded-3xl p-6 flex flex-col justify-between hover:border-brand/50 transition-all">
+                    <div>
+                        <div class="flex justify-between items-start mb-4">
+                            <span class="bg-blue-500/10 text-blue-400 text-xs font-bold px-3 py-1 rounded-full border border-blue-500/20">
+                                خدمة ربط API
+                            </span>
+                            <span class="text-xs text-gray-400">ID: #API-901</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-white mb-2">تطبيق ربط Webhooks وتحديث المخزون</h3>
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4">ربط متجدد بين متجر سلة الخاص بك وسيرفرات معالجة الطلبات لإعادة توجيه المخزون تلقائياً.</p>
+                        
+                        <div class="space-y-2 bg-[#121212] p-4 rounded-2xl border border-brand-border/60 text-xs">
+                            <div class="flex justify-between text-gray-300">
+                                <span><i class="fa-solid fa-gear text-brand ml-1"></i> التوافق:</span>
+                                <span>متجر سلة (Salla V2 API)</span>
+                            </div>
+                            <div class="flex justify-between text-gray-300">
+                                <span><i class="fa-solid fa-shield text-brand ml-1"></i> التوثيق:</span>
+                                <span>OAuth 2.0 & Signatures</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6 flex justify-between items-center border-t border-brand-border/50 mt-6">
+                        <div>
+                            <span class="text-xs text-gray-400 block">الاشتراك الشهري:</span>
+                            <span class="text-xl font-black text-brand">99.00 ر.س</span>
+                        </div>
+                        <button class="bg-brand hover:bg-brand-hover text-black font-bold px-5 py-2.5 rounded-xl text-sm transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-plug"></i> تفعيل الخدمة
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-[#0D0D0D] border-t border-brand-border mt-16 text-xs text-gray-400">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+                <div class="space-y-3">
+                    <div class="flex items-center gap-2">
+                        <span class="text-xl font-extrabold text-white">فلاش <span class="text-brand">ستور</span></span>
+                    </div>
+                    <p class="text-gray-400 leading-relaxed">المنصة الأولى المعتمدة لتنفيذ وتوفير كافة الخدمات الرقمية وحلول أتمتة المتاجر بأسرع وقت.</p>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-3 text-sm">روابط سريعة</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="hover:text-brand transition-colors">مستندات API للموزعين</a></li>
+                        <li><a href="#" class="hover:text-brand transition-colors">شروط الخدمة والضمان</a></li>
+                        <li><a href="#" class="hover:text-brand transition-colors">مركز الدعم الفني</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-3 text-sm">وسائل الدفع المقبولة</h4>
+                    <div class="flex flex-wrap gap-2 text-base text-gray-300">
+                        <span class="bg-[#1E1E1E] px-3 py-1.5 rounded-lg border border-brand-border"><i class="fa-solid fa-credit-card"></i> مدى</span>
+                        <span class="bg-[#1E1E1E] px-3 py-1.5 rounded-lg border border-brand-border"><i class="fa-brands fa-apple"></i> Apple Pay</span>
+                        <span class="bg-[#1E1E1E] px-3 py-1.5 rounded-lg border border-brand-border">STC Pay</span>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-bold text-white mb-3 text-sm">تواصل معنا</h4>
+                    <p class="mb-2">الدعم الفني متواجد على مدار 24 ساعة عبر واتساب والتلجرام.</p>
+                    <div class="flex gap-3 text-lg text-brand">
+                        <a href="#" class="hover:opacity-80"><i class="fa-brands fa-telegram"></i></a>
+                        <a href="#" class="hover:opacity-80"><i class="fa-brands fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-brand-border/40 pt-6 text-center text-gray-500">
+                جميع الحقوق محفوظة © 2026 لـ منصة فلاش ستور (Flash Store).
+            </div>
+        </div>
+    </footer>
+
 </body>
 </html>
