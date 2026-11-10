@@ -1,1 +1,45 @@
+/* ===== صفحة المنتج ===== */
+html body#app .product-single [class*="product-block"],
+html body#app .product-single [class*="s-block"] > div,
+html body#app .product-form,
+html body#app .product-entry__features,
+html body#app .product-single [class*="description"] {
+  background:#161618 !important; border:1px solid #2a2a2e !important; border-radius:18px !important; box-shadow:none !important;
+}
+html body#app .product-single [class*="description"] { padding:18px !important; color:#B8B8B8 !important; line-height:2; }
+html body#app .product-single [class*="description"] strong { color:#fff; }
 
+/* الرابط (الحقل المخصص): امسح الخلفية السوداء الداخلية */
+html body#app .product-form [class*="s-form-group"],
+html body#app .product-form [class*="s-product-options-option"] { background:transparent !important; border:0 !important; padding:0 !important; }
+html body#app .product-form label { color:#B8B8B8 !important; font-size:.95rem; margin-bottom:6px; display:block; }
+html body#app .product-form input[type="text"] { background:#0b0b0c !important; border:1px solid #2a2a2e !important; border-radius:14px !important; min-height:52px; }
+
+/* صندوق السعر */
+html body#app .product-form [class*="price"] { background:transparent !important; }
+
+/* الكمية + زر السلة */
+html body#app [class*="s-quantity-input"] { background:#0b0b0c !important; border:1px solid #2a2a2e !important; border-radius:14px !important; }
+html body#app salla-add-product-button button, html body#app .product-form button[type="submit"] {
+  background:linear-gradient(135deg,#FFC04D,#FC9E01) !important; color:#111 !important; border-radius:14px !important; min-height:52px; font-weight:800; border:0 !important;
+}
+
+/* ===== التقييمات ===== */
+html body#app [class*="s-comments"], html body#app [class*="product-comments"], html body#app salla-comments {
+  background:#161618 !important; border:1px solid #2a2a2e !important; border-radius:18px !important; padding:18px !important; box-shadow:none !important;
+}
+html body#app [class*="s-comments"] [class*="comment-item"], html body#app [class*="s-comments-item"],
+html body#app salla-comments [class*="item"] {
+  background:#1E1E1E !important; border:1px solid #343434 !important; border-inline-start:4px solid #FC9E01 !important;
+  border-radius:14px !important; padding:14px 16px !important; margin-bottom:12px; box-shadow:none !important;
+}
+/* النجوم ذهبية */
+html body#app [class*="s-comments"] [class*="star"], html body#app [class*="s-rating"] i, html body#app [class*="s-rating"] svg { color:#FFC04D !important; fill:#FFC04D !important; }
+/* العدد الكبير 100% */
+html body#app [class*="s-comments"] [class*="rate"] h2, html body#app [class*="s-comments"] [class*="percent"] { color:#FFC04D !important; font-size:2.6rem; font-weight:900; }
+/* قائمة "الأحدث" */
+html body#app [class*="s-comments"] select, html body#app [class*="s-comments"] [class*="sort"] { background:#0b0b0c !important; border:1px solid #2a2a2e !important; border-radius:12px !important; color:#fff !important; }
+/* علامة موثّق */
+html body#app [class*="s-comments"] [class*="comment-item"]::after, html body#app [class*="s-comments-item"]::after {
+  content:'✓ مشتري موثّق'; display:inline-block; margin-top:8px; padding:3px 12px; border:1px solid #343434; border-radius:999px; background:#2A2A2A; color:#FFC04D; font-size:.8rem; font-weight:700;
+}
